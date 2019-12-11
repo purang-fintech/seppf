@@ -64,6 +64,6 @@
 
 # License
 
-(1) The code are licensed under the MIT license;
+- 开原协议为MIT，请参考[LICENSE](./LICENSE)
 
-(2) All rights of other parts, but not limited to the icons, images, and UI designs are reserved.
+- 本平台已经获得软件著作权（登记号2019SR0572278、2019SR1105515），请使用和传播时审慎思考
