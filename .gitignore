@@ -1,0 +1,15 @@
+.DS_Store
+/node_modules/
+/dist/*
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+/chromium/*
+/.vscode/*
+/.idea/*
+/package-lock.json
+/debug.log*
+/config/dev.env.js
+/static/dll*
+/.idea/*
+
