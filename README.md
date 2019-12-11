@@ -4,7 +4,7 @@
 
 ## 安装步骤 ##
 
-	git clone https://gitlab.com/fudax/seppf      // 载到本地
+	git clone https://github.com/purang-fintech/seppf.git      // 下载到本地
 	cd seppf            // 进入项目目录
 	npm install         // 安装项目依赖，等待安装完成之后
 
