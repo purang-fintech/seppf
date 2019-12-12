@@ -202,10 +202,12 @@
         <el-collapse-item name="brotherCms">
           <template slot="title">
             <i class="iconfont icon-label"></i>
-            <span v-if="activeName=='brotherCms'"> 所属产品需求下其他开发任务</span>
-            <span v-else> 所属产品需求下其他开发任务({{brotherCms.pageInfo.total - 1}} 条记录，展开可查看)</span>
+            <span v-if="activeName=='brotherCms'"> 所属产品需求下全部开发任务</span>
+            <span v-else> 所属产品需求下全部开发任务({{brotherCms.pageInfo.total}} 条记录，展开可查看)</span>
           </template>
-          <el-table :data="brotherCms.data" size="mini" class="cms-detail-table" empty-text="所属产品需求下无其他开发任务" stripe>
+          <el-table :data="brotherCms.data" size="mini" class="cms-detail-table" :row-class-name="isCurrentRow" empty-text="所属产品需求下无其他开发任务" stripe>
+            <el-table-column type="index" label="序号" width="40" align="center">
+            </el-table-column>
             <el-table-column prop="id" label="任务编号" width="100" align="center">
             </el-table-column>
             <el-table-column prop="statusName" label="任务状态" width="80" align="center">
@@ -231,7 +233,7 @@
               :page-sizes="[5, 10]"
               :page-size="brotherCms.pageSize"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="brotherCms.pageInfo.total - 1">
+              :total="brotherCms.pageInfo.total">
             </el-pagination>
           </div>
         </el-collapse-item>
@@ -874,6 +876,14 @@ export default {
       return commonQuery.checkUrl(url);
     },
 
+    isCurrentRow({ row, rowIndex }) {
+      console.log(row.id);
+      console.log(this.currentCms.id);
+      if (row.id == this.currentCms.id) {
+        return "current-row";
+      }
+    },
+
     handleCurrentChange(current) {
       if (this.queryChanged == true) {
         this.currentPage = 1;
@@ -1339,14 +1349,8 @@ export default {
         })
         .then(function(res) {
           _self.brotherCms.pageInfo = res.data;
-          let cmss = eval(res.data.list);
-          _self.brotherCms.data = cmss.filter(item => {
-            return item.id != currentCms.id;
-          });
+          _self.brotherCms.data = eval(res.data.list);
         })
-        .catch(function(response) {
-          console.log(response);
-        });
     },
 
     openAttach(fileObject) {
@@ -1500,9 +1504,7 @@ export default {
   margin: 0;
   font-size: 40px;
 }
-</style>
 
-<style scoped>
 .cmform-box {
   width: 97% !important;
   border: 1px solid #e4edf3;
@@ -1526,6 +1528,11 @@ export default {
 .cms-status-tip {
   margin-bottom: 10px;
   color: #61c3df;
+}
+
+.current-row {
+  color: #61c3df !important;
+  font-weight: 600 !important;
 }
 
 .tips {

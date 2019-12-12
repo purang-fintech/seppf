@@ -662,13 +662,13 @@
           data: [],
           pageInfo: {},
           currentPage: 1,
-          pageSize: parseInt(sessionStorage.tablePageSize) || 10
+          pageSize: 5
         },
         currentReqBug: {
           data: [],
           pageInfo: {},
           currentPage: 1,
-          pageSize: parseInt(sessionStorage.tablePageSize) || 10
+          pageSize: 5
         },
         currentReqChange: [],
         activeName: "reqDetail",
