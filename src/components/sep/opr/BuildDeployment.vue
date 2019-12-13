@@ -12,7 +12,7 @@
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="clearfix">
         <span style="font-size: 15px">构建部署</span>
-        <el-button style="float:right; padding:3px 0;margin-left:12px" type="text" icon="el-icon-right"
+        <el-button v-no-more-click style="float:right; padding:3px 0;margin-left:12px" type="text" icon="el-icon-right"
                    @click="releaseQuery(),dialogBuildVisible = true">立即构建
         </el-button>
         <router-link to="/build" style="margin-right:50px">
@@ -77,8 +77,8 @@
                 width="100"
                 align="center">
                 <template slot-scope="scope">
-                  <el-button v-if="scope.row.buildStatus == 'FAILURE'" @click="handleRetry(scope.row)" type="text">重试</el-button>
-                  <el-button v-else  type="text" @click="viewLog(scope.row)">查看日志</el-button>
+                  <el-button v-no-more-click v-if="scope.row.buildStatus == 'FAILURE'" @click="handleRetry(scope.row)" type="text">重试</el-button>
+                  <el-button v-no-more-click v-else  type="text" @click="viewLog(scope.row)">查看日志</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -151,8 +151,8 @@
       </el-form>
       <span slot="footer">
         <span style="float:left;color:#EE6F6F;font-size:18px">{{showErrorMessage}}</span>
-        <el-button @click="dialogBuildVisible = false" size="mini" type="primary" icon="el-icon-close">取 消</el-button>
-        <el-button @click="validateAndBuild('buildEnv','buildEnvInstance')" size="mini" type="primary" icon="el-icon-check">构 建</el-button>
+        <el-button v-no-more-click @click="dialogBuildVisible = false" size="mini" type="primary" icon="el-icon-close">取消</el-button>
+        <el-button v-no-more-click @click="validateAndBuild('buildEnv','buildEnvInstance')" size="mini" type="primary" icon="el-icon-check">构建</el-button>
       </span>
     </el-dialog>
 

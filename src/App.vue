@@ -70,21 +70,8 @@ body {
   font-size: 14px !important;
   width: 100%;
   height: 100%;
-  background: url(assets/img/bg.jpg) cover;
+  background-color: #4d5a6b;
   -webkit-font-smoothing: antialiased;
-  background: url("assets/img/bg.jpg");
-  background-attachment: fixed;
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-      src="assets/img/bg.jpg",
-      sizingMethod="scale"
-    );
-  -ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-      src="assets/img/bg.jpg",
-      sizingMethod="scale"
-    );
-  background-size: cover;
-  -moz-background-size: cover;
-  -webkit-background-size: cover;
 }
 
 #sepp {
