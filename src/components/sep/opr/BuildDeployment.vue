@@ -78,7 +78,7 @@
                 align="center">
                 <template slot-scope="scope">
                   <el-button v-no-more-click v-if="scope.row.buildStatus == 'FAILURE'" @click="handleRetry(scope.row)" type="text">重试</el-button>
-                  <el-button v-no-more-click v-else  type="text" @click="viewLog(scope.row)">查看日志</el-button>
+                  <el-button v-no-more-click v-else :disabled="['QUEUE','START'].indexOf(scope.row.buildStatus) > -1"  type="text" @click="viewLog(scope.row)">查看日志</el-button>
                 </template>
               </el-table-column>
             </el-table>
