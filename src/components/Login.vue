@@ -431,7 +431,7 @@ export default {
     },
 
     toICPGov() {
-      window.open("http://www.miit.gov.cn/", "Blank");
+      window.open("http://www.miit.gov.cn/", "_blank");
     },
 
     normalAuth(callback) {

@@ -206,7 +206,7 @@ export default {
           reportId: row.id
         }
       });
-      window.open(routeData.href, "Blank");
+      window.open(routeData.href, "_blank");
     },
 
     timeDiff(begin, end) {

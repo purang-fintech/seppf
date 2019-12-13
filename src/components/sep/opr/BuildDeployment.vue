@@ -35,11 +35,10 @@
                     </el-progress>
                   </div>
                   <div v-else-if="scope.row.buildStatus== 'FAILURE'">
-                    <router-link target="_blank"
-                                 :to="'/buildLog?jobName='+scope.row.jobName+'&buildVersion='+scope.row.buildVersion+'&buildStatus='+scope.row.buildStatus+'&instanceType='+scope.row.type">
+                    <el-button v-no-more-click type="text" @click="viewLog(scope.row)">
                       <i :class="scope.row.status.badge" :style="{color:scope.row.status.color}"></i>
                       <span :style="{color:scope.row.status.color}">{{scope.row.status.statusCh}}</span>
-                    </router-link>
+                    </el-button>
                   </div>
                   <div v-else>
                     <i :class="scope.row.status.badge" :style="{color:scope.row.status.color}"></i>
