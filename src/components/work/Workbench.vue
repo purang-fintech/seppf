@@ -14,7 +14,20 @@
           <el-link type="primary" style="float:right" @click="chooseProject(item)" :disabled="productName==item.productName" :underline="false" icon="el-icon-right">进入</el-link>
         </div>
       </el-card>
+      <el-card class="project-list" shadow="never" :class="[userProducts.length%4 > 0 ? 'special-list-wb': 'normal-list-wb']">
+        <div slot="header">
+          <el-link type="primary" @click="showNew=true" style="float:left" :underline="false" icon="el-icon-plus">新建产品/项目</el-link>
+        </div>
+      </el-card>
     </el-card>
+
+    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showNew" width="950px">
+      <v-prod ref="createProduct"></v-prod>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showNew=false" size="mini">取消</el-button>
+        <el-button type="primary" icon="el-icon-check" @click="saveCreate()" size="mini">保存</el-button>
+      </div>
+    </el-dialog>
 
     <el-drawer title="版本 / 迭代计划 —— 待发布" :visible.sync="showAllRelease" direction="rtl" size="50%">
       <el-table :data="release.allData" size="mini" stripe :border="showBorder" :max-height="maxHeight">
@@ -473,16 +486,19 @@
 <script>
 import { dateFormat } from "@/util/date.js";
 import commonQuery from '../util/CommonQuery.vue';
+import createProduct from "@/components/mgr/product/ProductCreate.vue";
 export default {
   data() {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
+      modalClose: sessionStorage.dialogAutoClose == 1,
       maxHeight: document.body.clientHeight - 65,
       defects: [],
       priorities: [],
       influences: [],
       productName: sessionStorage.productName,
       userDefined: [],
+      showNew: false,
       showAllRelease: false,
       showMyRelease: false,
       showPooledRequest: false,
@@ -592,6 +608,10 @@ export default {
     };
   },
 
+  components: {
+    vProd: createProduct
+  },
+
   watch: {
     activeName: function(val) {
       this.schedule = {
@@ -678,6 +698,10 @@ export default {
       sessionStorage.setItem("roleNames", thisProject.roleNames);
       localStorage.setItem("lastProduct", item.productId);
       window.location.reload();
+    },
+
+    saveCreate(){
+      this.$refs.createProduct.checkProductCreate();
     },
 
     getRoles(productId){
@@ -960,6 +984,21 @@ export default {
 .my-project .el-card__body,
 .project-work .el-card__body {
   padding: 1% 0 0.5% 1%;
+}
+
+.special-list-wb {
+  position:absolute;
+  width: 23.6% !important;
+  padding: 10px !important;
+}
+
+.normal-list-wb {
+  width: 24.3%;
+}
+
+.special-list-wb .el-card__header,
+.normal-list-wb .el-card__header{
+  padding: 10px !important;
 }
 
 .project-list {

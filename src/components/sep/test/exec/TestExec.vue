@@ -137,7 +137,7 @@
           class="tree-view"
           v-if="loadTree"
           ref="caseToSelect"
-          style="height: 398px"
+          style="height: 388px"
           node-key="id"
           highlight-current
           auto-expand-parent
@@ -1561,7 +1561,9 @@
               "Content-type": "application/x-www-form-urlencoded"
             },
             params: {
-              parentId: parentId
+              parentId: parentId,
+              isDesc: 'Y',
+              qryProduct: sessionStorage.productId
             }
           })
           .then(function (res) {

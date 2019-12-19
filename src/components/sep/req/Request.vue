@@ -65,7 +65,7 @@
           class="tree-view"
           v-if="loadTree"
           ref="caseToSelect"
-          style="height: 398px"
+          style="height: 388px"
           node-key="id"
           highlight-current
           :show-checkbox="true"
@@ -585,7 +585,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="relate" v-if="scope.row.testable" style="color:lightseagreen"><i class="el-icon-collection-tag"/>关联测试用例</el-dropdown-item>
                 <el-dropdown-item command="tms" v-if="scope.row.testable" style="color:#6BBD6B"><i class="el-icon-copy-document"/>拆分测试任务</el-dropdown-item>
-                <el-dropdown-item command="change" v-if="scope.row.relId && scope.row.editable" style="color:#EE6F6F"><i class="el-icon-edit-outline"/>产品需求变更</el-dropdown-item>
+                <el-dropdown-item command="change" v-if="scope.row.relId && scope.row.editable && scope.row.status>0" style="color:#EE6F6F"><i class="el-icon-edit-outline"/>产品需求变更</el-dropdown-item>
                 <el-dropdown-item command="edit" v-if="!scope.row.relId && scope.row.editable" style="color:#DEAF6C"><i class="el-icon-edit-outline"/>产品需求编辑</el-dropdown-item>
                 <el-dropdown-item command="cms" v-if="scope.row.splitable" style="color:#3AB4D7"><i class="el-icon-document-copy"/>拆分开发任务</el-dropdown-item>
               </el-dropdown-menu>
@@ -1119,7 +1119,9 @@
               "Content-type": "application/x-www-form-urlencoded"
             },
             params: {
-              parentId: parentId
+              parentId: parentId,
+              isDesc: 'Y',
+              qryProduct: sessionStorage.productId
             }
           })
           .then(function (res) {
@@ -1127,9 +1129,6 @@
             if (parentId > 0) {
               let node = _self.$refs.caseToSelect.getNode(parentId);
               _self.$set(node.data, "children", []);
-              json = json.filter(item => {
-                return item.productId == parseInt(sessionStorage.productId);
-              });
               json.forEach(item => {
                 item.leaf = (item.type != 'folder');
                 node.data.children.push(item);
@@ -1137,10 +1136,6 @@
             }
             resolve(json);
           })
-          .catch(function (response) {
-            _self.$notify.error("发生错误");
-            console.log(response);
-          });
       },
 
       renderContent(h, { node, data, store }) {

@@ -36,6 +36,14 @@
       </div>
     </el-dialog>
 
+    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showNewProduct" width="950px">
+      <v-prod ref="newProduct"></v-prod>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showNewProduct=false" size="mini">取消</el-button>
+        <el-button type="primary" icon="el-icon-check" @click="saveCreate()" size="mini">保存</el-button>
+      </div>
+    </el-dialog>
+
     <div class="header">
       <span v-if="!isCollapse" class="app-name" @click="toHome()">{{sysName}}</span>
       <span v-if="isCollapse" class="app-alias" @click="toHome()">SEPP</span>
@@ -79,6 +87,7 @@
             <template v-for="(item, index) in userProducts">
               <el-dropdown-item :command="composeValue(item)" :key="index" :disabled="item.productId==productId"><i class="el-icon-right"/>{{item.productName}}</el-dropdown-item>
             </template>
+            <el-dropdown-item command="new" style="color:#3ab4d7"><i class="el-icon-plus"/>新建产品/项目</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -118,6 +127,7 @@
 
 <script>
 import commonQuery from "@/components/util/CommonQuery.vue";
+import createProduct from "@/components/mgr/product/ProductCreate.vue";
 let baseUrl = process.env.ROOT_URL;
 import { Notification } from 'element-ui';
 export default {
@@ -144,6 +154,7 @@ export default {
       messages: [],
       showWarning: false,
       warnings: [],
+      showNewProduct: false,
       authed: sessionStorage.userId && sessionStorage.userId != null,
       websock: null,
       isShowAlert: false,
@@ -153,6 +164,10 @@ export default {
       timeout: 4000,
       viewRefreshed: true
     };
+  },
+
+  components: {
+    vProd: createProduct
   },
 
   watch: {
@@ -250,6 +265,10 @@ export default {
       });
     },
 
+    saveCreate(){
+      this.$refs.newProduct.checkProductCreate();
+    },
+
     composeValue(item) {
       return {
         productId: item.productId,
@@ -261,6 +280,10 @@ export default {
     },
 
     productChoose(cmd){
+      if (cmd == 'new') {
+        this.showNewProduct = true;
+        return;
+      }
       if (cmd.productId == sessionStorage.productId) {
         return;
       }

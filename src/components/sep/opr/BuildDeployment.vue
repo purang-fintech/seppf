@@ -296,7 +296,7 @@
             'instanceType': data.type
           }
         });
-        window.open(routeData.href, 'Blank');
+        window.open(routeData.href, '_blank');
       },
 
       getJobName() {

@@ -65,6 +65,14 @@
       <span v-else>使用中如果遇到问题，请<a class="icp" href="mailto:liuyi@purang.com">联系管理员</a></span>
     </div>
 
+    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showNew" width="950px">
+      <v-prod ref="newProduct"></v-prod>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showNew=false" size="mini">取消</el-button>
+        <el-button type="primary" icon="el-icon-check" @click="saveCreate()" size="mini">保存</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog :close-on-click-modal="modalClose" :visible.sync="showErrors" title="权限申请处理失败信息" width="600px">
       <div class="float-body" style="padding-top:40px;height:auto">
         <h2 v-for="item in errors">{{item}}</h2>
@@ -103,6 +111,11 @@
             <span slot="reference">{{item.productName}}</span>
           </el-popover>
           <el-link type="primary" style="float:right;font-size:16px" @click="commitChoice(item)" :underline="false" icon="el-icon-right">进入</el-link>
+        </div>
+      </el-card>
+      <el-card class="product-list" shadow="never" :class="[float.products.length%4 > 0 ? 'special-list-login': 'normal-list-login']">
+        <div slot="header">
+          <el-link type="primary" @click="showNew=true" style="float:left;font-size:20px;font-weight:600" :underline="false" icon="el-icon-plus">新建产品 / 项目</el-link>
         </div>
       </el-card>
       <div slot="footer">
@@ -160,6 +173,7 @@
 <script>
 const emailPatern = /^[a-zA-Z0-9]+([._\\-]*[a-zA-Z0-9])*@([a-zA-Z0-9]+[-a-zA-Z0-9]*[a-zA-Z0-9]+.){1,63}[a-zA-Z0-9]+$/;
 import commonQuery from "@/components/util/CommonQuery.vue";
+import createProduct from "@/components/mgr/product/ProductCreate.vue";
 export default {
   data: function() {
     return {
@@ -191,6 +205,7 @@ export default {
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
       },
       menus: [],
+      showNew: false,
       activeName: "ldap",
       ldapDisabled: false,
       userName: "",
@@ -227,6 +242,10 @@ export default {
     };
   },
 
+  components: {
+    vProd: createProduct
+  },
+
   created() {
     sessionStorage.clear();
     localStorage.removeItem("userProducts");
@@ -253,6 +272,10 @@ export default {
       if (this.$refs[formName]) {
         this.$refs[formName].resetFields();
       }
+    },
+
+    saveCreate(){
+      this.$refs.newProduct.checkProductCreate();
     },
 
     getRoles(productId){
@@ -670,8 +693,19 @@ export default {
             .then(() => {
               _self.queryBaseInfo();
               _self.showApplyPriv = true;
+              return;
             })
-          return;
+            .catch(() => {
+              _self.$confirm("是否现在创建？", "创建一个新的产品/项目", {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "info"
+                })
+                .then(() => {
+                  _self.showCreateNew = true;
+                  return;
+                })
+            });
         }
         let sortedPrivs = _self.sortData(privileges, "productId", "productName", "productCode", "children");
         _self.float.products.splice(0, _self.float.products.length);
@@ -902,6 +936,15 @@ export default {
   border-radius: 5px;
   margin: 0 1% 1% 0;
   border: none;
+}
+
+.special-list-login {
+  position:absolute;
+  width:22.3% !important;
+}
+
+.normal-list-login {
+  width:23.8%;
 }
 
 .product-list .el-card__header {
