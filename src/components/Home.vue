@@ -1,7 +1,13 @@
 <template>
-  <div class="wrapper">    
+  <div class="wrapper">
     <el-dialog :close-on-click-modal="modalClose" :visible.sync="showWarning" width="950px" :show-close="false" custom-class="popver-dialog">
-      <el-table :data="warnings" size="mini" stripe empty-text="暂无异常告警情况发生" :max-height="warnTHeight" :border="showBorder">
+      <el-table
+        :data="warnings"
+        size="mini"
+        stripe
+        empty-text="暂无异常告警情况发生"
+        :max-height="warnTHeight"
+        :border="showBorder">
         <el-table-column type="index" label="序号" width="50" align="center" sortable>
         </el-table-column>
         <el-table-column prop="warningDate" label="告警日期" width="120" align="center" sortable>
@@ -48,16 +54,46 @@
       <span v-if="!isCollapse" class="app-name" @click="toHome()">{{sysName}}</span>
       <span v-if="isCollapse" class="app-alias" @click="toHome()">SEPP</span>
       <i :class="{ 'el-icon-d-arrow-right': isCollapse , 'el-icon-d-arrow-left' : !isCollapse }" @click="setCollapse()" style="vertical-align:middle;margin-right:10px" />
-      <el-button v-no-more-click size="mini" type="text" @click="$router.push('/prereq')" class="el-icon-document" style="color:#6bbd6b"> 提交需求</el-button>
+      <el-button
+        v-no-more-click
+        size="mini"
+        type="text"
+        @click="$router.push('/prereq')"
+        class="el-icon-document"
+        style="color:#6bbd6b"> 提交需求</el-button>
       <el-divider direction="vertical"></el-divider>
-      <el-button v-no-more-click size="mini" type="text" @click="$router.push('/defect')" class="iconfont icon-bug" style="color:#DEAF6C"> 上报缺陷</el-button>
+      <el-button
+        v-no-more-click
+        size="mini"
+        type="text"
+        @click="$router.push('/defect')"
+        class="iconfont icon-bug"
+        style="color:#DEAF6C"> 上报缺陷</el-button>
       <el-divider direction="vertical"></el-divider>
-      <el-button v-no-more-click size="mini" type="text" @click="$router.push('/problem')" class="iconfont icon-flashlight" style="color:#EE6F6F"> 上报线上问题</el-button>
+      <el-button
+        v-no-more-click
+        size="mini"
+        type="text"
+        @click="$router.push('/problem')"
+        class="iconfont icon-flashlight"
+        style="color:#EE6F6F"> 上报线上问题</el-button>
       <el-divider direction="vertical"></el-divider>
-      <el-button v-no-more-click size="mini" type="text" @click="$router.push('/build')" class="iconfont icon-flag_fill" style="color:#3AB4D7"> 构建发布</el-button>
+      <el-button
+        v-no-more-click
+        size="mini"
+        type="text"
+        @click="$router.push('/build')"
+        class="iconfont icon-flag_fill"
+        style="color:#3AB4D7"> 构建发布</el-button>
       <el-divider direction="vertical"></el-divider>
-      <el-button v-no-more-click size="mini" type="text" @click="toSearch()" class="el-icon-search" style="color:#9CA9C4"> 全局搜索(Q)</el-button>
-      
+      <el-button
+        v-no-more-click
+        size="mini"
+        type="text"
+        @click="toSearch()"
+        class="el-icon-search"
+        style="color:#9CA9C4"> 全局搜索(Q)</el-button>
+
       <div class="user-info">
         <el-badge :value="messages.length" class="item" :max="99" v-if="messageOn" :hidden="messages.length==0">
           <el-button icon="el-icon-message" size="mini" @click="openMessage()" :disabled="!authed">通知</el-button>
@@ -85,9 +121,9 @@
           <span style="color:#fafad2;margin-left:0">{{productName}}<i class="el-icon-arrow-down" style="margin-left:5px"></i></span>
           <el-dropdown-menu slot="dropdown">
             <template v-for="(item, index) in userProducts">
-              <el-dropdown-item :command="composeValue(item)" :key="index" :disabled="item.productId==productId"><i class="el-icon-right"/>{{item.productName}}</el-dropdown-item>
+                    <el-dropdown-item :command="composeValue(item)" :key="index" :disabled="item.productId==productId"><i class="el-icon-right" />{{item.productName}}</el-dropdown-item>
             </template>
-            <el-dropdown-item command="new" style="color:#3ab4d7"><i class="el-icon-plus"/>新建产品/项目</el-dropdown-item>
+                  <el-dropdown-item command="new" style="color:#3ab4d7"><i class="el-icon-plus" />新建产品/项目</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -118,9 +154,9 @@
 
     <div :class="{'collapsed-content' : isCollapse, 'content' : !isCollapse}">
       <keep-alive>
-        <router-view :messages="messages" :collapsed="isCollapse" v-if="$route.meta.keepAlive && viewRefreshed"/>
+        <router-view :messages="messages" :collapsed="isCollapse" v-if="$route.meta.keepAlive && viewRefreshed" />
       </keep-alive>
-      <router-view :messages="messages" :collapsed="isCollapse" v-if="!$route.meta.keepAlive && viewRefreshed"/>
+      <router-view :messages="messages" :collapsed="isCollapse" v-if="!$route.meta.keepAlive && viewRefreshed" />
     </div>
   </div>
 </template>
@@ -129,7 +165,9 @@
 import commonQuery from "@/components/util/CommonQuery.vue";
 import createProduct from "@/components/mgr/product/ProductCreate.vue";
 let baseUrl = process.env.ROOT_URL;
-import { Notification } from 'element-ui';
+import {
+  Notification
+} from 'element-ui';
 export default {
   data() {
     return {
@@ -146,7 +184,7 @@ export default {
       total: 0,
       messageCurrentPage: 1,
       messagePageSize: parseInt(sessionStorage.tablePageSize) || 10,
-      messageTotal:0,
+      messageTotal: 0,
       userProducts: [],
       isCollapse: (localStorage.isCollapse && localStorage.isCollapse === 'true') ? true : false,
       items: [],
@@ -171,7 +209,7 @@ export default {
   },
 
   watch: {
-    '$route' (to, from) {
+    '$route'(to, from) {
       let params = [];
       for (let p in this.$route.params) {
         params.push(p);
@@ -189,7 +227,7 @@ export default {
   },
 
   created() {
-    this.$axios.get("/menus/configs").then(resp=>{
+    this.$axios.get("/menus/configs").then(resp => {
       this.items = resp.data;
     });
     if (!this.authed) {
@@ -219,14 +257,14 @@ export default {
 
     userFavicon() {
       let ufavicon = sessionStorage.userFavicon;
-      return ufavicon ?  ufavicon : this.favicon;
+      return ufavicon ? ufavicon : this.favicon;
     },
 
     contentWidth() {
       return document.body.clientWidth - (!this.isCollapse ? 180 : 50);
     },
 
-    messageOn(){
+    messageOn() {
       return sessionStorage.messageOn == 1;
     }
   },
@@ -247,8 +285,8 @@ export default {
       this.start();
     },
 
-    userProductRoles(){
-      let _self =  this;
+    userProductRoles() {
+      let _self = this;
       _self.userProducts.splice(0, _self.userProducts.length);
       let userPrivs = localStorage.getItem("userProducts");
       if (commonQuery.isNull(userPrivs) || eval(JSON.parse(userPrivs)).length == 0) {
@@ -265,21 +303,21 @@ export default {
       });
     },
 
-    saveCreate(){
+    saveCreate() {
       this.$refs.newProduct.checkProductCreate();
     },
 
     composeValue(item) {
-      return {
+      return {
         productId: item.productId,
         productName: item.productName,
         roles: item.roles,
         roleNames: item.roleNames,
         productCode: item.productCode
-      }
-    },
+      }
+    },
 
-    productChoose(cmd){
+    productChoose(cmd) {
       if (cmd == 'new') {
         this.showNewProduct = true;
         return;
@@ -298,9 +336,9 @@ export default {
     },
 
     start() {
-      let _self =  this;
+      let _self = this;
       _self.timeoutObj = setInterval(function () {
-        if ( _self.websock.readyState == 1) {
+        if (_self.websock.readyState == 1) {
           _self.websock.send("HeartBeat");
         } else {
           clearTimeout(_self.timeoutObj)
@@ -309,8 +347,8 @@ export default {
       }, this.timeout)
     },
 
-    reconnect() {//重新连接
-      let _self =  this;
+    reconnect() { //重新连接
+      let _self = this;
       if (_self.lockReconnect) {
         return;
       };
@@ -332,7 +370,7 @@ export default {
     messageHandleCurrentChange(val) {
       this.messageCurrentPage = val;
     },
-    
+
     subShow(subMenu) {
       if (subMenu.shows.indexOf(-1) > -1) {
         return true;
@@ -341,7 +379,7 @@ export default {
         return false;
       }
       let roles = sessionStorage.roles.split(",");
-      for (let i = 0; i < roles.length; i ++) {
+      for (let i = 0; i < roles.length; i++) {
         if (subMenu.shows.indexOf(parseInt(roles[i])) > -1) {
           return true;
         }
@@ -351,20 +389,28 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       //todo 异步请求一次
-      let params = {"pageNum":this.currentPage,"pageSize":this.pageSize,"messageTypes":["ALARM"]};
+      let params = {
+        "pageNum": this.currentPage,
+        "pageSize": this.pageSize,
+        "messageTypes": ["ALARM"]
+      };
       this.websocketsend(JSON.stringify(params));
     },
 
     handleCurrentChange(val) {
       this.currentPage = val;
       //异步请求一次
-      let params = {"pageNum":this.currentPage,"pageSize":this.pageSize,"messageTypes":["ALARM"]};
+      let params = {
+        "pageNum": this.currentPage,
+        "pageSize": this.pageSize,
+        "messageTypes": ["ALARM"]
+      };
       this.websocketsend(JSON.stringify(params));
     },
 
-    initWebSocket(){
+    initWebSocket() {
       //初始化weosocket
-      const wsuri = "ws://"+baseUrl.substr(7,baseUrl.length)+"myHandler";
+      const wsuri = "ws://" + baseUrl.substr(7, baseUrl.length) + "myHandler";
       this.websock = new WebSocket(wsuri);
       this.websock.onmessage = this.websocketonmessage;
       this.websock.onopen = this.websocketonopen;
@@ -380,7 +426,10 @@ export default {
         messageTypes = ["ALARM", "NOTICE"];
       }
       let params = {
-        alertPage: { pageNum: this.currentPage, pageSize: this.pageSize },
+        alertPage: {
+          pageNum: this.currentPage,
+          pageSize: this.pageSize
+        },
         messagePage: {
           pageNum: this.messageCurrentPage,
           pageSize: this.messagePageSize
@@ -392,11 +441,11 @@ export default {
       this.websocketsend(JSON.stringify(params));
     },
 
-    websocketonerror(w){//连接建立失败重连
+    websocketonerror(w) { //连接建立失败重连
       this.initWebSocket();
     },
 
-    websocketonmessage(e){ //数据接收
+    websocketonmessage(e) { //数据接收
       let resp = JSON.parse(e.data);
       if (resp.alerts) {
         this.warnings = eval(resp.alerts.list);
@@ -410,9 +459,9 @@ export default {
           message: '<span style="font-weight:600;cursor:pointer;color:#EE6F6F">您有新的告警（点击查看）</span>',
           duration: 0,
           type: 'warning',
-          position:'bottom-right',
+          position: 'bottom-right',
           showClose: false,
-          onClick:()=>this.newOpenWarning(alertNotify),
+          onClick: () => this.newOpenWarning(alertNotify),
         });
       }
       if (resp.messages && resp.messages.list != null) {
@@ -427,18 +476,18 @@ export default {
           message: '<span style="font-weight:600;cursor:pointer;color:#3AB4D7">您有新的消息（点击查看）</span>',
           duration: 0,
           type: 'success',
-          position:'bottom-right',
+          position: 'bottom-right',
           showClose: true,
-          onClick:()=>this.newOpenMessage(messageNotify),
+          onClick: () => this.newOpenMessage(messageNotify),
         });
       }
     },
 
-    websocketsend(Data){//数据发送
+    websocketsend(Data) { //数据发送
       this.websock.send(Data);
     },
 
-    websocketclose(e){  //关闭
+    websocketclose(e) { //关闭
     },
 
     newOpenMessage(val) {
@@ -453,14 +502,14 @@ export default {
       this.isShowAlert = false;
     },
 
-    hotKeyPress(e){
+    hotKeyPress(e) {
       if (e.ctrlKey && e.keyCode == 81) {
         e.preventDefault();
         this.$router.push("/fuzzq");
       }
     },
 
-    setWarnTHeight(){
+    setWarnTHeight() {
       if (this.warnings * 40 > 360) {
         this.warnTHeight = 380;
       } else {
@@ -468,39 +517,41 @@ export default {
       }
     },
 
-    toHome(){
+    toHome() {
       this.$router.push("/index");
     },
 
-    toSearch(){
+    toSearch() {
       this.$router.push("/fuzzq");
     },
 
-    openMessage(){
+    openMessage() {
       if (this.$route.path == "/message") {
         this.viewRefreshed = false;
         setTimeout(() => {
           this.viewRefreshed = true;
         }, 200);
       } else {
-        this.$router.push({path: '/message'});
+        this.$router.push({
+          path: '/message'
+        });
       }
     },
 
-    closeMessage(){
+    closeMessage() {
       this.showMessage = false;
     },
 
-    openWarning(){
+    openWarning() {
       this.showWarning = true;
     },
 
-    closeWarning(){
+    closeWarning() {
       this.showWarning = false;
     },
 
     rootShow(rootMenu) {
-      let _self =  this;
+      let _self = this;
       let subMenus = rootMenu.subs;
       if (!subMenus) {
         return true;
@@ -513,8 +564,8 @@ export default {
       return false;
     },
 
-    setCollapse(){
-      this.isCollapse=!this.isCollapse;
+    setCollapse() {
+      this.isCollapse = !this.isCollapse;
       localStorage.setItem("isCollapse", this.isCollapse);
       if (localStorage.autoResize == 'true') {
         this.$message.success("页面将自动重新自适应刷新");
@@ -525,16 +576,16 @@ export default {
     },
 
     handleCommand(command) {
-      let _self =  this;
+      let _self = this;
       if (command == "logout") {
         _self.$confirm("确定要退出登录吗?", "操作确认", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-        .then(() => {
-          _self.loginOut();
-        })
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+          .then(() => {
+            _self.loginOut();
+          })
       } else if (command == "workbench") {
         _self.$router.push("/index");
       } else if (command == "settings") {
@@ -543,7 +594,7 @@ export default {
     },
 
     loginOut() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/user/logout",
@@ -551,18 +602,18 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.$router.push("/login");
           _self.$message.success("退出登录成功!");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           this.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    baseQuery(){
-      let _self =  this;
+    baseQuery() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/base/query_p",
@@ -570,49 +621,49 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let result = res.data;
           localStorage.setItem("autotestType", JSON.stringify(result.autotestType));
-					localStorage.setItem("releaseNoteStatus", JSON.stringify(result.releaseNoteStatus));
-					localStorage.setItem("caseRelateType", JSON.stringify(result.caseRelateType));
-					localStorage.setItem("codeMissionStatus", JSON.stringify(result.codeMissionStatus));
-					localStorage.setItem("dataUnit", JSON.stringify(result.dataUnit));
-					localStorage.setItem("defectFoundMeans", JSON.stringify(result.defectFoundMeans));
-					localStorage.setItem("defectFoundPeriod", JSON.stringify(result.defectFoundPeriod));
-					localStorage.setItem("defectInfluence", JSON.stringify(result.defectInfluence));
-					localStorage.setItem("defectPeriod", JSON.stringify(result.defectPeriod));
-					localStorage.setItem("defectPriority", JSON.stringify(result.defectPriority));
-					localStorage.setItem("defectStatus", JSON.stringify(result.defectStatus));
-					localStorage.setItem("defectType", JSON.stringify(result.defectType));
-					localStorage.setItem("environmentType", JSON.stringify(result.environmentType));
-					localStorage.setItem("messageGateway", JSON.stringify(result.messageGateway));
-					localStorage.setItem("objectType", JSON.stringify(result.objectType));
-					localStorage.setItem("problemImprove", JSON.stringify(result.problemImprove));
-					localStorage.setItem("problemResolve", JSON.stringify(result.problemResolve));
-					localStorage.setItem("problemStatus", JSON.stringify(result.problemStatus));
-					localStorage.setItem("problemType", JSON.stringify(result.problemType));
-					localStorage.setItem("releaseStatus", JSON.stringify(result.releaseStatus));
-					localStorage.setItem("productBranch", JSON.stringify(result.productBranch));
-					localStorage.setItem("reportType", JSON.stringify(result.reportType));
-					localStorage.setItem("requirementPriority", JSON.stringify(result.requirementPriority));
+          localStorage.setItem("releaseNoteStatus", JSON.stringify(result.releaseNoteStatus));
+          localStorage.setItem("caseRelateType", JSON.stringify(result.caseRelateType));
+          localStorage.setItem("codeMissionStatus", JSON.stringify(result.codeMissionStatus));
+          localStorage.setItem("dataUnit", JSON.stringify(result.dataUnit));
+          localStorage.setItem("defectFoundMeans", JSON.stringify(result.defectFoundMeans));
+          localStorage.setItem("defectFoundPeriod", JSON.stringify(result.defectFoundPeriod));
+          localStorage.setItem("defectInfluence", JSON.stringify(result.defectInfluence));
+          localStorage.setItem("defectPeriod", JSON.stringify(result.defectPeriod));
+          localStorage.setItem("defectPriority", JSON.stringify(result.defectPriority));
+          localStorage.setItem("defectStatus", JSON.stringify(result.defectStatus));
+          localStorage.setItem("defectType", JSON.stringify(result.defectType));
+          localStorage.setItem("environmentType", JSON.stringify(result.environmentType));
+          localStorage.setItem("messageGateway", JSON.stringify(result.messageGateway));
+          localStorage.setItem("objectType", JSON.stringify(result.objectType));
+          localStorage.setItem("problemImprove", JSON.stringify(result.problemImprove));
+          localStorage.setItem("problemResolve", JSON.stringify(result.problemResolve));
+          localStorage.setItem("problemStatus", JSON.stringify(result.problemStatus));
+          localStorage.setItem("problemType", JSON.stringify(result.problemType));
+          localStorage.setItem("releaseStatus", JSON.stringify(result.releaseStatus));
+          localStorage.setItem("productBranch", JSON.stringify(result.productBranch));
+          localStorage.setItem("reportType", JSON.stringify(result.reportType));
+          localStorage.setItem("requirementPriority", JSON.stringify(result.requirementPriority));
           localStorage.setItem("prStatus", JSON.stringify(result.prStatus));
-					localStorage.setItem("requirementStatus", JSON.stringify(result.requirementStatus));
-					localStorage.setItem("requirementType", JSON.stringify(result.requirementType));
-					localStorage.setItem("testMeans", JSON.stringify(result.testMeans));
-					localStorage.setItem("testMissionStatus", JSON.stringify(result.testMissionStatus));
-					localStorage.setItem("testPeriod", JSON.stringify(result.testPeriod));
-					localStorage.setItem("testPriority", JSON.stringify(result.testPriority));
-					localStorage.setItem("warningType", JSON.stringify(result.warningType));
-					localStorage.setItem("warningLevel", JSON.stringify(result.warningLevel));
-					localStorage.setItem("testStatus", JSON.stringify(result.testStatus));
-					localStorage.setItem("testResultStatus", JSON.stringify(result.testResultStatus));
-					localStorage.setItem("testType", JSON.stringify(result.testType));
-					localStorage.setItem("userRoles", JSON.stringify(result.userRoles));
+          localStorage.setItem("requirementStatus", JSON.stringify(result.requirementStatus));
+          localStorage.setItem("requirementType", JSON.stringify(result.requirementType));
+          localStorage.setItem("testMeans", JSON.stringify(result.testMeans));
+          localStorage.setItem("testMissionStatus", JSON.stringify(result.testMissionStatus));
+          localStorage.setItem("testPeriod", JSON.stringify(result.testPeriod));
+          localStorage.setItem("testPriority", JSON.stringify(result.testPriority));
+          localStorage.setItem("warningType", JSON.stringify(result.warningType));
+          localStorage.setItem("warningLevel", JSON.stringify(result.warningLevel));
+          localStorage.setItem("testStatus", JSON.stringify(result.testStatus));
+          localStorage.setItem("testResultStatus", JSON.stringify(result.testResultStatus));
+          localStorage.setItem("testType", JSON.stringify(result.testType));
+          localStorage.setItem("userRoles", JSON.stringify(result.userRoles));
           localStorage.setItem("products", JSON.stringify(result.product));
           localStorage.setItem("requirementClose", JSON.stringify(result.requirementClose));
           localStorage.setItem("defectRefuseReason", JSON.stringify(result.defectRefuseReason));
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("基础表信息查询时出现程序错误！");
           console.log(response);
         });
@@ -620,8 +671,9 @@ export default {
   }
 };
 </script>
+
 <style>
-.home-menu .el-submenu li{
+.home-menu .el-submenu li {
   padding-left: 45px !important;
 }
 
@@ -629,13 +681,13 @@ export default {
   margin-top: 0 !important;
 }
 
-.header .el-switch{
+.header .el-switch {
   background-color: #ffffff30;
   border-radius: 2px;
   padding: 5px 12px;
 }
 
-.header .el-switch .el-switch__label:not(.is-active){
+.header .el-switch .el-switch__label:not(.is-active) {
   font-size: 13px !important;
   color: #fff8dc;
 }
@@ -656,12 +708,10 @@ export default {
   padding: 0 20px 20px 20px;
 }
 
-.message-content .el-alert__description{
+.message-content .el-alert__description {
   font-size: 14px;
 }
-</style>
-
-<style scoped>
+</style><style scoped>
 .header {
   box-sizing: border-box;
   font-size: 20px;
@@ -682,10 +732,11 @@ export default {
   margin: 0 10px 0 20px;
   font-size: 19px;
   font-weight: 600;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.header .app-name:hover,.header .app-alias:hover {
+.header .app-name:hover,
+.header .app-alias:hover {
   color: #61c3df;
 }
 
@@ -713,7 +764,7 @@ export default {
   margin-left: 5px;
 }
 
-.header .icon > img {
+.header .icon>img {
   width: 28px;
   height: 28px;
   line-height: 30px;
@@ -748,7 +799,7 @@ export default {
 }
 
 .header .el-button {
-  font-size:13px;
+  font-size: 13px;
   vertical-align: middle;
   padding: 0;
 }
@@ -812,7 +863,7 @@ export default {
   padding: 10px 20px;
 }
 
-.float-body .el-form-item__label div{
+.float-body .el-form-item__label div {
   height: 40px;
   line-height: 20px;
 }
@@ -886,7 +937,7 @@ export default {
   height: 100%;
 }
 
-.sidebar > ul {
+.sidebar>ul {
   height: 100%;
 }
 

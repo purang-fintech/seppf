@@ -9,7 +9,13 @@
     </div>
 
     <div class="tfrom-box">
-      <el-form ref="form" :model="form" :inline="true" size="mini" label-width="110px" @keydown.native.enter="reportsQuery()">
+      <el-form
+        ref="form"
+        :model="form"
+        :inline="true"
+        size="mini"
+        label-width="110px"
+        @keydown.native.enter="reportsQuery()">
         <el-form-item label="版本号" required>
           <el-select v-model="form.release.selected" placeholder="请选择" @change="testPlanQuery()" filterable>
             <el-option v-for="opt in form.release.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -35,7 +41,13 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="tableData" :max-height="baseHeight" size="mini" class="report-table" stripe :border="showBorder">
+      <el-table
+        :data="tableData"
+        :max-height="baseHeight"
+        size="mini"
+        class="report-table"
+        stripe
+        :border="showBorder">
         <el-table-column prop="relCode" label="版本号" width="140" align="center" sortable>
         </el-table-column>
         <el-table-column prop="planType" label="测试计划类型" width="120" align="center" sortable>
@@ -63,13 +75,13 @@
         </el-table-column>
       </el-table>
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
       </div>
@@ -78,11 +90,14 @@
 </template>
 
 <script>
-import { dateFormat, dateDiff } from "@/util/date.js";
+import {
+  dateFormat,
+  dateDiff
+} from "@/util/date.js";
 import commonQuery from "@/components/util/CommonQuery.vue";
 let versions = [];
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       tableData: [],
@@ -131,7 +146,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
 
     _self.reportTypes.splice(0, _self.reportTypes.length);
     let reportType = localStorage.getItem("reportType");
@@ -154,13 +169,13 @@ export default {
     _self.baseHeight = bodyAviHeightNTab - 110 - 45;
     // 数据表展示封版报告用
     _self.testPeriod.forEach(item => {
-      _self.form.planType.push(item);  
+      _self.form.planType.push(item);
     });
     _self.form.planType.push({
       value: 0,
       label: "整版编制"
     });
-    
+
     _self.releaseQuery();
   },
 
@@ -180,8 +195,8 @@ export default {
       this.testPlanQuery();
     },
 
-    setReportType(){
-      let _self =  this;
+    setReportType() {
+      let _self = this;
       let val = _self.form.createdTypes.selected;
       _self.form.rptType = "";
       _self.reportTypes.forEach(item => {
@@ -216,14 +231,14 @@ export default {
     createReport() {
       this.reportsQuery();
       setTimeout(() => {
-        this.$nextTick(function() {
+        this.$nextTick(function () {
           this.createTestReport();
         });
       }, 200);
     },
 
     createTestReport() {
-      let _self =  this;
+      let _self = this;
 
       let reportTime = new Date(dateFormat(new Date(), _self.timefmt));
       let sRel = _self.form.release.selected;
@@ -272,11 +287,11 @@ export default {
       } else {
         planBegin = new Date(
           dateFormat(new Date(selectedPlan.planBegin), _self.datefmt) +
-            " 00:00:00"
+          " 00:00:00"
         );
         planEnd = new Date(
           dateFormat(new Date(selectedPlan.planEnd), _self.datefmt) +
-            " 23:59:59"
+          " 23:59:59"
         );
       }
 
@@ -297,7 +312,7 @@ export default {
         if (reportType === 1) {
           if (
             _self.timeDiff(new Date(tDate), reportTime) <
-              _self.reportInterval &&
+            _self.reportInterval &&
             tRel === sRel &&
             tType === sType
           ) {
@@ -341,26 +356,26 @@ export default {
             reportType: reportType,
             url: ""
           },
-           data: dataParam
+          data: dataParam
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.$message.success("测试报告生成成功");
           } else {
             _self.$message.info("测试报告生成失败");
           }
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.reportsQuery();
           });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
     reportsQuery() {
-      let _self =  this;
+      let _self = this;
       if (
         null === _self.form.release.selected ||
         _self.form.release.selected === ""
@@ -382,21 +397,21 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tableData = eval(res.data.list);
           _self.pageInfo = res.data;
           setTimeout(() => {
             _self.queryChanged = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
     releaseQuery() {
-      let _self =  this;
+      let _self = this;
       _self.form.release.opts.splice(0, _self.form.release.opts.length);
       versions.splice(0, versions.length);
       if (_self.form.hideClosed == true) {
@@ -424,7 +439,7 @@ export default {
           } else {
             _self.form.release.selected = result.original[0].id;
           }
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.testPlanQuery();
           });
         })
@@ -453,7 +468,7 @@ export default {
           } else {
             _self.form.release.selected = result.original[0].id;
           }
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.testPlanQuery();
           });
         })
@@ -461,7 +476,7 @@ export default {
     },
 
     testPlanQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/plan/query",
@@ -472,7 +487,7 @@ export default {
             relId: _self.form.release.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let json = eval(res.data.list);
           let types = _self.testPeriod;
           _self.form.createdTypes.opts.splice(
@@ -506,11 +521,11 @@ export default {
               }
             }
           }
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.reportsQuery();
           });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });

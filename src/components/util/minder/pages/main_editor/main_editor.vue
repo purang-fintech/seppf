@@ -1,6 +1,12 @@
 <template lang="html">
   <div class="mind-editor">
-    <el-button type="primary" size="mini" icon="iconfont icon-save" style="position:absolute;top:10px;left:10px" @click="saveMind()" :disabled="!editable">保存</el-button>
+    <el-button
+      type="primary"
+      size="mini"
+      icon="iconfont icon-save"
+      style="position:absolute;top:10px;left:10px"
+      @click="saveMind()"
+      :disabled="!editable">保存</el-button>
     <el-dropdown size="mini" split-button type="primary" style="position:absolute;top:10px;left:90px" @command="handleCommand">
       导出
       <el-dropdown-menu slot="dropdown">
@@ -16,13 +22,29 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from "vuex";
-import { exportPNGImage } from "../../script/protocol/png"
-import { exportSVG } from "../../script/protocol/svg"
-import { exportJson } from "../../script/protocol/json"
-import { exportTextTree } from "../../script/protocol/plain"
-import { exportMarkdown } from "../../script/protocol/markdown"
-import { exportFreeMind } from "../../script/protocol/freemind"
+import {
+  mapActions,
+  mapMutations,
+  mapGetters
+} from "vuex";
+import {
+  exportPNGImage
+} from "../../script/protocol/png"
+import {
+  exportSVG
+} from "../../script/protocol/svg"
+import {
+  exportJson
+} from "../../script/protocol/json"
+import {
+  exportTextTree
+} from "../../script/protocol/plain"
+import {
+  exportMarkdown
+} from "../../script/protocol/markdown"
+import {
+  exportFreeMind
+} from "../../script/protocol/freemind"
 
 export default {
   data() {
@@ -51,7 +73,7 @@ export default {
       this.mindText = JSON.parse(window.localStorage.mindText);
     }
 
-    editor.minder.on("contentchange", function() {
+    editor.minder.on("contentchange", function () {
       window.localStorage.mindText = JSON.stringify(editor.minder.exportJson());
     });
 
@@ -71,7 +93,7 @@ export default {
 
     ...mapMutations(["setMinder", "setEditor"]),
 
-    handleCommand(cmd){
+    handleCommand(cmd) {
       if (cmd == "json") {
         exportJson(editor.minder);
       } else if (cmd == "png") {
@@ -87,7 +109,7 @@ export default {
       }
     },
 
-    saveMind(){
+    saveMind() {
       this.$parent.saveCaseMind(JSON.stringify(editor.minder.exportJson()));
     }
   },

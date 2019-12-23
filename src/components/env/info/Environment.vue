@@ -20,7 +20,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="editform" :rules="nFormRules" ref="ruledForm" size="mini" :inline="true" label-width="110px" class="env-eform">
+      <el-form
+        :model="editform"
+        :rules="nFormRules"
+        ref="ruledForm"
+        size="mini"
+        :inline="true"
+        label-width="110px"
+        class="env-eform">
         <el-form-item label="产品分支" prop="branchId" required>
           <el-select v-model="editform.branchId" placeholder="请选择产品分支">
             <el-option v-for="opt in prodBranchs" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -47,18 +54,18 @@
         </el-form-item>
         <br>
         <el-form-item label="二维码上传">
-          <el-upload 
-            class="env-upload" 
-            ref="upload" 
-            :accept="editform.permitType" 
+          <el-upload
+            class="env-upload"
+            ref="upload"
+            :accept="editform.permitType"
             multiple
-            drag 
-            :limit="1" 
+            drag
+            :limit="1"
             :before-upload="beforeUpload"
-            :on-exceed="fileExceeded" 
-            :on-success="uploadComplete" 
-            :on-remove="handleRemove" 
-            :file-list="editform.fileList" 
+            :on-exceed="fileExceeded"
+            :on-success="uploadComplete"
+            :on-remove="handleRemove"
+            :file-list="editform.fileList"
             action=""
             :http-request="uploadAction">
             <i class="el-icon-upload"></i>
@@ -88,7 +95,15 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="editform" :rules="nFormRules" ref="ruledFormMod" size="mini" :inline="true" label-width="110px" class="env-eform" :fullscreen="maximize1">
+      <el-form
+        :model="editform"
+        :rules="nFormRules"
+        ref="ruledFormMod"
+        size="mini"
+        :inline="true"
+        label-width="110px"
+        class="env-eform"
+        :fullscreen="maximize1">
         <el-form-item label="产品分支" prop="branchId" required>
           <el-select v-model="editform.branchId" placeholder="请选择产品分支">
             <el-option v-for="opt in prodBranchs" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -115,18 +130,18 @@
         </el-form-item>
         <br>
         <el-form-item label="附件上传">
-          <el-upload 
-            class="env-upload" 
-            ref="uploadMod" 
-            :accept="editform.permitType" 
+          <el-upload
+            class="env-upload"
+            ref="uploadMod"
+            :accept="editform.permitType"
             multiple
-            drag 
-            :limit="1" 
+            drag
+            :limit="1"
             :before-upload="beforeUpload"
-            :on-exceed="fileExceeded" 
-            :on-success="uploadComplete" 
-            :on-remove="handleRemoveMod" 
-            :file-list="editform.fileList" 
+            :on-exceed="fileExceeded"
+            :on-success="uploadComplete"
+            :on-remove="handleRemoveMod"
+            :file-list="editform.fileList"
             action=""
             :http-request="uploadAction">
             <i class="el-icon-upload"></i>
@@ -146,7 +161,7 @@
     <div class="env-main">
       <el-form :model="qryform" :inline="true" size="mini" class="qry-form" @keydown.native.enter="envInfoQuery()">
         <el-form-item label="分支">
-          <el-select v-model="qryform.branchId" placeholder="请选择"  @change="queryInstance()" filterable clearable>
+          <el-select v-model="qryform.branchId" placeholder="请选择" @change="queryInstance()" filterable clearable>
             <el-option v-for="opt in prodBranchs" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
           </el-select>
         </el-form-item>
@@ -167,7 +182,13 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="tableData" :max-height="tableHeight" size="mini" stripe :border="showBorder" ref="envTable">
+      <el-table
+        :data="tableData"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        ref="envTable">
         <el-table-column prop="branchName" label="产品分支" width="140" align="center" sortable>
         </el-table-column>
         <el-table-column prop="envTypeName" label="环境类型" width="140" align="center" sortable>
@@ -187,7 +208,13 @@
               </el-form-item>
               <br>
               <el-form-item label="二维码">
-                <el-upload action="#" v-if="!scope.row.noAttach" class="env-imgs" disabled :file-list="scope.row.attachs" list-type="picture-card">
+                <el-upload
+                  action="#"
+                  v-if="!scope.row.noAttach"
+                  class="env-imgs"
+                  disabled
+                  :file-list="scope.row.attachs"
+                  list-type="picture-card">
                 </el-upload>
                 <span v-show="scope.row.noAttach">当前环境没有上传二维码</span>
               </el-form-item>
@@ -209,10 +236,10 @@
           :page-sizes="[10, 20, 50, 100, 200]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="pageInfo.total"
-        ></el-pagination>
-        <el-button type="primary" 
-          class="el-icon-download export-btn" 
+          :total="pageInfo.total"></el-pagination>
+        <el-button
+          type="primary"
+          class="el-icon-download export-btn"
           size="mini"
           :disabled="tableData.length == 0"
           plain
@@ -226,11 +253,13 @@
 </template>
 
 <script>
-import { dateFormat } from "@/util/date.js";
+import {
+  dateFormat
+} from "@/util/date.js";
 import TableExport from '@/util/TableExport.js'
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       modalClose: sessionStorage.dialogAutoClose == 1,
@@ -265,13 +294,27 @@ export default {
         attachs: [],
       },
       nFormRules: {
-        'branchId': [
-          { required: true, message: '请输入产品分支', trigger: 'blur' },
-        ],
-        'envType': [{ required: true, message: '请选择环境类型', trigger: 'change' }],
-        'instance': [
-          { required: true, message: '请选输入组件实例', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 2 到 20 个字', trigger: 'blur' }
+        'branchId': [{
+          required: true,
+          message: '请输入产品分支',
+          trigger: 'blur'
+        }, ],
+        'envType': [{
+          required: true,
+          message: '请选择环境类型',
+          trigger: 'change'
+        }],
+        'instance': [{
+            required: true,
+            message: '请选输入组件实例',
+            trigger: 'blur'
+          },
+          {
+            min: 2,
+            max: 20,
+            message: '长度在 2 到 20 个字',
+            trigger: 'blur'
+          }
         ]
       }
     };
@@ -359,8 +402,8 @@ export default {
       });
     },
 
-    checkEnvCreate(formName){
-      let _self =  this;
+    checkEnvCreate(formName) {
+      let _self = this;
       _self.$refs[formName].validate((valid) => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -371,15 +414,17 @@ export default {
       });
     },
 
-    uploadAction(params){
-      let _self =  this;
+    uploadAction(params) {
+      let _self = this;
       let file = params.file;
       let fileList = _self.editform.fileList || [];
       let refedUpload = _self.showDialog ? _self.$refs.upload : _self.$refs.uploadMod;
-      
+
       if (file.name.indexOf("_V") > -1) {
         _self.$message.warning("请去除文件名中包含的字符串： _V");
-        refedUpload.uploadFiles = fileList.filter(item => {return item.status == 'success'}) || []; 
+        refedUpload.uploadFiles = fileList.filter(item => {
+          return item.status == 'success'
+        }) || [];
         return;
       }
       commonQuery.attachmentUpload(file, fileList, (res) => {
@@ -388,31 +433,31 @@ export default {
       })
     },
 
-    saveEnvCreate(){
-      let _self =  this;
+    saveEnvCreate() {
+      let _self = this;
       let files = [];
-      _self.editform.attachs.forEach(function(fs, i) {
+      _self.editform.attachs.forEach(function (fs, i) {
         files.push(fs.response[0].id);
       });
       _self.$axios.post("/env/create", {
-        branchId: _self.editform.branchId,
-        envType: _self.editform.envType,
-        instance: _self.editform.instance,
-        envUrl: _self.editform.envUrl,
-        jobName: _self.editform.jobName,
-        jobParams: _self.editform.jobParams,
-        qrCode: files.toString()
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.showDialog = false;
-          _self.$message.success("保存成功！");
-          _self.envInfoQuery();
-        } else {
-          _self.$message.warning("保存失败");
-          console.log(res);
-        }
-      })
+          branchId: _self.editform.branchId,
+          envType: _self.editform.envType,
+          instance: _self.editform.instance,
+          envUrl: _self.editform.envUrl,
+          jobName: _self.editform.jobName,
+          jobParams: _self.editform.jobParams,
+          qrCode: files.toString()
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.showDialog = false;
+            _self.$message.success("保存成功！");
+            _self.envInfoQuery();
+          } else {
+            _self.$message.warning("保存失败");
+            console.log(res);
+          }
+        })
     },
 
     editEnvInfo(data) {
@@ -432,8 +477,8 @@ export default {
       });
     },
 
-    saveEnvUpdate(formName){
-      let _self =  this;
+    saveEnvUpdate(formName) {
+      let _self = this;
       _self.$refs[formName].validate((valid) => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -445,9 +490,9 @@ export default {
     },
 
     saveEditRequest() {
-      let _self =  this;
+      let _self = this;
       let files = [];
-      _self.editform.attachs.forEach(function(fs, i) {
+      _self.editform.attachs.forEach(function (fs, i) {
         if (fs.response) {
           files.push(fs.response[0].id);
         } else {
@@ -455,33 +500,33 @@ export default {
         }
       });
       _self.$axios.post("/env/update", {
-        id: _self.currentEnvId,
-        branchId: _self.editform.branchId,
-        envType: _self.editform.envType,
-        instance: _self.editform.instance,
-        envUrl: _self.editform.envUrl,
-        jobName: _self.editform.jobName,
-        jobParams: _self.editform.jobParams,
-        qrCode: files.toString()
-      })
-      .then(function(res) {
-        if (res.data == 1) {
-          _self.$message.success("环境信息修改成功！");
-          _self.showDialogMod = false;
-          _self.envInfoQuery();
-        } else {
-          _self.$message.info("保存失败");
-          console.log(res);
-        }
-      })
+          id: _self.currentEnvId,
+          branchId: _self.editform.branchId,
+          envType: _self.editform.envType,
+          instance: _self.editform.instance,
+          envUrl: _self.editform.envUrl,
+          jobName: _self.editform.jobName,
+          jobParams: _self.editform.jobParams,
+          qrCode: files.toString()
+        })
+        .then(function (res) {
+          if (res.data == 1) {
+            _self.$message.success("环境信息修改成功！");
+            _self.showDialogMod = false;
+            _self.envInfoQuery();
+          } else {
+            _self.$message.info("保存失败");
+            console.log(res);
+          }
+        })
     },
 
-    delEnvinfo(row){
+    delEnvinfo(row) {
       this.$confirm("确定要删除当前记录吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "error"
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        })
         .then(() => {
           this.saveDelEnvinfo(row.id);
         })
@@ -489,36 +534,36 @@ export default {
     },
 
     saveDelEnvinfo(id) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/env/delete/" + id)
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.$message.success("删除成功！");
-          _self.envInfoQuery();
-        } else {
-          _self.$notify.error("删除失败");
-          console.log(res);
-        }
-      })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.$message.success("删除成功！");
+            _self.envInfoQuery();
+          } else {
+            _self.$notify.error("删除失败");
+            console.log(res);
+          }
+        })
     },
 
     queryInstance() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/env/instance_query/" + sessionStorage.productId)
-      .then(function(res) {
-        let json = eval(res.data);
-        _self.instances.splice(0, _self.instances.length);
-        for (let i = 0; i < json.length; i++) {
-          _self.instances.push({
-            value: json[i],
-            label: json[i]
-          });
-        }
-      })
+        .then(function (res) {
+          let json = eval(res.data);
+          _self.instances.splice(0, _self.instances.length);
+          for (let i = 0; i < json.length; i++) {
+            _self.instances.push({
+              value: json[i],
+              label: json[i]
+            });
+          }
+        })
     },
 
     envInfoQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/env/query",
@@ -533,7 +578,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let json = eval(res.data.list);
           _self.pageInfo = res.data;
           let attach = {};
@@ -551,7 +596,7 @@ export default {
           _self.queryChanged = false;
           _self.tableData = result;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -563,12 +608,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -579,7 +624,7 @@ export default {
       return result;
     },
 
-    beforeUpload(file){
+    beforeUpload(file) {
       const permitSize = file.size / 1024 / 1024 < 2;
       const permitType =
         file.type === "image/jpeg" ||
@@ -602,20 +647,20 @@ export default {
     },
 
     uploadComplete(res, file, fileList) {
-      let _self =  this;
+      let _self = this;
       _self.editform.attachs = fileList;
       _self.editform.fileList = fileList;
     },
 
     handleRemoveMod(file, fileList) {
-      let _self =  this;
+      let _self = this;
       _self.$message.success("文件删除成功！");
       _self.editform.attachs = fileList;
       _self.editform.fileList = fileList;
     },
 
     handleRemove(file, fileList) {
-      let _self =  this;
+      let _self = this;
       commonQuery.attachmentDelete(file, fileList, (res) => {
         _self.editform.fileList = res;
       })

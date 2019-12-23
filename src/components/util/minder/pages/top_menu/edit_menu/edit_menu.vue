@@ -31,5 +31,4 @@ export default {
     selection
   }
 }
-
 </script>

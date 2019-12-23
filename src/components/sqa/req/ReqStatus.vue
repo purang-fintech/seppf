@@ -1,6 +1,7 @@
 <template>
   <div id="reqStatus" style="width:100%; height:300px"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -19,14 +20,14 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let legendData = [];
     let statusData = [];
     for (let i = 0; i < _self.datas.length; i++) {
       let namedLabel = eval(localStorage.getItem("requirementStatus")).find(item => {
         return item.statusId === _self.datas[i].status;
       }).statusName;
-      legendData.push(namedLabel); 
+      legendData.push(namedLabel);
       statusData.push({
         value: _self.datas[i].num,
         name: namedLabel
@@ -54,38 +55,43 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "需求状态",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: statusData,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: "rgba(0, 0, 0, 0.5)"
-            }
-          },
-          label: {
-            normal: {
-              formatter: '{b} ({d}%)',
-            }
+      series: [{
+        name: "需求状态",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: statusData,
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)"
+          }
+        },
+        label: {
+          normal: {
+            formatter: '{b} ({d}%)',
           }
         }
-      ]
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("reqStatus");
 
     let dataCharts = echarts.init(charts, sepp);

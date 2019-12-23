@@ -1,6 +1,7 @@
 <template>
   <div id="influenceCharts" style="width: 99%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,14 +19,14 @@ export default {
   props: ["dinfluences"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let legendData = [];
     let influenceData = [];
     for (let i = 0; i < _self.dinfluences.length; i++) {
       let influence = eval(localStorage.getItem("defectInfluence")).find(item => {
         return item.influenceId === _self.dinfluences[i].influence;
       }).influenceName;
-      legendData.push(influence); 
+      legendData.push(influence);
       influenceData.push({
         value: _self.dinfluences[i].num,
         name: influence
@@ -53,26 +54,31 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "严重程度",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: influenceData
-        }
-      ]
+      series: [{
+        name: "严重程度",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: influenceData
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("influenceCharts");
 
     let dataCharts = echarts.init(charts, sepp);

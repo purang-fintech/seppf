@@ -1,6 +1,7 @@
 <template>
   <div id="fperiodAna" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,14 +19,14 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let legendData = [];
     let fperiodData = [];
     _self.datas.forEach(data => {
       let defectFoundPeriod = eval(localStorage.getItem("defectFoundPeriod")).find(item => {
         return item.periodId == data.foundPeriod;
       }).periodName;
-      legendData.push(defectFoundPeriod); 
+      legendData.push(defectFoundPeriod);
       fperiodData.push({
         value: data.num,
         name: defectFoundPeriod
@@ -53,31 +54,36 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "发现阶段",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: fperiodData,
-          label: {
-            normal: {
-              formatter: '{b} ({d}%)',
-            }
+      series: [{
+        name: "发现阶段",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: fperiodData,
+        label: {
+          normal: {
+            formatter: '{b} ({d}%)',
           }
         }
-      ]
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("fperiodAna");
 
     let dataCharts = echarts.init(charts, sepp);

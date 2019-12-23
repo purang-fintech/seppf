@@ -10,12 +10,14 @@
           width="20%"
           :modal="modal"
           :show-close="showClose">
-          <span><el-progress :percentage="process"></el-progress></span>
+          <span>
+            <el-progress :percentage="process"></el-progress>
+          </span>
         </el-dialog>
       </div>
-      
+
       <div class="sum-info">
-        <a class="confirm-send" @click="sendEmail" v-if="img && img != '' && isDisplayed"  ref="confirmSend">
+        <a class="confirm-send" @click="sendEmail" v-if="img && img != '' && isDisplayed" ref="confirmSend">
           <i class="el-icon-message"></i> 一键发送邮件
         </a>
         <a class="confirm-send" :href="emailSet" v-if="img && img != '' && isDisplayed" ref="confirmSend">
@@ -28,11 +30,16 @@
             <i class="iconfont icon-calendar"></i> 测试进度情况</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <el-table :data="reportSum" size="mini" :border="showBorder"stripe class="sum-info" 
-        :cell-class-name="standardCheck" 
-        v-loading.fullscreen.lock="sumLoading" 
-        element-loading-text="数据较多，请耐心等待..." 
-        element-loading-spinner="el-icon-loading" 
+      <el-table
+        :data="reportSum"
+        size="mini"
+        :border="showBorder"
+        stripe
+        class="sum-info"
+        :cell-class-name="standardCheck"
+        v-loading.fullscreen.lock="sumLoading"
+        element-loading-text="数据较多，请耐心等待..."
+        element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column type="index" label="序号" width="50" align="center">
         </el-table-column>
@@ -234,10 +241,12 @@
 
 <script>
 import html2canvas from "html2canvas/dist/html2canvas.min.js";
-import { dateFormat } from "@/util/date.js";
+import {
+  dateFormat
+} from "@/util/date.js";
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       urlParams: {},
@@ -263,10 +272,10 @@ export default {
       emailSet: "",
       tos: [],
       ccs: [],
-      imgUrl:"",
-      subject:"",
-      emailTo:"",
-      emailCc:"",
+      imgUrl: "",
+      subject: "",
+      emailTo: "",
+      emailCc: "",
       modal: false,
       showClose: false,
       isSendEmail: false,
@@ -280,7 +289,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
 
     _self.reportTypes.splice(0, _self.reportTypes.length);
     let reportType = localStorage.getItem("reportType");
@@ -300,14 +309,14 @@ export default {
       });
     });
     _self.reportId = this.$route.query.reportId;
-    _self.$nextTick(function() {
+    _self.$nextTick(function () {
       _self.reportQuery();
     });
   },
 
   methods: {
     sendEmail() {
-      let _self =  this;
+      let _self = this;
       if (commonQuery.isNull(_self.emailTo) && commonQuery.isNull(_self.emailCc)) {
         _self.$message.warning("收件人列表为空，请补充信息！");
         return;
@@ -322,26 +331,26 @@ export default {
       }).then((response) => {
         _self.isSendEmail = true;
         let i = 0;
-        _self.timer = setInterval( () => {
+        _self.timer = setInterval(() => {
           i++;
           _self.process = i * 10;
-          if ( i >=11 ) {
+          if (i >= 11) {
             clearInterval(_self.timer);
             _self.process = 100;
             _self.isSendEmail = false,
-            _self.$message.success("邮件发送成功");
+              _self.$message.success("邮件发送成功");
             return;
           }
         }, 100);
-      }).catch((e)=>{
+      }).catch((e) => {
         _self.isSendEmail = true;
         let i = 0;
-        _self.timer = setInterval( () => {
+        _self.timer = setInterval(() => {
           i++;
           if (i >= 9) {
             clearInterval(_self.timer);
             _self.isSendEmail = false,
-            _self.$notify.error("邮件发送失败");
+              _self.$notify.error("邮件发送失败");
             return;
           }
           _self.process = i * 10;
@@ -350,10 +359,10 @@ export default {
     },
 
     getSummary() {
-      let _self =  this;
+      let _self = this;
       let begin = _self.baseInfo.planBegin.split("-");
       let end = _self.baseInfo.planEnd.split("-");
-      
+
       let dateS = new Date(begin[0], begin[1] - 1, begin[2]);
       let dateE = new Date(end[0], end[1] - 1, end[2]);
       let date = dateS;
@@ -369,26 +378,26 @@ export default {
         date.setTime(date.getTime() + 3600 * 1000 * 24);
       }
       let daily = (100 / _self.periods.length).toFixed(2);
-      for (let zz = 0; zz < _self.periods.length; zz ++) {
+      for (let zz = 0; zz < _self.periods.length; zz++) {
         let current = _self.periods[zz];
         _self.$set(current, "planRatio", daily * (zz + 1));
         _self.periods.splice(zz, 1, current);
       }
-      
+
       _self.sumLoading = true;
       let params =
-        _self.baseInfo.reportType === 1
-          ? {
-              relId: _self.baseInfo.relId,
-              reportId: _self.reportId,
-              reportDate: _self.baseInfo.reportDate,
-              planType: _self.baseInfo.planType
-            }
-          : {
-              relId: _self.baseInfo.relId,
-              reportId: _self.reportId,
-              planType: _self.baseInfo.planType
-            };
+        _self.baseInfo.reportType === 1 ?
+        {
+          relId: _self.baseInfo.relId,
+          reportId: _self.reportId,
+          reportDate: _self.baseInfo.reportDate,
+          planType: _self.baseInfo.planType
+        } :
+        {
+          relId: _self.baseInfo.relId,
+          reportId: _self.reportId,
+          planType: _self.baseInfo.planType
+        };
       _self.$axios({
           method: "post",
           url: "/report/sum_query",
@@ -397,14 +406,13 @@ export default {
           },
           params: params
         })
-        .then(function(res) {
+        .then(function (res) {
           let json = res.data;
           let tableData = [];
           tableData.push({
             standard: "需求测试用例覆盖率",
             planData: "100%",
-            actData:
-              (json.coveredReq * 100 / json.totalReq).toFixed(2) +
+            actData: (json.coveredReq * 100 / json.totalReq).toFixed(2) +
               "% (" +
               json.coveredReq +
               "/" +
@@ -416,10 +424,9 @@ export default {
             return item.planDate === dateFormat(new Date(_self.baseInfo.reportDate), _self.datefmt);
           }).planRatio;
           tableData.push({
-            standard: "测试用例执行率",            
+            standard: "测试用例执行率",
             planData: planRatio + "%",
-            actData:
-              (json.runedCase * 100 / json.totalCase).toFixed(2) +
+            actData: (json.runedCase * 100 / json.totalCase).toFixed(2) +
               "% (" +
               json.runedCase +
               "/" +
@@ -431,18 +438,23 @@ export default {
           _self.reqs = json.relReq;
           _self.cases = json.relCase;
           _self.defects = json.relDefect;
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.sumLoading = false;
           });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.sumLoading = false;
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    standardCheck({ row, column, rowIndex, columnIndex }) {
+    standardCheck({
+      row,
+      column,
+      rowIndex,
+      columnIndex
+    }) {
       if (row.result && columnIndex === 4) {
         if (row.result.indexOf("异常") > -1) {
           return "failed-items";
@@ -453,25 +465,27 @@ export default {
     },
 
     campture() {
-      let _self =  this;
-      
+      let _self = this;
+
       if (!sessionStorage.userId) {
         _self.$message.warning("您未登录，不可操作该功能！");
         return;
       }
-      
+
       document.body.scrollTop = document.documentElement.scrollTop = 0;
       _self.isDisplayed = false;
-      _self.$nextTick(function() {
+      _self.$nextTick(function () {
         setTimeout(() => {
-          html2canvas(document.body).then(function(canvas) {
+          html2canvas(document.body).then(function (canvas) {
             let base64img = canvas.toDataURL("image/png");
             let data = window.atob(base64img.split(",")[1]);
             var ia = new Uint8Array(data.length);
             for (var i = 0; i < data.length; i++) {
               ia[i] = data.charCodeAt(i);
             }
-            let blob = new Blob([ia], { type: "image/png" });
+            let blob = new Blob([ia], {
+              type: "image/png"
+            });
             _self.upload(blob);
           });
         }, 200);
@@ -479,7 +493,7 @@ export default {
     },
 
     updateTestReport(url) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/report/update", {
         id: _self.reportId,
         emergencyPlan: _self.emergencyPlan,
@@ -489,9 +503,9 @@ export default {
     },
 
     reportQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/report/info_query/" + _self.reportId)
-        .then(function(res) {
+        .then(function (res) {
           let json = eval(res.data);
           if (json.length === 0) {
             _self.$message.info("数据异常，无法查询报告信息");
@@ -503,11 +517,11 @@ export default {
             return item.value === json[0].reportType;
           }).label;
           _self.baseInfo.namedPlan =
-            json[0].planType === 0
-              ? ""
-              : _self.testPeriod.find(item => {
-                  return item.value === json[0].planType;
-                }).label;
+            json[0].planType === 0 ?
+            "" :
+            _self.testPeriod.find(item => {
+              return item.value === json[0].planType;
+            }).label;
           if (json[0].emailTo && json[0].emailTo != "") {
             _self.tos = Array.from(new Set(json[0].emailTo.split(",")));
           }
@@ -515,9 +529,9 @@ export default {
             _self.ccs = Array.from(new Set(json[0].emailCc.split(",")));
           }
           let len =
-            _self.tos.length > _self.ccs.length
-              ? _self.tos.length
-              : _self.ccs.length;
+            _self.tos.length > _self.ccs.length ?
+            _self.tos.length :
+            _self.ccs.length;
           for (let z = 0; z < len; z++) {
             let to = z > _self.tos.length ? "" : _self.tos[z];
             let cc = z > _self.ccs.length ? "" : _self.ccs[z];
@@ -526,21 +540,21 @@ export default {
               cc: cc
             });
           }
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.memberQuery();
             _self.missionQuery();
             _self.testMissionQuery();
           });
           _self.getSummary();
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
     missionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/cms/query",
@@ -551,16 +565,16 @@ export default {
             relId: _self.baseInfo.relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.cms = eval(res.data.list);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
         });
     },
 
     testMissionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/tms/query",
@@ -571,21 +585,21 @@ export default {
             relId: _self.baseInfo.relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tms = eval(res.data.list);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
         });
     },
 
-    memberQuery(){
+    memberQuery() {
       let result = commonQuery.memberQueryProduct(this.baseInfo.productId);
       this.users = result.users;
     },
 
     upload(data) {
-      let _self =  this;
+      let _self = this;
       let datas = new FormData();
       datas.append("file", data, data.name || "");
       _self.$axios({
@@ -596,11 +610,11 @@ export default {
           },
           data: datas
         })
-        .then(function(res) {
-          _self.img =  res.data.url;
+        .then(function (res) {
+          _self.img = res.data.url;
           _self.imgUrl = res.data.url;
-          _self.$nextTick(function() {
-            let _self =  this;
+          _self.$nextTick(function () {
+            let _self = this;
             _self.updateTestReport(_self.img);
             let maxWidth = document.body.clientWidth * 4 / 5;
             let to = _self.tos;
@@ -612,11 +626,11 @@ export default {
             }
             if (newccs && newccs != "") {
               cc = _self.ccs.concat(newccs.split(","));
-            } 
+            }
             _self.emailTo = to;
             _self.emailCc = cc;
 
-            let subject =_self.baseInfo.title;
+            let subject = _self.baseInfo.title;
             let resulting = _self.reportSum.find(d => {
               return d.result === "异常";
             });
@@ -626,13 +640,13 @@ export default {
             }
             let body =
               "各位领导，同事：<br>" +
-              "<span style='margin-left:20px'>截至 "+ _self.baseInfo.reportDate +"，【" +
+              "<span style='margin-left:20px'>截至 " + _self.baseInfo.reportDate + "，【" +
               _self.baseInfo.productName +
               "】【" +
               _self.baseInfo.relCode +
               "】" +
               _self.baseInfo.namedPlan +
-              "工作进度： " + namedRes + 
+              "工作进度： " + namedRes +
               "</span><br><br>" +
               "<span style='margin-left:20px'>附测试报告：</span><br>" +
               "<span style='margin-left:40px'><a href='" +
@@ -657,7 +671,7 @@ export default {
             _self.isDisplayed = true;
           });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -739,7 +753,7 @@ body {
   line-height: 20px;
 }
 
-.sum-info .el-form-item + .sum-info .el-form-item {
+.sum-info .el-form-item+.sum-info .el-form-item {
   margin-left: 1%;
 }
 
@@ -787,7 +801,7 @@ body {
 }
 
 .emali-class {
-  color:#EE6F6F !important;
+  color: #EE6F6F !important;
   margin-top: 0 !important;
   float: right !important;
 }

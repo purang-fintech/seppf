@@ -1,6 +1,7 @@
 <template>
   <div id="densityCmsChartsM" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -13,7 +14,7 @@ require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -21,7 +22,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let monthData = [];
     let numsBug = [];
     let numsCms = [];
@@ -88,10 +89,20 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line", "bar"] },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          magicType: {
+            show: true,
+            type: ["line", "bar"]
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -106,8 +117,7 @@ export default {
         },
         data: monthData
       },
-      yAxis: [
-        {
+      yAxis: [{
           type: "value",
           name: "缺陷用例比",
           axisLabel: {
@@ -128,8 +138,7 @@ export default {
           }
         }
       ],
-      series: [
-        {
+      series: [{
           name: "缺陷开发任务比",
           type: "line",
           smooth: true,
@@ -157,7 +166,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("densityCmsChartsM");
 
     let dataCharts = echarts.init(charts, sepp);

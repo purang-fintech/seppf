@@ -1,10 +1,10 @@
 <template lang="">
-<div class="menu-container">
-  <mold></mold>
-  <arrange></arrange>
-  <styleOperation></styleOperation>
-  <fontOperation></fontOperation>
-</div>
+  <div class="menu-container">
+    <mold></mold>
+    <arrange></arrange>
+    <styleOperation></styleOperation>
+    <fontOperation></fontOperation>
+  </div>
 
 </template>
 
@@ -23,5 +23,4 @@ export default {
     fontOperation
   }
 }
-
 </script>

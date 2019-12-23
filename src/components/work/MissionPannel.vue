@@ -1,58 +1,84 @@
 <template>
   <div id="root" style="width: 100%">
     <div class="query-filter">
-      <el-select v-model="release.selected" placeholder="请选择一个版本" size="small" style="width: 18.9%" @change="releaseReqQuery()" filterable>
+      <el-select
+        v-model="release.selected"
+        placeholder="请选择一个版本"
+        size="small"
+        style="width: 18.9%"
+        @change="releaseReqQuery()"
+        filterable>
         <el-option v-for="opt in release.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
       </el-select>
 
       <el-tooltip content="完成特指编码和测试都已完成！" placement="left" effect="dark">
         <span style="margin:0 10px">计划完成日期</span>
       </el-tooltip>
-      <el-date-picker 
-        v-model="planTo" 
-        type="daterange" 
-        align="right" 
+      <el-date-picker
+        v-model="planTo"
+        type="daterange"
+        align="right"
         size="small"
-        unlink-panels 
-        :value-format="datefmt" 
-        range-separator="至" 
-        start-placeholder="开始日期" 
-        end-placeholder="结束日期" 
+        unlink-panels
+        :value-format="datefmt"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
         :picker-options="pickOptions">
       </el-date-picker>
-      
+
       <div class="ana-mode">
         <el-radio-group v-model="queryFilter" size="small" @change="queryFilterChange()">
           <el-radio-button label="1">全部</el-radio-button>
           <el-radio-button label="2">按需求</el-radio-button>
           <el-radio-button label="3">按负责人</el-radio-button>
-        </el-radio-group> 
+        </el-radio-group>
       </div>
-      <el-select v-if="queryFilter === '2'" v-model="reqs.selected" size="small" style="width: 18.9%" placeholder="====请选择====" @change="missionQuery()">
+      <el-select
+        v-if="queryFilter === '2'"
+        v-model="reqs.selected"
+        size="small"
+        style="width: 18.9%"
+        placeholder="====请选择===="
+        @change="missionQuery()">
         <el-option v-for="opt in reqs.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
       </el-select>
-      <el-select v-if="queryFilter === '3'" v-model="responser" size="small" style="width: 18.9%" placeholder="====请选择====" @change="missionQuery()" filterable :filter-method="filterUsers" @visible-change="resetFilterText">
-        <el-option-group
-          v-for="group in userOptions"
-          :key="group.label"
-          :label="group.label">
-          <el-option
-            v-for="item in group.options"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
+      <el-select
+        v-if="queryFilter === '3'"
+        v-model="responser"
+        size="small"
+        style="width: 18.9%"
+        placeholder="====请选择===="
+        @change="missionQuery()"
+        filterable
+        :filter-method="filterUsers"
+        @visible-change="resetFilterText">
+        <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+          <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
             <span style="float:left">{{ item.name }}</span>
             <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
           </el-option>
         </el-option-group>
       </el-select>
-      <el-button v-no-more-click type="primary" size="small" class="el-icon-search" @click="missionQuery()" style="margin-left:1%">查询</el-button>
+      <el-button
+        v-no-more-click
+        type="primary"
+        size="small"
+        class="el-icon-search"
+        @click="missionQuery()"
+        style="margin-left:1%">查询</el-button>
     </div>
 
     <div class="task-lists" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="info" size="small">
         <i class="iconfont icon-label" /> 待处理</el-tag>
-      <draggable element="ul" class="drag-area" v-model="planed" :options="dragOptions" :move="onMove" @change="onPlaned">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="planed"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onPlaned">
         <div v-for="ele in planed" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -69,7 +95,13 @@
     <div class="task-lists" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="danger" size="small">
         <i class="iconfont icon-coding" /> 设计编码中</el-tag>
-      <draggable element="ul" class="drag-area" v-model="coding" :options="dragOptions" :move="onMove" @change="onCoding">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="coding"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onCoding">
         <div v-for="ele in coding" :key="ele.id" class="items" :class="[ele.special? 'special' : '', ele.id === specified ? 'specified' : '']">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -87,7 +119,13 @@
     <div class="task-lists" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" size="small">
         <i class="el-icon-time" /> 待提测</el-tag>
-      <draggable element="ul" class="drag-area" v-model="ready" :options="dragOptions" :move="onMove" @change="onReady">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="ready"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onReady">
         <div v-for="ele in ready" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -104,7 +142,13 @@
     <div class="task-lists" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="warning" size="small">
         <i class="iconfont icon-bug" /> 测试中</el-tag>
-      <draggable element="ul" class="drag-area" v-model="testing" :options="dragOptions" :move="onMove" @change="onTesting">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="testing"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onTesting">
         <div v-for="ele in testing" :key="ele.id" class="items" :class="[ele.special? 'special' : '', ele.id === specified ? 'specified' : '']">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -122,7 +166,13 @@
     <div class="task-lists" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="success" size="small">
         <i class="el-icon-circle-check" /> 已完成</el-tag>
-      <draggable element="ul" class="drag-area" v-model="completed" :options="dragOptions" :move="onMove" @change="onCompleted">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="completed"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onCompleted">
         <div v-for="ele in completed" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -141,13 +191,16 @@
 <script>
 import draggable from "vuedraggable";
 import commonQuery from "@/components/util/CommonQuery.vue";
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 export default {
   components: {
     draggable: draggable
   },
 
-  data: function() {
+  data: function () {
     return {
       formHeight: bodyAviHeightTab,
       editable: true,
@@ -180,7 +233,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.planTo.splice(0, _self.planTo.length);
     if (_self.$route.params.relId && _self.$route.params.relId > 0) {
       _self.release.selected = parseInt(_self.$route.params.relId);
@@ -213,37 +266,38 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
-    
-    queryFilterChange(){
-      let _self =  this;
+
+    queryFilterChange() {
+      let _self = this;
       if (_self.queryFilter === "1") {
         _self.reqs.selected = "";
         _self.responser = "";
         _self.missionQuery();
-      } else if(_self.queryFilter === "2") {
+      } else if (_self.queryFilter === "2") {
         _self.responser = "";
-      } else if(_self.queryFilter === "3") {
+      } else if (_self.queryFilter === "3") {
         _self.reqs.selected = "";
       }
     },
 
-    toDefect(role){
-      let _self =  this;
-      _self.$router.push({ 
-        name: 'defect', 
-        params: { 
+    toDefect(role) {
+      let _self = this;
+      _self.$router.push({
+        name: 'defect',
+        params: {
           'relId': _self.release.selected,
-          'status': role == "dev" ? '1,2,3' : '4,5,6' 
-        } })
+          'status': role == "dev" ? '1,2,3' : '4,5,6'
+        }
+      })
     },
 
     onMove(evt) {
@@ -270,7 +324,7 @@ export default {
     },
 
     onTesting(e) {
-      let _self =  this;
+      let _self = this;
       if (e.added && e.added.element) {
         _self.changeMissionState(e.added.element, 4);
       } else {
@@ -279,7 +333,7 @@ export default {
     },
 
     onCompleted(e) {
-      let _self =  this;
+      let _self = this;
       if (e.added && e.added.element) {
         _self.changeMissionState(e.added.element, 5);
       } else {
@@ -287,8 +341,8 @@ export default {
       }
     },
 
-    changeOnWayCms(id, callback){
-      let _self =  this;
+    changeOnWayCms(id, callback) {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/change/on_way",
@@ -299,7 +353,7 @@ export default {
             id: id,
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let changes = res.data;
           _self.$nextTick(() => {
             if (typeof callback == "function") {
@@ -307,46 +361,51 @@ export default {
             }
           })
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.$notify.error("查询需求变更记录时发生程序错误！");
         });
     },
 
     changeMissionState(element, newStatus) {
-      let _self =  this;
+      let _self = this;
       _self.changeOnWayCms(element.id, (changeCount) => {
         if (changeCount > 0) {
           _self.missionQuery();
           _self.$confirm("是否前往变更页面查看？", "所属需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {id: element.id}});
-          })
-          .catch(() => {
-          });
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  id: element.id
+                }
+              });
+            })
+            .catch(() => {});
         } else {
           _self.$axios.post("/cms/status_update/" + element.id + "/" + newStatus)
-          .then(sres => {
-            if (sres.data < 1) {
-              _self.$message.info("开发任务变更保存失败！");
-            }
-          })
+            .then(sres => {
+              if (sres.data < 1) {
+                _self.$message.info("开发任务变更保存失败！");
+              }
+            })
         }
       });
     },
 
     missionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.planed.splice(0, _self.planed.length);
       _self.ready.splice(0, _self.ready.length);
       _self.coding.splice(0, _self.coding.length);
       _self.testing.splice(0, _self.testing.length);
       _self.completed.splice(0, _self.completed.length);
-      let planToBegin = "", planToEnd = "";
+      let planToBegin = "",
+        planToEnd = "";
       if (_self.planTo && _self.planTo.length > 1) {
         planToBegin = _self.planTo[0];
         planToEnd = _self.planTo[1];
@@ -370,7 +429,7 @@ export default {
             planToEnd: planToEnd
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let json = eval(res.data.list);
           let rels = _self.release.opts;
           for (let i = 0; i < json.length; i++) {
@@ -408,18 +467,18 @@ export default {
             if (json[i].status === 4) {
               _self.testing.push(json[i]);
             }
-            if (json[i].status >= 5 || json[i].status ===  0) {
+            if (json[i].status >= 5 || json[i].status === 0) {
               _self.completed.push(json[i]);
             }
           }
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
         });
     },
 
     defectQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/defect/query",
@@ -430,7 +489,7 @@ export default {
             relId: _self.release.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let defects = eval(res.data.list);
           let toDever = 0;
           let toTester = 0;
@@ -467,14 +526,14 @@ export default {
             });
           }
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    memberQuery(callback){
-      let _self =  this;
+    memberQuery(callback) {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.members = result.users;
         _self.memberFull = result.usersFull;
@@ -486,8 +545,10 @@ export default {
     },
 
     releaseQuery() {
-      let _self =  this;
-      let params = _self.release.selected == "" ? null : {relId : _self.release.selected};
+      let _self = this;
+      let params = _self.release.selected == "" ? null : {
+        relId: _self.release.selected
+      };
       let planToBegin = "",
         planToEnd = "";
       if (_self.planTo && _self.planTo.length > 1) {
@@ -502,7 +563,7 @@ export default {
           },
           params: params
         })
-        .then(function(res) {
+        .then(function (res) {
           let rels = eval(res.data);
           if (rels.length === 0) {
             _self.$message.warning("尚未创建版本计划！");
@@ -525,24 +586,24 @@ export default {
     },
 
     releaseReqQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/req/rel_query/" + _self.release.selected + "/1/500")
-      .then(function(res) {
-        let json = eval(res.data.list);
-        _self.reqs.opts.splice(0, _self.reqs.opts.length);
-        for (var i = 0; i < json.length; i++) {
-          _self.reqs.opts.push({
-            label: "#" + json[i].id + " - " + json[i].summary,
-            value: json[i].id
+        .then(function (res) {
+          let json = eval(res.data.list);
+          _self.reqs.opts.splice(0, _self.reqs.opts.length);
+          for (var i = 0; i < json.length; i++) {
+            _self.reqs.opts.push({
+              label: "#" + json[i].id + " - " + json[i].summary,
+              value: json[i].id
+            });
+          }
+          _self.reqs.selected = "";
+          _self.responser = "";
+          _self.queryFilter = "1";
+          _self.$nextTick(() => {
+            _self.missionQuery();
           });
-        }
-        _self.reqs.selected = "";
-        _self.responser = "";
-        _self.queryFilter = "1";
-        _self.$nextTick(() => {
-          _self.missionQuery();
-        });
-      })
+        })
     }
   }
 };
@@ -602,7 +663,7 @@ export default {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
 }
 
-.task-lists + .task-lists {
+.task-lists+.task-lists {
   margin-left: 1%;
 }
 
@@ -635,8 +696,8 @@ export default {
 }
 
 .cms-link {
-  color:#3AB4D7;
-  cursor:pointer;
+  color: #3AB4D7;
+  cursor: pointer;
 }
 
 .specified {
@@ -644,7 +705,7 @@ export default {
   color: #fff !important;
 }
 
-.drag-area div + div {
+.drag-area div+div {
   margin-top: 10px;
 }
 

@@ -1,6 +1,7 @@
 <template>
   <div id="proTypeOneAna" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: "",
       problemType: []
@@ -19,7 +20,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
 
     let typeOpts = _self.sortData(eval(localStorage.getItem("problemType")), "type", "typeDesc", "children");
     _self.problemType.splice(0, _self.problemType.length);
@@ -36,7 +37,7 @@ export default {
       let typeOne = _self.problemType.find(item => {
         return item.value === data.typeOne;
       }).label;
-      legendData.push(typeOne); 
+      legendData.push(typeOne);
       typeData.push({
         value: data.num,
         name: typeOne
@@ -64,31 +65,36 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "一级分类",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: typeData,
-          label: {
-            normal: {
-              formatter: '{b} ({d}%)',
-            }
+      series: [{
+        name: "一级分类",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: typeData,
+        label: {
+          normal: {
+            formatter: '{b} ({d}%)',
           }
         }
-      ]
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("proTypeOneAna");
 
     let dataCharts = echarts.init(charts, sepp);
@@ -102,12 +108,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({

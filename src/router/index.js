@@ -192,7 +192,7 @@ export default new Router({
           name: 'history',
           meta: {
             requireAuth: true,
-            keepAlive: true
+            keepAlive: false
           },
           component: resolve => require(['@/components/center/history/History.vue'], resolve)
         },

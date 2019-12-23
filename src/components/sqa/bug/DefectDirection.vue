@@ -1,9 +1,7 @@
 <template>
-  <div
-    id='directionCharts'
-    style='width: 100%; height: 300px;'
-  ></div>
+  <div id='directionCharts' style='width: 100%; height: 300px;'></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/line");
@@ -16,7 +14,7 @@ require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: "",
       anaRelease: true
@@ -25,7 +23,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.anaRelease = _self.datas[0].expectFound;
     let dates = [];
     let dailyFound = [];
@@ -55,28 +53,28 @@ export default {
       totalClosed.push(current.totalClosed);
     }
 
-    legendData = _self.anaRelease
-      ? [
-          "累计发现",
-          "理论应发现",
-          "累计响应",
-          "累计修复",
-          "累计关闭",
-          "当日发现",
-          "当日响应",
-          "当日修复",
-          "当日关闭"
-        ]
-      : [
-          "累计发现",
-          "累计响应",
-          "累计修复",
-          "累计关闭",
-          "当日发现",
-          "当日响应",
-          "当日修复",
-          "当日关闭"
-        ];
+    legendData = _self.anaRelease ?
+      [
+        "累计发现",
+        "理论应发现",
+        "累计响应",
+        "累计修复",
+        "累计关闭",
+        "当日发现",
+        "当日响应",
+        "当日修复",
+        "当日关闭"
+      ] :
+      [
+        "累计发现",
+        "累计响应",
+        "累计修复",
+        "累计关闭",
+        "当日发现",
+        "当日响应",
+        "当日修复",
+        "当日关闭"
+      ];
 
     seriesData.push({
       name: "当日发现",
@@ -120,9 +118,9 @@ export default {
       seriesData.push({
         name: "理论应发现",
         type: "line",
-        itemStyle:{
-          normal:{
-            color:'#ef6060'
+        itemStyle: {
+          normal: {
+            color: '#ef6060'
           }
         },
         stack: "理论应发现",
@@ -170,10 +168,20 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line", "bar"] },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          magicType: {
+            show: true,
+            type: ["line", "bar"]
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -185,8 +193,7 @@ export default {
         bottom: 10,
         backgroundColor: "#000",
         showDetail: false,
-        fillerColor: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-          {
+        fillerColor: new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
             offset: 0,
             color: "#89ca89"
           },
@@ -205,8 +212,7 @@ export default {
           background: "#ddd",
           shadowColor: "#ddd"
         },
-        handleIcon:
-          "M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z",
+        handleIcon: "M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z",
         height: 10
       },
       xAxis: {
@@ -219,8 +225,7 @@ export default {
         },
         data: dates
       },
-      yAxis: [
-        {
+      yAxis: [{
           type: "value",
           name: "累计数",
           axisLabel: {
@@ -246,7 +251,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("directionCharts");
 
     let dataCharts = echarts.init(charts, sepp);

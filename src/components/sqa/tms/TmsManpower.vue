@@ -1,6 +1,7 @@
 <template>
   <div id="tmsManpower" style="width:100%; height:300px"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -19,11 +20,11 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let legendData = [];
     let manpowerData = [];
     _self.datas.forEach(item => {
-      legendData.push(item.tmCost); 
+      legendData.push(item.tmCost);
       manpowerData.push({
         value: item.num,
         name: item.tmCost
@@ -51,31 +52,36 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "人力",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: manpowerData,
-          label: {
-            normal: {
-              formatter: '{b} ({d}%)',
-            }
+      series: [{
+        name: "人力",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: manpowerData,
+        label: {
+          normal: {
+            formatter: '{b} ({d}%)',
           }
         }
-      ]
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("tmsManpower");
 
     let dataCharts = echarts.init(charts, sepp);

@@ -1,159 +1,178 @@
 <template>
-<div ref="root">
-  <div class="crumbs">
+  <div ref="root">
+    <div class="crumbs">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item><i class="iconfont icon-icon-product"></i> 产品配置</el-breadcrumb-item>
-          <el-breadcrumb-item>产品文档</el-breadcrumb-item>
+        <el-breadcrumb-item><i class="iconfont icon-icon-product"></i> 产品配置</el-breadcrumb-item>
+        <el-breadcrumb-item>产品文档</el-breadcrumb-item>
       </el-breadcrumb>
-  </div>
-
-  <el-dialog :close-on-click-modal="modalClose" :visible.sync="showSearch" width="1150px" :fullscreen="maximize">
-    <div slot="title">
-      <span style="font-size:18px">文档信息模糊查询</span>
-      <button class="el-dialog__headerbtn" style="right:40px" @click="maximize=!maximize">
-        <el-tooltip content="最大化" effect="dark" placement="left">
-          <i v-show="maximize==false" class="el-icon-full-screen" style="font-size:14px"></i>
-        </el-tooltip>
-        <el-tooltip content="还原" effect="dark" placement="left">
-          <i v-show="maximize==true" class="el-icon-bottom-left" style="font-size:14px"></i>
-        </el-tooltip>
-      </button>
     </div>
-    <el-button v-no-more-click type="primary" icon="el-icon-search" size="small" style="float:right;margin-left:10px" @click="executeQuery()">查询</el-button>
-    
-    <el-tooltip content="仅支持文档关键字、摘要、文件名、所属需求标题的关键字搜索" placement="top" effect="dark">
-      <el-autocomplete
-        v-model="searchText" 
-        style="width:300px;margin-bottom:20px;float:right" 
-        size="small" 
-        :fetch-suggestions="searchHistory"
-        @select="handleSelect"
-        placeholder="输入关键字不得少于2个字符" clearable>
-        <template slot-scope="{ item }">
-          <span class="sdocInput">{{ item }}</span>
-          <i class="el-icon-close" style="float:right;line-height:34px" @click="removeHistory(item)"></i>
-        </template>
-      </el-autocomplete>
-    </el-tooltip>
 
-    <el-table :data="searchMatch" max-height="400" size="mini" stripe :border="showBorder">
-      <el-table-column type="index" width="50" label="序号" align="center">
-      </el-table-column>
-      <el-table-column prop="keywod" label="关键字" width="200" align="center" show-overflow-tooltip>
-        <template slot-scope="scope">
-          <div v-html="scope.row.keywordHtml"></div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="label" label="文档标题" min-width="20%" header-align="center" show-overflow-tooltip>
-        <template slot-scope="scope">
-          <span class="pdocs-links" v-html="scope.row.labelHtml" @click="intoNodes(scope.row)">{{scope.row.label}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="id" label="所属需求" min-width="20%" header-align="center" sortable show-overflow-tooltip>
-        <template slot-scope="scope">
-          <div v-html="scope.row.reqHtml"></div>
-        </template>
-      </el-table-column>
-      <el-table-column label="上传人" align="center" width="90">
-        <template slot-scope="scope">
-          <el-select size="mini" v-model="scope.row.uploadUser" placeholder="" disabled>
-            <el-option v-for="opt in members" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="page-set">
-      <el-pagination 
-        @size-change="handleSizeChange" 
-        @current-change="handleCurrentChange" 
-        :current-page="searchResult.currentPage" 
-        :page-sizes="[10, 20, 50, 100, 200]" 
-        :page-size="searchResult.pageSize" 
-        layout="total, sizes, prev, pager, next, jumper" 
-        :total="searchResult.pageInfo.total">
-      </el-pagination>
+    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showSearch" width="1150px" :fullscreen="maximize">
+      <div slot="title">
+        <span style="font-size:18px">文档信息模糊查询</span>
+        <button class="el-dialog__headerbtn" style="right:40px" @click="maximize=!maximize">
+          <el-tooltip content="最大化" effect="dark" placement="left">
+            <i v-show="maximize==false" class="el-icon-full-screen" style="font-size:14px"></i>
+          </el-tooltip>
+          <el-tooltip content="还原" effect="dark" placement="left">
+            <i v-show="maximize==true" class="el-icon-bottom-left" style="font-size:14px"></i>
+          </el-tooltip>
+        </button>
+      </div>
+      <el-button
+        v-no-more-click
+        type="primary"
+        icon="el-icon-search"
+        size="small"
+        style="float:right;margin-left:10px"
+        @click="executeQuery()">查询</el-button>
+
+      <el-tooltip content="仅支持文档关键字、摘要、文件名、所属需求标题的关键字搜索" placement="top" effect="dark">
+        <el-autocomplete
+          v-model="searchText"
+          style="width:300px;margin-bottom:20px;float:right"
+          size="small"
+          :fetch-suggestions="searchHistory"
+          @select="handleSelect"
+          placeholder="输入关键字不得少于2个字符"
+          clearable>
+          <template slot-scope="{ item }">
+            <span class="sdocInput">{{ item }}</span>
+            <i class="el-icon-close" style="float:right;line-height:34px" @click="removeHistory(item)"></i>
+          </template>
+        </el-autocomplete>
+      </el-tooltip>
+
+      <el-table :data="searchMatch" max-height="400" size="mini" stripe :border="showBorder">
+        <el-table-column type="index" width="50" label="序号" align="center">
+        </el-table-column>
+        <el-table-column prop="keywod" label="关键字" width="200" align="center" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <div v-html="scope.row.keywordHtml"></div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="label" label="文档标题" min-width="20%" header-align="center" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span class="pdocs-links" v-html="scope.row.labelHtml" @click="intoNodes(scope.row)">{{scope.row.label}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="id"
+          label="所属需求"
+          min-width="20%"
+          header-align="center"
+          sortable
+          show-overflow-tooltip>
+          <template slot-scope="scope">
+            <div v-html="scope.row.reqHtml"></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="上传人" align="center" width="90">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.uploadUser" placeholder="" disabled>
+              <el-option v-for="opt in members" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="page-set">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="searchResult.currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="searchResult.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="searchResult.pageInfo.total">
+        </el-pagination>
+      </div>
+      <div slot="footer">
+        <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="showSearch=false">取消</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :close-on-click-modal="modalClose" title="新增功能点文件夹" :visible.sync="showNewBox" width="600px">
+      <el-form :model="newForm" size="small">
+        <el-form-item label="功能点名称" label-width="100px" required>
+          <el-input v-model="newForm.label" clearable style="width:95%"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="onCancel()">取消</el-button>
+        <el-button v-no-more-click type="primary" icon="el-icon-circle-check" size="small" @click="saveNewNode()">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :close-on-click-modal="modalClose" title="文档所属需求清单" :visible.sync="showDocReqs" width="800px">
+      <el-table :data="currentDocument.reqs" max-height="400" size="mini" stripe :border="showBorder">
+        <el-table-column type="index" width="50" label="序号" align="center">
+        </el-table-column>
+        <el-table-column prop="reqId" label="需求号" width="100" align="center" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column prop="reqSummary" label="需求摘要" header-align="center" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column label="操作" width="80" align="center" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-button v-no-more-click type="primary" size="small" @click="showDocReqs=false;$router.push({ name: 'request', params: { 'id': scope.row.reqId } })">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer">
+        <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="showDocReqs=false">关闭</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :close-on-click-modal="modalClose" title="修改功能点文件夹" :visible.sync="showModBox" width="600px">
+      <el-form :model="modForm" size="small">
+        <el-form-item label="功能点名称" label-width="100px" required>
+          <el-input v-model="modForm.label" clearable style="width:95%"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="onCancel()">取消</el-button>
+        <el-button v-no-more-click type="primary" icon="el-icon-circle-check" size="small" @click="saveModNode()">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <div class="document-block" v-bind:style="{height: baseHeight + 'px'}" ref="cases">
+      <el-tree
+        class="tree-view"
+        :style="{ height: treeHeight + 'px' }"
+        node-key="id"
+        ref="folder"
+        :key="nodeKey"
+        @node-expand="expandNode"
+        @node-collapse="collapseNode"
+        highlight-current
+        :auto-expand-parent="false"
+        :expand-on-click-node="false"
+        :props="defaultProps"
+        lazy
+        :load="loadNode"
+        @node-click="nodeClickEvent"
+        :default-expanded-keys="expanded"
+        :render-content="renderContent">
+      </el-tree>
     </div>
-    <div slot="footer">
-      <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="showSearch=false">取消</el-button>
-    </div>
-  </el-dialog>
 
-  <el-dialog :close-on-click-modal="modalClose" title="新增功能点文件夹" :visible.sync="showNewBox" width="600px">
-    <el-form :model="newForm" size="small">
-      <el-form-item label="功能点名称" label-width="100px" required>
-        <el-input v-model="newForm.label"  clearable style="width:95%"></el-input>
-      </el-form-item>
-    </el-form>
-    <div slot="footer">
-      <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="onCancel()">取消</el-button>
-      <el-button v-no-more-click type="primary" icon="el-icon-circle-check" size="small" @click="saveNewNode()">确定</el-button>
-    </div>
-  </el-dialog>
-
-  <el-dialog :close-on-click-modal="modalClose" title="文档所属需求清单" :visible.sync="showDocReqs" width="800px">
-    <el-table :data="currentDocument.reqs" max-height="400" size="mini" stripe :border="showBorder">
-      <el-table-column type="index" width="50" label="序号" align="center">
-      </el-table-column>
-      <el-table-column prop="reqId" label="需求号" width="100" align="center" show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column prop="reqSummary" label="需求摘要" header-align="center" show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column label="操作" width="80" align="center" show-overflow-tooltip>
-        <template slot-scope="scope">
-          <el-button v-no-more-click type="primary" size="small" @click="showDocReqs=false;$router.push({ name: 'request', params: { 'id': scope.row.reqId } })">查看详情</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div slot="footer">
-      <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="showDocReqs=false">关闭</el-button>
-    </div>
-  </el-dialog>
-
-  <el-dialog :close-on-click-modal="modalClose" title="修改功能点文件夹" :visible.sync="showModBox" width="600px">
-    <el-form :model="modForm" size="small">
-      <el-form-item label="功能点名称" label-width="100px" required>
-        <el-input v-model="modForm.label"  clearable style="width:95%"></el-input>
-      </el-form-item>
-    </el-form>
-    <div slot="footer">
-      <el-button v-no-more-click type="primary" icon="el-icon-circle-close" size="small" @click="onCancel()">取消</el-button>
-      <el-button v-no-more-click type="primary" icon="el-icon-circle-check" size="small" @click="saveModNode()">确定</el-button>
-    </div>
-  </el-dialog>
-
-  <div class="document-block" v-bind:style="{height: baseHeight + 'px'}" ref="cases">
-    <el-tree
-      class="tree-view"
-      :style="{ height: treeHeight + 'px' }"
-      node-key="id"
-      ref="folder"
-      :key="nodeKey"
-      @node-expand="expandNode"
-      @node-collapse="collapseNode"
-      highlight-current
-      :auto-expand-parent="false"
-      :expand-on-click-node="false"
-      :props="defaultProps"
-      lazy
-      :load="loadNode"
-      @node-click="nodeClickEvent"
-      :default-expanded-keys="expanded"
-      :render-content="renderContent">
-    </el-tree>
-  </div>
-
-  <div class="document-detail" v-bind:style="{height: baseHeight + 'px'}"> 
-      <el-button 
-        type="primary" 
-        size="mini" 
-        icon="el-icon-check" 
-        style="float:right" 
-        @click="saveDocumentInfo()" 
+    <div class="document-detail" v-bind:style="{height: baseHeight + 'px'}">
+      <el-button
+        type="primary"
+        size="mini"
+        icon="el-icon-check"
+        style="float:right"
+        @click="saveDocumentInfo()"
         :disabled="operForbidden()">
-         保存
+        保存
       </el-button>
       <br><br>
-      <el-form ref="form" :model="currentDocument" :inline="false" size="small" label-width="100px" class="content-form">
+      <el-form
+        ref="form"
+        :model="currentDocument"
+        :inline="false"
+        size="small"
+        label-width="100px"
+        class="content-form">
         <el-form-item>
           <template slot="label">
             <el-tooltip content="点击下载或查看文档" placement="left" effect="dark" :disabled="!currentDocument.url">
@@ -162,10 +181,7 @@
           </template>
           <el-tooltip :content="currentDocument.label" placement="top" effect="dark" :disabled="!currentDocument.url">
             <div class="pdocs-router-link">
-              <span 
-                class="links" 
-                v-if="currentDocument.url" 
-                @click="openAttach(currentDocument)">
+              <span class="links" v-if="currentDocument.url" @click="openAttach(currentDocument)">
                 {{currentDocument.label}}
               </span>
             </div>
@@ -205,12 +221,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="文档关键字" required>
-          <el-tag
-            :key="index"
-            :closable="currentDocument.type=='doc'"
-            v-for="(tag, index) in currentDocument.keyWords"
-            :disable-transitions="false"
-            @close="handleClose(tag)">
+          <el-tag :key="index" :closable="currentDocument.type=='doc'" v-for="(tag, index) in currentDocument.keyWords" :disable-transitions="false" @close="handleClose(tag)">
             {{tag}}
           </el-tag>
           <el-input
@@ -222,15 +233,28 @@
             @keyup.enter.native="handleInputConfirm()"
             @blur="handleInputConfirm()">
           </el-input>
-          <el-button v-else type="primary" class="button-new-tag el-icon-plus" size="mini" @click="showInput()" :disabled="currentDocument.type!='doc'"> 新关键字</el-button>
+          <el-button
+            v-else
+            type="primary"
+            class="button-new-tag el-icon-plus"
+            size="mini"
+            @click="showInput()"
+            :disabled="currentDocument.type!='doc'"> 新关键字</el-button>
         </el-form-item>
         <el-form-item label="文档摘要" required>
-          <el-input v-model="currentDocument.summary" type="textarea" :rows="10" placeholder="请输入文档摘要" :disabled="currentDocument.type!='doc'" :maxlength="500" show-word-limit></el-input>
+          <el-input
+            v-model="currentDocument.summary"
+            type="textarea"
+            :rows="10"
+            placeholder="请输入文档摘要"
+            :disabled="currentDocument.type!='doc'"
+            :maxlength="500"
+            show-word-limit></el-input>
         </el-form-item>
       </el-form>
-  </div>
+    </div>
 
-</div>
+  </div>
 </template>
 
 <script>
@@ -238,7 +262,7 @@ let id = 0;
 const rootId = -1;
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       modalClose: sessionStorage.dialogAutoClose == 1,
@@ -316,8 +340,8 @@ export default {
   },
 
   computed: {
-    searchMatch(){
-      let _self =  this;
+    searchMatch() {
+      let _self = this;
       for (let i = 0, rows = _self.searchResult.data; i < rows.length; i++) {
         let keyword = rows[i].keyword;
         let reqText = rows[i].reqId + " - " + rows[i].reqSummary;
@@ -347,15 +371,15 @@ export default {
     },
 
     showInput() {
-      let _self =  this;
+      let _self = this;
       _self.$set(_self.currentDocument, "inputVisible", true);
       _self.$nextTick(_ => {
-        _self.$refs.docTags.$refs.input.focus();  
+        _self.$refs.docTags.$refs.input.focus();
       });
     },
 
     handleInputConfirm() {
-      let _self =  this;
+      let _self = this;
       let inputValue = _self.currentDocument.inputValue;
       if (inputValue) {
         if (inputValue.indexOf(",") > -1) {
@@ -382,12 +406,12 @@ export default {
       this.documentFuzzQuery();
     },
 
-    operForbidden(){
-      return this.currentDocument.type!='doc' || !commonQuery.roleAllow([1, 16]);
+    operForbidden() {
+      return this.currentDocument.type != 'doc' || !commonQuery.roleAllow([1, 16]);
     },
 
-    refreshNodes(){
-      let _self =  this;
+    refreshNodes() {
+      let _self = this;
       _self.nodeKey += new Date().getTime();
       if (_self.currentDocument || _self.currentDocument.id) {
         _self.$nextTick(_ => {
@@ -398,53 +422,56 @@ export default {
       }
     },
 
-    executeQuery(){
-      let _self =  this;
+    executeQuery() {
+      let _self = this;
 
       const qText = _self.searchText;
       if (qText == "" || qText.length < 2) {
         _self.$message.warning("请输入不少于2个字的文本！");
         return;
       }
-      
+
       _self.searchHistorySet(qText);
       _self.documentFuzzQuery();
     },
 
-    documentFuzzQuery(){
-      let _self =  this;
+    documentFuzzQuery() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/document/fuzz_query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          searchText: _self.searchText,
-          pageNum: _self.searchResult.currentPage,
-          pageSize: _self.searchResult.pageSize
-        }
-      })
-      .then(function(res) {
-        _self.searchResult.data = eval(res.data.list);
-        _self.searchResult.pageInfo = res.data;
-      })
+          method: "post",
+          url: "/document/fuzz_query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            searchText: _self.searchText,
+            pageNum: _self.searchResult.currentPage,
+            pageSize: _self.searchResult.pageSize
+          }
+        })
+        .then(function (res) {
+          _self.searchResult.data = eval(res.data.list);
+          _self.searchResult.pageInfo = res.data;
+        })
     },
 
     loadNode(node, resolve) {
-      let _self =  this;
+      let _self = this;
       if (node.level === 0) {
-        return resolve([{ label: sessionStorage.productCode + ' - ' + sessionStorage.productName, id: -1 }]);
+        return resolve([{
+          label: sessionStorage.productCode + ' - ' + sessionStorage.productName,
+          id: -1
+        }]);
       }
 
-      if (node.level == 1){
+      if (node.level == 1) {
         _self.moduleQuery(node, sessionStorage.productId, resolve);
       }
-      
-      if (node.level >= 2 && node.data.type != 'doc'){
+
+      if (node.level >= 2 && node.data.type != 'doc') {
         _self.documentQuery(node, resolve);
         _self.$nextTick(_ => {
-          setTimeout(() => {  //id恰好与moduleId相同的时候会触发子节点遍历，预先将其阻止
+          setTimeout(() => { //id恰好与moduleId相同的时候会触发子节点遍历，预先将其阻止
             let children = node.data.children;
             children.forEach(n => {
               let childNode = _self.$refs.folder.getNode(n);
@@ -455,22 +482,22 @@ export default {
       }
     },
 
-    expandNode(data, node, s){
-      let _self =  this;
+    expandNode(data, node, s) {
+      let _self = this;
       _self.$refs.folder.setCurrentNode(data);
       _self.expanded.push(data.id);
     },
 
-    collapseNode(data, node, s){
-      let _self =  this;
+    collapseNode(data, node, s) {
+      let _self = this;
       let index = _self.expanded.indexOf(data.id);
       if (index > -1) {
         _self.expanded.splice(index, 1);
       }
     },
 
-    nodeClickEvent(data, node, s){
-      let _self =  this;
+    nodeClickEvent(data, node, s) {
+      let _self = this;
       let crtNode = node || _self.$refs.folder.getNode(data);
       _self.currentDocument = data;
 
@@ -495,8 +522,8 @@ export default {
       _self.$refs.folder.setCurrentNode(data);
     },
 
-    intoNodes(data){
-      let _self =  this;
+    intoNodes(data) {
+      let _self = this;
       _self.showSearch = false;
 
       if (_self.expanded.indexOf(_self.timestamp + data.moduleId) == -1) {
@@ -514,11 +541,11 @@ export default {
       });
     },
 
-    search(){
+    search() {
       this.showSearch = true;
     },
 
-    searchHistory(sText, callback){
+    searchHistory(sText, callback) {
       let sdocHistory = localStorage.getItem("sdocHistory");
       if (sdocHistory && sdocHistory != null && sdocHistory != '') {
         callback(sdocHistory.split(","));
@@ -527,11 +554,11 @@ export default {
       }
     },
 
-    handleSelect(item){
+    handleSelect(item) {
       this.searchText = item;
     },
 
-    removeHistory(historyText){
+    removeHistory(historyText) {
       let hisText = localStorage.getItem("sdocHistory");
       let sdocHistory = [];
       if (hisText && hisText != null && hisText != '') { //搜索历史记录不为空
@@ -542,7 +569,7 @@ export default {
       }
     },
 
-    searchHistorySet(qText){
+    searchHistorySet(qText) {
       let historyText = localStorage.getItem("sdocHistory");
       let sdocHistory = [];
       let current = [];
@@ -563,7 +590,6 @@ export default {
       localStorage.setItem("sdocHistory", current.concat(sdocHistory).toString());
     },
 
-
     openAttach(file) {
       if (file) {
         commonQuery.attachmentDownload(file);
@@ -572,70 +598,75 @@ export default {
 
     toRequest(reqId) {
       if (reqId) {
-        this.$router.push({ name: 'request', params: { 'reqId': reqId } })
+        this.$router.push({
+          name: 'request',
+          params: {
+            'reqId': reqId
+          }
+        })
       }
     },
 
     onCancel() {
-      let _self =  this;
+      let _self = this;
       _self.showNewBox = false;
       _self.showModBox = false;
     },
 
     docVersionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/document/version_query/" + sessionStorage.productId)
-      .then(function(res) {
-        _self.versions = eval(res.data);
-      })
+        .then(function (res) {
+          _self.versions = eval(res.data);
+        })
     },
 
     moduleQuery(node, productId, resolve) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/module/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          isValid: 'Y'
-        }
-      })
-      .then(function(res) {
-        let modules = eval(res.data.list);
-        if (modules.length === 0) {
-          _self.$message.warning("该产品尚未录入模块信息！");
-          return;
-        }
-        _self.$set(node.data, "children", []);
-        modules.forEach(item => {
-          item.leaf = false;
-          item.type = "module";
-          item.label = item.moduleName;
-          item.id = _self.timestamp + item.moduleId;
-          item.busiId = item.moduleId;
-          node.data.children.push(item);
-        });
-        resolve(modules);
-      })
+          method: "post",
+          url: "/module/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            isValid: 'Y'
+          }
+        })
+        .then(function (res) {
+          let modules = eval(res.data.list);
+          if (modules.length === 0) {
+            _self.$message.warning("该产品尚未录入模块信息！");
+            return;
+          }
+          _self.$set(node.data, "children", []);
+          modules.forEach(item => {
+            item.leaf = false;
+            item.type = "module";
+            item.label = item.moduleName;
+            item.id = _self.timestamp + item.moduleId;
+            item.busiId = item.moduleId;
+            node.data.children.push(item);
+          });
+          resolve(modules);
+        })
     },
 
-    documentReqQuery(attachmentId){
-      let _self =  this;
+    documentReqQuery(attachmentId) {
+      let _self = this;
       _self.showDocReqs = true;
       _self.$axios.post("/document/req_query/" + attachmentId)
-      .then(function(res) {
-        if (!_self.currentDocument.reqs) {
-          _self.$set(_self.currentDocument, "reqs", eval(res.data));
-        } else {
-          _self.currentDocument.reqs = eval(res.data);
-        }
-      });
+        .then(function (res) {
+          if (!_self.currentDocument.reqs) {
+            _self.$set(_self.currentDocument, "reqs", eval(res.data));
+          } else {
+            _self.currentDocument.reqs = eval(res.data);
+          }
+        });
     },
 
     documentQuery(node, resolve) {
-      let _self =  this;
+      let _self = this;
       const isModule = node.data.type == "module";
       let params = isModule ? {
         productId: node.data.productId,
@@ -644,49 +675,49 @@ export default {
         parentId: node.data.id
       }
       _self.$axios({
-        method: "post",
-        url: "/document/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: params
-      })
-      .then(function(res) {
-        let docs = eval(res.data);
-        if (node.data.id > 0) {
-          _self.$set(node.data, "children", []);
-        }
-        
-        let functions = [];
-        docs.forEach(item => {
-          if (item.type == 'folder') {
-            functions.push({
-              value: item.id,
-              label: item.label
-            });
+          method: "post",
+          url: "/document/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: params
+        })
+        .then(function (res) {
+          let docs = eval(res.data);
+          if (node.data.id > 0) {
+            _self.$set(node.data, "children", []);
           }
-        });
-        docs.forEach(item => {
-          if (!item.leaf) {
-            _self.$set(item, "leaf", item.type == 'doc');
-          }
-          if (!item.funcs) {
-            _self.$set(item, "funcs", {});
-          }
-          if (isModule) {
-            item.funcs.options = functions.concat();
-          } else {
-            item.funcs.options = node.data.funcs.options.concat();
-          }
-          item.funcs.selected = "";
-          node.data.children.push(item);
-        });
-        resolve(docs);
-      })
+
+          let functions = [];
+          docs.forEach(item => {
+            if (item.type == 'folder') {
+              functions.push({
+                value: item.id,
+                label: item.label
+              });
+            }
+          });
+          docs.forEach(item => {
+            if (!item.leaf) {
+              _self.$set(item, "leaf", item.type == 'doc');
+            }
+            if (!item.funcs) {
+              _self.$set(item, "funcs", {});
+            }
+            if (isModule) {
+              item.funcs.options = functions.concat();
+            } else {
+              item.funcs.options = node.data.funcs.options.concat();
+            }
+            item.funcs.selected = "";
+            node.data.children.push(item);
+          });
+          resolve(docs);
+        })
     },
 
     append(node, data, store) {
-      let _self =  this;
+      let _self = this;
       _self.tempData = data;
       _self.showNewBox = true;
       _self.$nextTick(_ => {
@@ -700,7 +731,7 @@ export default {
     },
 
     saveNewNode() {
-      let _self =  this;
+      let _self = this;
       let data = _self.tempData;
       let label = _self.newForm.label;
 
@@ -712,33 +743,33 @@ export default {
         _self.$message.warning("功能点名称长度不能超过20字符！");
         return;
       }
-      
+
       if (data.children) {
-        for (let i = 0; i < data.children.length; i ++){
+        for (let i = 0; i < data.children.length; i++) {
           if (data.children[i].label === label) {
             _self.$message.warning("存在相同标题的功能点！");
             return;
           }
         }
       }
-      
+
       _self.$axios.post("/document/create", {
-        label : label,
-        parentId : data.busiId,
-        productId : data.productId,
-        moduleId : data.moduleId,
-        type : "folder",
-        maintainUser: sessionStorage.userId
-      })
-      .then(function(res) {
-        _self.showNewBox = false;
-        _self.nodeKey += new Date().getTime();
-        _self.$message.success("新增功能点文件夹保存成功！");
-      })
+          label: label,
+          parentId: data.busiId,
+          productId: data.productId,
+          moduleId: data.moduleId,
+          type: "folder",
+          maintainUser: sessionStorage.userId
+        })
+        .then(function (res) {
+          _self.showNewBox = false;
+          _self.nodeKey += new Date().getTime();
+          _self.$message.success("新增功能点文件夹保存成功！");
+        })
     },
 
-    memberQuery(callback){
-      let _self =  this;
+    memberQuery(callback) {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.members = result.users;
         _self.memberFull = result.usersFull;
@@ -760,7 +791,7 @@ export default {
     },
 
     saveModNode() {
-      let _self =  this;
+      let _self = this;
       let data = _self.tempData;
       let node = _self.tempNode;
       if (null == _self.modForm.label || '' == _self.modForm.label) {
@@ -771,11 +802,11 @@ export default {
         _self.$notify.error("功能点名称长度不能超过20字符！");
         return;
       }
-      
+
       const parent = node.parent;
       const children = parent.data.children || parent.data;
 
-      for (let i = 0; i < children.length; i ++){
+      for (let i = 0; i < children.length; i++) {
         if (children[i].label == _self.modForm.label && data.label != _self.modForm.label) {
           _self.$message.warning("存在相同标题的功能点！");
           return;
@@ -789,28 +820,28 @@ export default {
       data.summary = _self.modForm.summary;
 
       _self.$axios.post("/document/update", {
-        label : data.label,
-        id:  data.id,
-        parentId: parent.data.busiId,
-        maintainUser : sessionStorage.userId
-      })
-      .then(function(res) {
-        if (res.data == 1) {
-          _self.nodeKey += new Date().getTime();
-          _self.$nextTick(_ => {
-            setTimeout(() => {
-              _self.$refs.folder.setCurrentNode(data);
-            }, 500);
-          });
-          _self.$message.success("功能点文件夹名称修改成功！");
-        } else {
-          _self.$message.warning("功能点文件夹名称修改失败，没有记录更新！");
-        }
-      })
+          label: data.label,
+          id: data.id,
+          parentId: parent.data.busiId,
+          maintainUser: sessionStorage.userId
+        })
+        .then(function (res) {
+          if (res.data == 1) {
+            _self.nodeKey += new Date().getTime();
+            _self.$nextTick(_ => {
+              setTimeout(() => {
+                _self.$refs.folder.setCurrentNode(data);
+              }, 500);
+            });
+            _self.$message.success("功能点文件夹名称修改成功！");
+          } else {
+            _self.$message.warning("功能点文件夹名称修改失败，没有记录更新！");
+          }
+        })
     },
 
-    saveDocumentInfo(){
-      let _self =  this;
+    saveDocumentInfo() {
+      let _self = this;
       if (!_self.currentDocument.keyWords || _self.currentDocument.keyWords.length === 0) {
         _self.$message.warning("文档关键字不能为空，请录入！");
         return;
@@ -835,30 +866,30 @@ export default {
       const parent = _self.$refs.folder.getNode(data).parent;
       const children = parent.data.children || parent.data;
       _self.$axios.post("/document/update", {
-        label : _self.currentDocument.label,
-        id:  _self.currentDocument.id,
-        parentId: _self.currentDocument.funcs.selected,
-        version: _self.currentDocument.version,
-        keyword: _self.currentDocument.keyWords.toString(),
-        summary: _self.currentDocument.summary,
-        maintainUser : sessionStorage.userId
-      })
-      .then(function(res) {
-        if (res.data == 1) {
-          const index = children.findIndex(d => d.id === data.id);
-          children.splice(index, 1, data);
-          _self.nodeKey += new Date().getTime();
-          _self.$nextTick(_ => {
-            _self.expanded.push(_self.currentDocument.funcs.selected);
-            setTimeout(() => {
-              _self.$refs.folder.setCurrentNode(data);
-            }, 500);
-          });
-          _self.$message.success("文档信息更新成功！");
-        } else {
-          _self.$message.warning("文档信息更新失败，没有记录更新！");
-        }
-      })
+          label: _self.currentDocument.label,
+          id: _self.currentDocument.id,
+          parentId: _self.currentDocument.funcs.selected,
+          version: _self.currentDocument.version,
+          keyword: _self.currentDocument.keyWords.toString(),
+          summary: _self.currentDocument.summary,
+          maintainUser: sessionStorage.userId
+        })
+        .then(function (res) {
+          if (res.data == 1) {
+            const index = children.findIndex(d => d.id === data.id);
+            children.splice(index, 1, data);
+            _self.nodeKey += new Date().getTime();
+            _self.$nextTick(_ => {
+              _self.expanded.push(_self.currentDocument.funcs.selected);
+              setTimeout(() => {
+                _self.$refs.folder.setCurrentNode(data);
+              }, 500);
+            });
+            _self.$message.success("文档信息更新成功！");
+          } else {
+            _self.$message.warning("文档信息更新失败，没有记录更新！");
+          }
+        })
     },
 
     renderContent(h, { node, data, store }) {
@@ -959,7 +990,7 @@ export default {
 }
 
 .document-detail .oper-button {
-  float:right;
+  float: right;
   margin: 8px -5px 0 15px;
   color: #3AB4D7;
   font-size: 16px;
@@ -989,7 +1020,7 @@ export default {
   width: 100%;
 }
 
-.tree-view .iconfont{
+.tree-view .iconfont {
   font-size: 17px;
 }
 
@@ -1022,8 +1053,8 @@ export default {
   display: none !important;
 }
 
-.el-tag + .el-tag,
-.el-tag + .el-button {
+.el-tag+.el-tag,
+.el-tag+.el-button {
   margin-left: 10px;
 }
 
@@ -1062,11 +1093,11 @@ export default {
 }
 
 .sdocInput {
-  text-overflow:ellipsis;
-  overflow:hidden;
-  color:#b4b4b4;
-  max-width:200px;
-  display:inline-block;
-  height:25px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #b4b4b4;
+  max-width: 200px;
+  display: inline-block;
+  height: 25px;
 }
 </style>

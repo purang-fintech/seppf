@@ -12,7 +12,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="nform" size="mini" :rules="nformRules" ref="ruledFromN" :inline="true" label-width="110px" class="test-mission-form">
+      <el-form
+        :model="nform"
+        size="mini"
+        :rules="nformRules"
+        ref="ruledFromN"
+        :inline="true"
+        label-width="110px"
+        class="test-mission-form">
         <el-form-item label="计划开始日期" prop="planBegin" required>
           <el-date-picker type="date" v-model="nform.planBegin" placeholder="请选择" :value-format="datefmt" clearable>
           </el-date-picker>
@@ -30,16 +37,15 @@
           <el-input v-model="nform.manpower" placeholder="请输入（人日）" clearable>所需人日</el-input>
         </el-form-item>
         <el-form-item label="测试负责人" prop="responser" required>
-          <el-select v-model="nform.responser" placeholder="请选择" clearable filterable :filter-method="filterUsers1" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions1"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="nform.responser"
+            placeholder="请选择"
+            clearable
+            filterable
+            :filter-method="filterUsers1"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions1" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -47,16 +53,18 @@
           </el-select>
         </el-form-item>
         <el-form-item label="测试参与人" prop="assistant">
-          <el-select v-model="nform.assistant" placeholder="请选择，可多选" filterable clearable multiple collapse-tags class="long" :filter-method="filterUsers2" @change="multiOptionsHandler2">
-            <el-option-group
-              v-for="group in userOptions2"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="nform.assistant"
+            placeholder="请选择，可多选"
+            filterable
+            clearable
+            multiple
+            collapse-tags
+            class="long"
+            :filter-method="filterUsers2"
+            @change="multiOptionsHandler2">
+            <el-option-group v-for="group in userOptions2" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin:0 10px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -71,7 +79,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :close-on-click-modal="modalClose" title="测试任务信息修改" :visible.sync="showDialogMod" width="880px"  :fullscreen="maximize1">
+    <el-dialog :close-on-click-modal="modalClose" title="测试任务信息修改" :visible.sync="showDialogMod" width="880px" :fullscreen="maximize1">
       <div slot="title">
         <span style="font-size:18px">测试任务信息修改</span>
         <button class="el-dialog__headerbtn" style="right:40px" @click="maximize1=!maximize1">
@@ -83,7 +91,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="nform" size="mini" :rules="nformRules" ref="ruledFromC" :inline="true" label-width="110px" class="test-mission-form">
+      <el-form
+        :model="nform"
+        size="mini"
+        :rules="nformRules"
+        ref="ruledFromC"
+        :inline="true"
+        label-width="110px"
+        class="test-mission-form">
         <el-form-item label="计划开始日期" prop="planBegin" required>
           <el-date-picker type="date" v-model="nform.planBegin" placeholder="请选择" :value-format="datefmt" clearable>
           </el-date-picker>
@@ -101,16 +116,15 @@
           <el-input v-model="nform.manpower" placeholder="请输入（人日）" clearable>所需人日</el-input>
         </el-form-item>
         <el-form-item label="测试负责人" prop="responser" required>
-          <el-select v-model="nform.responser" placeholder="请选择" clearable filterable :filter-method="filterUsers3" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions3"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="nform.responser"
+            placeholder="请选择"
+            clearable
+            filterable
+            :filter-method="filterUsers3"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions3" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -118,16 +132,18 @@
           </el-select>
         </el-form-item>
         <el-form-item label="测试参与人" prop="assistant">
-          <el-select v-model="nform.assistant" placeholder="请选择，可多选" filterable clearable multiple collapse-tags class="long" :filter-method="filterUsers4" @change="multiOptionsHandler4">
-            <el-option-group
-              v-for="group in userOptions4"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="nform.assistant"
+            placeholder="请选择，可多选"
+            filterable
+            clearable
+            multiple
+            collapse-tags
+            class="long"
+            :filter-method="filterUsers4"
+            @change="multiOptionsHandler4">
+            <el-option-group v-for="group in userOptions4" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin:0 10px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -145,15 +161,8 @@
       <el-form ref="form" :inline="true" size="mini" label-width="110px" @keydown.native.enter="missionQuery()">
         <el-form-item label="任务负责人">
           <el-select v-model="mform.responser" clearable filterable :filter-method="filterUsers" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+            <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -182,7 +191,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="计划结束日期">
-          <el-date-picker v-model="mform.planTo" type="daterange" align="right" unlink-panels :value-format="datefmt" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickOptions">
+          <el-date-picker
+            v-model="mform.planTo"
+            type="daterange"
+            align="right"
+            unlink-panels
+            :value-format="datefmt"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickOptions">
           </el-date-picker>
         </el-form-item>
         <el-form-item style="float:right">
@@ -191,11 +209,17 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="dataRevert" :max-height="tableHeight" size="mini" stripe :border="showBorder" ref="table"
-          v-loading="queryLoading" 
-          element-loading-text="查询中..." 
-          element-loading-spinner="el-icon-loading" 
-          element-loading-background="rgba(0, 0, 0, 0.8)">
+      <el-table
+        :data="dataRevert"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        ref="table"
+        v-loading="queryLoading"
+        element-loading-text="查询中..."
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column label="产品需求号" width="100" align="center" prop="id" sortable>
           <template slot-scope="scope">
             <el-tooltip content="点此，产品需求拆分测试任务" placement="right-end" effect="dark">
@@ -206,10 +230,7 @@
         <el-table-column prop="id" label="任务编号" width="100" align="center" sortable>
           <template slot-scope="scope">
             <el-tooltip content="点此产看更多测试任务信息" placement="right-end" effect="dark">
-              <el-popover
-                placement="right-end"
-                width="400"
-                trigger="click">
+              <el-popover placement="right-end" width="400" trigger="click">
                 <el-form size="mini" label-width="100px">
                   <el-form-item label="人力(人日)">
                     <el-input v-model="scope.row.manpower" disabled></el-input>
@@ -221,7 +242,7 @@
                     <span style="color:#3AB4D7;padding-left:15px">{{ getAssistant(scope.row.assistant) }}</span>
                   </el-form-item>
                 </el-form>
-                  <span class="table-content-tips" slot="reference">{{scope.row.id}}</span>
+                <span class="table-content-tips" slot="reference">{{scope.row.id}}</span>
               </el-popover>
             </el-tooltip>
           </template>
@@ -273,21 +294,16 @@
       </el-table>
 
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
-        <el-button type="primary" 
-          class="el-icon-download export-btn" 
-          size="mini"
-          :disabled="tableData.length == 0"
-
-          @click="exportCSV('测试任务数据', 'table')">
+        <el-button type="primary" class="el-icon-download export-btn" size="mini" :disabled="tableData.length == 0" @click="exportCSV('测试任务数据', 'table')">
           导出CSV
         </el-button>
         <div class="export-tips">导出CSV文件请使用<span>新版本</span>MS Office或者WPS表格工具打开</div>
@@ -298,7 +314,10 @@
 
 <script>
 import commonQuery from "@/components/util/CommonQuery.vue";
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import TableExport from '@/util/TableExport.js'
 
 const validateManpower = (rule, value, callback) => {
@@ -347,13 +366,13 @@ export default {
         planTo: [],
         relId: "",
         responser: "",
-        status: [1,2,3]
+        status: [1, 2, 3]
       },
       currentPage: 1,
       pageSize: parseInt(sessionStorage.tablePageSize) || 10,
       queryChanged: false,
       nform: {
-        reqId:"",
+        reqId: "",
         relId: "",
         type: "",
         spliter: "",
@@ -364,14 +383,39 @@ export default {
         planBegin: "",
         planTo: ""
       },
-      currentTms : {},
+      currentTms: {},
       nformRules: {
-        responser: [{ required: true, message: '请选择负责人', trigger: 'change' }],
-        type: [{ required: true, message: '请选任务类型', trigger: 'change' }],
-        status: [{ required: true, message: '请选任务状态', trigger: 'change' }],
-        planBegin: [{ type: 'string', required: true, message: '请选择计划开始日期', trigger: 'blur' }],
-        planTo: [{ type: 'string', required: true, message: '请选择计划完成日期', trigger: 'blur' }],
-        manpower: [{ validator: validateManpower, trigger: 'blur'}]
+        responser: [{
+          required: true,
+          message: '请选择负责人',
+          trigger: 'change'
+        }],
+        type: [{
+          required: true,
+          message: '请选任务类型',
+          trigger: 'change'
+        }],
+        status: [{
+          required: true,
+          message: '请选任务状态',
+          trigger: 'change'
+        }],
+        planBegin: [{
+          type: 'string',
+          required: true,
+          message: '请选择计划开始日期',
+          trigger: 'blur'
+        }],
+        planTo: [{
+          type: 'string',
+          required: true,
+          message: '请选择计划完成日期',
+          trigger: 'blur'
+        }],
+        manpower: [{
+          validator: validateManpower,
+          trigger: 'blur'
+        }]
       }
     };
   },
@@ -400,15 +444,15 @@ export default {
         let now = new Date(dateFormat(new Date(), this.datefmt) + " 00:00:00").getTime();
         let planTo = new Date(datas[i].planTo + " 00:00:00").getTime();
         let planBegin = new Date(datas[i].planBegin + " 00:00:00").getTime();
-        if ((planBegin - now) < 0  && datas[i].status == 1) {
-          this.$set(datas[i], "planBeginHtml", "<span style='color:orange;font-weight:500'>"+ datas[i].planBegin + "</span>");
+        if ((planBegin - now) < 0 && datas[i].status == 1) {
+          this.$set(datas[i], "planBeginHtml", "<span style='color:orange;font-weight:500'>" + datas[i].planBegin + "</span>");
         } else {
-          this.$set(datas[i], "planBeginHtml", "<span style='color:#606266'>"+ datas[i].planBegin + "</span>");
+          this.$set(datas[i], "planBeginHtml", "<span style='color:#606266'>" + datas[i].planBegin + "</span>");
         }
-        if ((planTo - now) < 0  && datas[i].status < 3  && datas[i].status > 0) {
-          this.$set(datas[i], "planToHtml", "<span style='color:orange;font-weight:500'>"+ datas[i].planTo + "</span>");
+        if ((planTo - now) < 0 && datas[i].status < 3 && datas[i].status > 0) {
+          this.$set(datas[i], "planToHtml", "<span style='color:orange;font-weight:500'>" + datas[i].planTo + "</span>");
         } else {
-          this.$set(datas[i], "planToHtml", "<span style='color:#606266'>"+ datas[i].planTo + "</span>");
+          this.$set(datas[i], "planToHtml", "<span style='color:#606266'>" + datas[i].planTo + "</span>");
         }
         this.tableData.splice(i, 1, datas[i]);
       }
@@ -417,7 +461,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
 
     _self.tableHeight = bodyAviHeightTab - 60 - 45;
     let dateE = new Date();
@@ -431,9 +475,9 @@ export default {
     for (let p in _self.$route.params) {
       params.push(p);
     }
-    
+
     if (params.length > 0) {
-      _self.$nextTick(function(){
+      _self.$nextTick(function () {
         _self.mform.relId = _self.$route.params.relId;
         _self.mform.reqId = _self.$route.params.reqId;
         _self.nform.reqId = _self.$route.params.reqId;
@@ -474,15 +518,15 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
       _self.userOptions1 = _self.memberFull;
       _self.userOptions3 = _self.memberFull;
     },
 
-    multiOptionsHandler4(){
-      let _self =  this;
+    multiOptionsHandler4() {
+      let _self = this;
       const selected = _self.nform.assistant.concat([]);
       _self.nform.assistant.splice(0, _self.nform.assistant.length);
       _self.$nextTick(_ => {
@@ -493,8 +537,8 @@ export default {
       });
     },
 
-    multiOptionsHandler2(){
-      let _self =  this;
+    multiOptionsHandler2() {
+      let _self = this;
       const selected = _self.nform.assistant.concat([]);
       _self.nform.assistant.splice(0, _self.nform.assistant.length);
       _self.$nextTick(_ => {
@@ -506,30 +550,30 @@ export default {
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers1(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions1 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers2(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions2 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers3(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions3 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers4(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions4 = commonQuery.pickListFilter(val, _self.memberFull);
     },
-    
+
     handleCurrentChange(current) {
       if (this.queryChanged == true) {
         this.currentPage = 1;
@@ -551,7 +595,7 @@ export default {
     },
 
     getAssistant(assistant) {
-      let _self =  this;
+      let _self = this;
       let result = [];
       if (null == assistant || assistant == "") {
         return "无";
@@ -566,13 +610,13 @@ export default {
         }
       });
       if (result.length > 1) {
-        return result.toString().replace(/,/g ,"，");
+        return result.toString().replace(/,/g, "，");
       } else {
         return result.toString();
       }
     },
 
-    editForbidden(data){
+    editForbidden(data) {
       return !commonQuery.roleAllow([0]) && data.status == 0;
     },
 
@@ -583,32 +627,32 @@ export default {
       return data.status != newStatus - 1;
     },
 
-    checkReleasePlan(){
-      let _self =  this;
+    checkReleasePlan() {
+      let _self = this;
       if (_self.nform.relId == "" || _self.nform.type == "") {
         return;
       }
       _self.$axios({
-        method: "post",
-        url: "/plan/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.nform.relId,
-          planType: _self.nform.type
-        }
-      })
-      .then(function(res) {
-        let result = eval(res.data.list);
-        if (!result || result.length == 0) {
-          _self.$message.warning("该版本对应类型测试计划未建立！");
-          _self.nform.relId = "";
-        }
-      })
+          method: "post",
+          url: "/plan/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.nform.relId,
+            planType: _self.nform.type
+          }
+        })
+        .then(function (res) {
+          let result = eval(res.data.list);
+          if (!result || result.length == 0) {
+            _self.$message.warning("该版本对应类型测试计划未建立！");
+            _self.nform.relId = "";
+          }
+        })
     },
 
-    toRquest(reqId){
+    toRquest(reqId) {
       this.$router.push({
         name: "request",
         params: {
@@ -621,8 +665,8 @@ export default {
       this.$refs[formName].resetFields();
     },
 
-    checkSaveTmsCreate(formName){
-      let _self =  this;
+    checkSaveTmsCreate(formName) {
+      let _self = this;
       _self.$refs[formName].validate((valid) => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -633,8 +677,8 @@ export default {
       });
     },
 
-    checkSaveTmsMod(formName){
-      let _self =  this;
+    checkSaveTmsMod(formName) {
+      let _self = this;
       _self.$refs[formName].validate((valid) => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -645,50 +689,58 @@ export default {
       });
     },
 
-    beginSplit(reqId){
-      let _self =  this;
+    beginSplit(reqId) {
+      let _self = this;
       _self.changeOnWayReq(reqId, (changeCount) => {
         if (changeCount > 0) {
           _self.$confirm("是否前往变更页面查看？", "需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {reqId: reqId}});
-          })
-          .catch(() => {
-          });
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  reqId: reqId
+                }
+              });
+            })
+            .catch(() => {});
         } else {
           _self.nform.reqId = reqId;
           _self.nform.spliter = "";
           _self.nform.responser = "";
           _self.nform.status = 1,
-          _self.nform.planBegin = "";
+            _self.nform.planBegin = "";
           _self.nform.planTo = "";
           _self.nform.relId = "";
           _self.nform.type = "",
-          _self.nform.manpower = "";
+            _self.nform.manpower = "";
           _self.nform.assistant = [];
           _self.showDialog = true;
         }
       });
     },
 
-    beginEdit(data){
-      let _self =  this;
+    beginEdit(data) {
+      let _self = this;
       _self.changeOnWayTms(data.id, (changeCount) => {
         if (changeCount > 0) {
           _self.$confirm("是否前往变更页面查看？", "需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {reqId: data.reqId}});
-          })
-          .catch(() => {
-          });
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  reqId: data.reqId
+                }
+              });
+            })
+            .catch(() => {});
         } else {
           _self.currentTms = data;
           _self.nform.reqId = data.reqId;
@@ -702,8 +754,8 @@ export default {
             });
           }
           _self.nform.status = data.status,
-          _self.nform.type = data.type,
-          _self.nform.planBegin = data.planBegin;
+            _self.nform.type = data.type,
+            _self.nform.planBegin = data.planBegin;
           _self.nform.planTo = data.planTo;
           _self.nform.relId = data.relId;
           _self.nform.manpower = data.manpower;
@@ -712,8 +764,8 @@ export default {
       });
     },
 
-    changeOnWayReq(reqId, callback){
-      let _self =  this;
+    changeOnWayReq(reqId, callback) {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/change/on_way",
@@ -724,7 +776,7 @@ export default {
             reqId: reqId,
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let changes = res.data;
           _self.$nextTick(() => {
             if (typeof callback == "function") {
@@ -732,14 +784,14 @@ export default {
             }
           })
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.$notify.error("查询需求变更记录时发生程序错误！");
         });
     },
 
-    changeOnWayTms(id, callback){
-      let _self =  this;
+    changeOnWayTms(id, callback) {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/change/on_way",
@@ -750,7 +802,7 @@ export default {
             id: id,
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let changes = res.data;
           _self.$nextTick(() => {
             if (typeof callback == "function") {
@@ -758,53 +810,57 @@ export default {
             }
           })
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.$notify.error("查询需求变更记录时发生程序错误！");
         });
     },
 
     saveTmsCreate() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/tms/create", {
-        reqId: _self.nform.reqId,
-        status: 1,
-        spliter: sessionStorage.userId,
-        splitDate: dateFormat(new Date(), _self.datefmt),
-        planBegin: _self.nform.planBegin,
-        planTo: _self.nform.planTo,
-        responser: _self.nform.responser,
-        assistant: _self.nform.assistant.toString(),
-        manpower: _self.nform.manpower,
-        relId: _self.nform.relId,
-        type: _self.nform.type
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.showDialog = false;
-          _self.$message.success("拆分测试任务保存成功！");
-          _self.missionQuery();
-        } else {
-          _self.$message.info("拆分测试任务保存失败");
-          console.log(res);
-        }
-      })
+          reqId: _self.nform.reqId,
+          status: 1,
+          spliter: sessionStorage.userId,
+          splitDate: dateFormat(new Date(), _self.datefmt),
+          planBegin: _self.nform.planBegin,
+          planTo: _self.nform.planTo,
+          responser: _self.nform.responser,
+          assistant: _self.nform.assistant.toString(),
+          manpower: _self.nform.manpower,
+          relId: _self.nform.relId,
+          type: _self.nform.type
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.showDialog = false;
+            _self.$message.success("拆分测试任务保存成功！");
+            _self.missionQuery();
+          } else {
+            _self.$message.info("拆分测试任务保存失败");
+            console.log(res);
+          }
+        })
     },
 
-    statusTransCheck(data, newStatus){
-      let _self =  this;
+    statusTransCheck(data, newStatus) {
+      let _self = this;
       _self.changeOnWayTms(data.id, (changeCount) => {
         if (changeCount > 0) {
           _self.$confirm("是否前往变更页面查看？", "需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {reqId: data.reqId}});
-          })
-          .catch(() => {
-          });
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  reqId: data.reqId
+                }
+              });
+            })
+            .catch(() => {});
         } else {
           _self.statusTrans(data, newStatus);
         }
@@ -812,64 +868,68 @@ export default {
     },
 
     statusTrans(row, newStatus) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/tms/status_update/" + row.id, {
-        status: newStatus
-      })
-      .then(function(sres) {
-        if (sres.data == 1) {
-          _self.$message.success("测试任务状态修改成功！");
-          _self.missionQuery();   
-        } else {
-          _self.$message.info("测试任务状态修改保存失败");
-        }
-      })
+          status: newStatus
+        })
+        .then(function (sres) {
+          if (sres.data == 1) {
+            _self.$message.success("测试任务状态修改成功！");
+            _self.missionQuery();
+          } else {
+            _self.$message.info("测试任务状态修改保存失败");
+          }
+        })
     },
 
     saveTmsMod() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/tms/update", {
-        id: _self.nform.id,
-        manpower: _self.nform.manpower,
-        planBegin: _self.nform.planBegin,
-        planTo: _self.nform.planTo,
-        assistant: _self.nform.assistant.toString(),
-        relId: _self.nform.relId,
-        status: _self.nform.status,
-        responser: _self.nform.responser,
-        type: _self.nform.type
-      })
-      .then(function(sres) {
-        if (sres.data == 1) {
-          _self.$message.success("测试任务信息修改成功！");
-          _self.showDialogMod = false;
-          _self.missionQuery();   
-        } else {
-          _self.$message.info("测试任务信息修改保存失败");
-        }
-      })
+          id: _self.nform.id,
+          manpower: _self.nform.manpower,
+          planBegin: _self.nform.planBegin,
+          planTo: _self.nform.planTo,
+          assistant: _self.nform.assistant.toString(),
+          relId: _self.nform.relId,
+          status: _self.nform.status,
+          responser: _self.nform.responser,
+          type: _self.nform.type
+        })
+        .then(function (sres) {
+          if (sres.data == 1) {
+            _self.$message.success("测试任务信息修改成功！");
+            _self.showDialogMod = false;
+            _self.missionQuery();
+          } else {
+            _self.$message.info("测试任务信息修改保存失败");
+          }
+        })
     },
 
     missionDelete(data) {
-      let _self =  this;
+      let _self = this;
       _self.changeOnWayTms(data.id, (changeCount) => {
         if (changeCount > 0) {
           _self.$confirm("是否前往变更页面查看？", "需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {reqId: data.reqId}});
-          })
-          .catch(() => {
-          });
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  reqId: data.reqId
+                }
+              });
+            })
+            .catch(() => {});
         } else {
           this.$confirm("确定要删除当前记录吗?", "操作确认", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
             .then(() => {
               this.deleteTestMission(data.id);
             })
@@ -879,21 +939,21 @@ export default {
     },
 
     deleteTestMission(id) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/tms/delete/" + id)
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.$message.success("测试任务删除成功！");
-          _self.missionQuery();
-        } else {
-          _self.$notify.error("测试任务删除失败");
-          console.log(res);
-        }
-      })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.$message.success("测试任务删除成功！");
+            _self.missionQuery();
+          } else {
+            _self.$notify.error("测试任务删除失败");
+            console.log(res);
+          }
+        })
     },
 
-    memberQuery(callback){
-      let _self =  this;
+    memberQuery(callback) {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.members = result.users;
         _self.memberFull = result.usersFull;
@@ -909,7 +969,7 @@ export default {
     },
 
     releaseQuery() {
-      let _self =  this;
+      let _self = this;
       _self.releases.splice(0, _self.releases.length);
       commonQuery.releaseQuery((result) => {
         _self.releases = result.releasesWithBranch;
@@ -917,7 +977,7 @@ export default {
     },
 
     missionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       let planToBegin = "",
         planToEnd = "";
@@ -944,7 +1004,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tableData = eval(res.data.list);
           _self.pageInfo = res.data;
           setTimeout(() => {
@@ -952,7 +1012,7 @@ export default {
             _self.queryChanged = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.queryLoading = false;
         });
@@ -980,7 +1040,7 @@ export default {
   padding-right: 0px;
 }
 
-.tmform-box .el-table i{
+.tmform-box .el-table i {
   font-size: 14px;
   cursor: pointer;
   color: #3AB4D7;

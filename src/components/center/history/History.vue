@@ -16,24 +16,19 @@
         <div style="overflow-y:auto" :style="{height: formHeight + 'px'}">
           <div>
             <el-steps direction="vertical" space="67px">
-              <el-step 
-                v-for="(item, i) in direct.directHitory" 
-                :key="i" 
-                :title="item.operTime" 
-                :description="item.operComment" 
-                status="success">
+              <el-step v-for="(item, i) in direct.directHitory" :key="i" :title="item.operTime" :description="item.operComment" status="success">
               </el-step>
             </el-steps>
           </div>
         </div>
         <div class="page-setting">
-          <el-pagination 
-            @size-change="handleSizeChangeDirect" 
-            @current-change="handleCurrentChangeDirect" 
-            :current-page="direct.currentPage" 
-            :page-sizes="[10, 20, 50, 100, 200]" 
-            :page-size="direct.pageSize" 
-            layout="total, sizes, prev, pager, next, jumper" 
+          <el-pagination
+            @size-change="handleSizeChangeDirect"
+            @current-change="handleCurrentChangeDirect"
+            :current-page="direct.currentPage"
+            :page-sizes="[10, 20, 50, 100, 200]"
+            :page-size="direct.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="direct.pageInfo.total">
           </el-pagination>
         </div>
@@ -48,24 +43,19 @@
         <div style="overflow-y:auto" :style="{height: formHeight + 'px'}">
           <div>
             <el-steps direction="vertical" space="67px">
-              <el-step 
-                v-for="(item, i) in refer.referHistory" 
-                :key="i" 
-                :title="item.operTime" 
-                :description="item.operComment" 
-                status="finish">
+              <el-step v-for="(item, i) in refer.referHistory" :key="i" :title="item.operTime" :description="item.operComment" status="finish">
               </el-step>
             </el-steps>
           </div>
         </div>
         <div class="page-setting">
-          <el-pagination 
-            @size-change="handleSizeChangeRefer" 
-            @current-change="handleCurrentChangeRefer" 
-            :current-page="refer.currentPage" 
-            :page-sizes="[10, 20, 50, 100, 200]" 
-            :page-size="refer.pageSize" 
-            layout="total, sizes, prev, pager, next, jumper" 
+          <el-pagination
+            @size-change="handleSizeChangeRefer"
+            @current-change="handleCurrentChangeRefer"
+            :current-page="refer.currentPage"
+            :page-sizes="[10, 20, 50, 100, 200]"
+            :page-size="refer.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="refer.pageInfo.total">
           </el-pagination>
         </div>
@@ -77,7 +67,7 @@
 <script>
 let versions = [];
 export default {
-  data: function() {
+  data: function () {
     return {
       formHeight: bodyAviHeightNTab - 75,
       direct: {
@@ -95,8 +85,8 @@ export default {
     }
   },
 
-  created() { 
-    let _self =  this;
+  created() {
+    let _self = this;
     _self.historyDirectQuery();
     _self.historyReferQuery();
   },
@@ -122,8 +112,8 @@ export default {
       this.historyReferQuery();
     },
 
-    historyReferQuery(){
-      let _self =  this;
+    historyReferQuery() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/mgr/refer",
@@ -135,18 +125,18 @@ export default {
             pageSize: _self.refer.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.refer.referHistory = eval(res.data.list);
           _self.refer.pageInfo = res.data;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    historyDirectQuery(){
-      let _self =  this;
+    historyDirectQuery() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/mgr/direct",
@@ -158,11 +148,11 @@ export default {
             pageSize: _self.direct.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.direct.directHitory = eval(res.data.list);
           _self.direct.pageInfo = res.data;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -196,13 +186,13 @@ export default {
   border: 1px solid #e4edf3;
   border-radius: 2px;
   padding: 4% 1% 10px 4%;
-  background-color: rgba(200,200,200,0.1);
+  background-color: rgba(200, 200, 200, 0.1);
   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12),
     0 0 6px 0 rgba(0, 0, 0, 0.04);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
 }
 
-.page-setting{
+.page-setting {
   margin-top: 10px;
   float: right;
 }

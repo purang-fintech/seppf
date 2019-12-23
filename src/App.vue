@@ -1,8 +1,5 @@
 ﻿<template>
-  <div
-    id="sepp"
-    @click="userAlive()"
-  >
+  <div id="sepp" @click="userAlive()">
     <router-view></router-view>
   </div>
 </template>
@@ -41,13 +38,13 @@ export default {
       let currentInterval = _self.currentTime - _self.lastTime;
       if (currentInterval >= _self.keepaliveInterval && currentInterval <= _self.logoutInterval) {
         _self.$axios.get("/sepp").then(resp => {
-          // 每隔一段时间检查前端用户是否活跃，活跃则向后端探测一下，便于jwt返回活跃状态
-        })
-        .catch(e => {
-          _self.$message.warning("后端服务异常，请稍后重新登录！");
-          _self.$router.push("/login");
-          return;
-        });
+            // 每隔一段时间检查前端用户是否活跃，活跃则向后端探测一下，便于jwt返回活跃状态
+          })
+          .catch(e => {
+            _self.$message.warning("后端服务异常，请稍后重新登录！");
+            _self.$router.push("/login");
+            return;
+          });
       }
       if (currentInterval > _self.logoutInterval) {
         _self.$message.warning("登录已超时，请重新登录！");

@@ -1,5 +1,5 @@
 <template>
-    <p class="page-container">敬请期待！</p>
+  <p class="page-container">敬请期待！</p>
 </template>
 
 <style scoped>

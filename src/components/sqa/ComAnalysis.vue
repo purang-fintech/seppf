@@ -18,15 +18,15 @@
       </div>
 
       <div class="main-filter">
-        <el-date-picker 
-          v-model="anaPeriod" 
-          type="daterange" 
+        <el-date-picker
+          v-model="anaPeriod"
+          type="daterange"
           size="small"
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="checkPeriod()"
           :clearable="false"
@@ -64,7 +64,10 @@
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import reqCostTrend from "./com/ReqCostTrend.vue";
 import reqChangeTrendT from "./com/ReqChangeTrendTime.vue";
 import reqChangeTrendR from "./com/ReqChangeTrendRatio.vue";
@@ -72,7 +75,7 @@ import defectCostTrendM from "./com/DefectCostTrendM.vue";
 import defectCostTrendR from "./com/DefectCostTrendR.vue";
 let versions = [];
 export default {
-  data: function() {
+  data: function () {
     return {
       anaMode: "1",
       anaPeriod: [],
@@ -100,7 +103,7 @@ export default {
   },
 
   methods: {
-    refreshData(){
+    refreshData() {
       this.reqCosts.splice(0, this.reqCosts.length);
       this.reqCostTrend();
       this.reqChangesT.splice(0, this.reqChangesT.length);
@@ -112,7 +115,7 @@ export default {
       this.defectCostTrendR();
     },
 
-    setDefaultPeriod(){
+    setDefaultPeriod() {
       let date = new Date();
       let oldDay = new Date();
       let qTimeEnd = dateFormat(date, this.datefmt);
@@ -123,10 +126,10 @@ export default {
       this.anaPeriod.push(qTimeEnd);
     },
 
-    checkPeriod(){
+    checkPeriod() {
       let start = this.anaPeriod[0];
       let end = this.anaPeriod[1];
-      let period = (Date.parse(end.replace('/-/g','/')) - Date.parse(start.replace('/-/g','/'))) / (3600 * 1000 * 24);
+      let period = (Date.parse(end.replace('/-/g', '/')) - Date.parse(start.replace('/-/g', '/'))) / (3600 * 1000 * 24);
       if (period > 365) {
         this.$message.info("请查询12个月以内的数据！");
         this.setDefaultPeriod();
@@ -141,12 +144,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -157,8 +160,8 @@ export default {
       return result;
     },
 
-    reqCostTrend(){
-      let _self =  this;
+    reqCostTrend() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/reports/reqCostTrend",
@@ -170,17 +173,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.reqCosts = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    reqChangeTrend(){
-      let _self =  this;
+    reqChangeTrend() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/reports/reqChangeTrend",
@@ -192,18 +195,18 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.reqChangesT = eval(res.data);
           _self.reqChangesR = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectCostTrendM(){
-      let _self =  this;
+    defectCostTrendM() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/reports/defectCostTrendMonth",
@@ -215,17 +218,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.defectCostm = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectCostTrendR(){
-      let _self =  this;
+    defectCostTrendR() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/reports/defectCostTrendRel",
@@ -237,10 +240,10 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.defectCostr = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -270,7 +273,7 @@ export default {
   vertical-align: middle;
 }
 
-.wid-container{
+.wid-container {
   width: 99.2%;
   height: 300px;
   margin-bottom: 1%;

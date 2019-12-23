@@ -14,23 +14,23 @@
           <el-radio-button label="1">按版本分析</el-radio-button>
           <el-radio-button label="2">按任务拆分日期分析</el-radio-button>
         </el-radio-group>
-      </div> 
+      </div>
 
       <div style="display:inline-block">
         <el-select v-if="anaMode==='1'" v-model="releases.selected" size="small" @change="refreshData()" placeholder="请选择版本号">
           <el-option v-for="opt in releases.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
         </el-select>
-        
-        <el-date-picker 
-          v-if="anaMode==='2'" 
-          v-model="anaPeriod" 
-          type="daterange" 
+
+        <el-date-picker
+          v-if="anaMode==='2'"
+          v-model="anaPeriod"
+          type="daterange"
           size="small"
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="checkPeriod()"
           :clearable="false"
@@ -73,7 +73,10 @@
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import cmsSpliter from "./cms/CmsSpliter.vue";
 import cmsResponser from "./cms/CmsResponser.vue";
 import cmsModule from "./cms/CmsModule.vue";
@@ -83,7 +86,7 @@ import cmsOffset from "./cms/CmsOffset.vue";
 import commonQuery from "@/components/util/CommonQuery.vue";
 let versions = [];
 export default {
-  data: function() {
+  data: function () {
     return {
       anaMode: "1",
       releases: {
@@ -118,7 +121,7 @@ export default {
   },
 
   methods: {
-    setDefaultPeriod(){
+    setDefaultPeriod() {
       let date = new Date();
       let oldDay = new Date();
       let qTimeEnd = dateFormat(date, this.datefmt);
@@ -129,7 +132,7 @@ export default {
       this.anaPeriod.push(qTimeEnd);
     },
 
-    transQueryMode(){
+    transQueryMode() {
       if (this.anaMode == 1) {
         this.releaseQuery(this.refreshData);
       } else {
@@ -139,10 +142,10 @@ export default {
       }
     },
 
-    checkPeriod(){
+    checkPeriod() {
       let start = this.anaPeriod[0];
       let end = this.anaPeriod[1];
-      let period = (Date.parse(end.replace('/-/g','/')) - Date.parse(start.replace('/-/g','/'))) / (3600 * 1000 * 24);
+      let period = (Date.parse(end.replace('/-/g', '/')) - Date.parse(start.replace('/-/g', '/'))) / (3600 * 1000 * 24);
       if (period > 183) {
         this.$message.info("请查询六个月以内的数据！");
         this.setDefaultPeriod();
@@ -151,7 +154,7 @@ export default {
       this.refreshData();
     },
 
-    refreshData(){
+    refreshData() {
       this.spliters.splice(0, this.spliters.length);
       this.cmsSpliter();
       this.responsers.splice(0, this.responsers.length);
@@ -166,122 +169,122 @@ export default {
       this.cmsDevOffset();
     },
 
-    cmsSpliter(){
-      let _self =  this;
+    cmsSpliter() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/cmsSpliter",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.releases.selected,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.spliters = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/cmsSpliter",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.releases.selected,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.spliters = eval(res.data);
+        })
     },
 
-    cmsResponser(){
-      let _self =  this;
+    cmsResponser() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/cmsResponser",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.releases.selected,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.responsers = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/cmsResponser",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.releases.selected,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.responsers = eval(res.data);
+        })
     },
 
-    cmsStatus(){
-      let _self =  this;
+    cmsStatus() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/cmsStatus",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.releases.selected,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.statuss = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/cmsStatus",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.releases.selected,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.statuss = eval(res.data);
+        })
     },
 
-    cmsModule(){
-      let _self =  this;
+    cmsModule() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/cmsModule",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.releases.selected,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.modules = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/cmsModule",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.releases.selected,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.modules = eval(res.data);
+        })
     },
 
-    cmsCost(){
-      let _self =  this;
+    cmsCost() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/cmsManpower",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.releases.selected,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.cmsCosts = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/cmsManpower",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.releases.selected,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.cmsCosts = eval(res.data);
+        })
     },
 
-    cmsDevOffset(){
-      let _self =  this;
+    cmsDevOffset() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/cmsOffset",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.releases.selected,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.offsets = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/cmsOffset",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.releases.selected,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.offsets = eval(res.data);
+        })
     },
 
     releaseQuery(callback) {
-      let _self =  this;
+      let _self = this;
       _self.releases.opts.splice(0, _self.releases.opts.length);
       commonQuery.releaseQuery((result) => {
         if (result.releasesWithBranch.length === 0) {
@@ -290,7 +293,7 @@ export default {
         }
         _self.releases.opts = result.releasesWithBranch;
         _self.releases.selected = result.releasesWithBranch[0].value;
-        if(typeof callback === "function"){
+        if (typeof callback === "function") {
           callback();
         }
       })
@@ -314,7 +317,7 @@ export default {
   font-size: 13px;
 }
 
-.cms-container{
+.cms-container {
   width: 49%;
   height: 300px;
   display: inline-block;
@@ -324,7 +327,7 @@ export default {
   background-color: #3b434e;
 }
 
-.cms-container+.cms-container{
+.cms-container+.cms-container {
   margin-left: 1%;
 }
 

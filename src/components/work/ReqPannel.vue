@@ -1,58 +1,78 @@
 <template>
   <div id="root" style="width: 100%">
     <div class="query-filter">
-      <el-select v-model="relId" placeholder="请选择一个版本" size="small" style="width: 18.9%" @change="releaseReqQuery()" filterable>
+      <el-select
+        v-model="relId"
+        placeholder="请选择一个版本"
+        size="small"
+        style="width: 18.9%"
+        @change="releaseReqQuery()"
+        filterable>
         <el-option v-for="opt in releases" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
       </el-select>
-      
+
       <div class="ana-mode">
         <el-radio-group v-model="queryFilter" size="small" @change="queryFilterChange()">
           <el-radio-button label="0">全部</el-radio-button>
           <el-radio-button label="1">按模块</el-radio-button>
           <el-radio-button label="2">按提交人</el-radio-button>
           <el-radio-button label="3">按产品经理</el-radio-button>
-        </el-radio-group> 
+        </el-radio-group>
       </div>
       <el-select v-if="queryFilter === '1'" v-model="moduleId" size="small" placeholder="请选择模块" @change="releaseReqQuery()">
         <el-option v-for="opt in modules" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
       </el-select>
-      <el-select v-if="queryFilter === '2'" v-model="submitter" size="small" placeholder="请选择提交人" @change="releaseReqQuery()" filterable :filter-method="filterUsers" @visible-change="resetFilterText">
-        <el-option-group
-          v-for="group in userOptions"
-          :key="group.label"
-          :label="group.label">
-          <el-option
-            v-for="item in group.options"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
+      <el-select
+        v-if="queryFilter === '2'"
+        v-model="submitter"
+        size="small"
+        placeholder="请选择提交人"
+        @change="releaseReqQuery()"
+        filterable
+        :filter-method="filterUsers"
+        @visible-change="resetFilterText">
+        <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+          <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
             <span style="float:left">{{ item.name }}</span>
             <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
           </el-option>
         </el-option-group>
       </el-select>
-      <el-select v-if="queryFilter === '3'" v-model="pdResponser" size="small" placeholder="请选择产品经理" @change="releaseReqQuery()" filterable :filter-method="filterUsers1" @visible-change="resetFilterText">
-        <el-option-group
-          v-for="group in userOptions1"
-          :key="group.label"
-          :label="group.label">
-          <el-option
-            v-for="item in group.options"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
+      <el-select
+        v-if="queryFilter === '3'"
+        v-model="pdResponser"
+        size="small"
+        placeholder="请选择产品经理"
+        @change="releaseReqQuery()"
+        filterable
+        :filter-method="filterUsers1"
+        @visible-change="resetFilterText">
+        <el-option-group v-for="group in userOptions1" :key="group.label" :label="group.label">
+          <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
             <span style="float:left">{{ item.name }}</span>
             <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
           </el-option>
         </el-option-group>
       </el-select>
-      <el-button v-no-more-click type="primary" size="small" class="el-icon-search" @click="releaseReqQuery()" style="margin-left:1%">查询</el-button>
+      <el-button
+        v-no-more-click
+        type="primary"
+        size="small"
+        class="el-icon-search"
+        @click="releaseReqQuery()"
+        style="margin-left:1%">查询</el-button>
     </div>
 
     <div class="require-list" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="info" size="small">
         <i class="iconfont icon-label" /> 排期待开发</el-tag>
-      <draggable element="ul" class="drag-area" v-model="released" :options="dragOptions" :move="onMove" @change="onReleased">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="released"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onReleased">
         <div v-for="ele in released" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -69,7 +89,13 @@
     <div class="require-list" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" size="small">
         <i class="el-icon-time" /> 已拆分任务</el-tag>
-      <draggable element="ul" class="drag-area" v-model="splited" :options="dragOptions" :move="onMove" @change="onSplited">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="splited"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onSplited">
         <div v-for="ele in splited" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -86,7 +112,13 @@
     <div class="require-list" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="danger" size="small">
         <i class="iconfont icon-coding" /> 设计编码中</el-tag>
-      <draggable element="ul" class="drag-area" v-model="coding" :options="dragOptions" :move="onMove" @change="onCoding">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="coding"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onCoding">
         <div v-for="ele in coding" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -103,7 +135,13 @@
     <div class="require-list" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="warning" size="small">
         <i class="iconfont icon-bug" /> 测试中</el-tag>
-      <draggable element="ul" class="drag-area" v-model="testing" :options="dragOptions" :move="onMove" @change="onTesting">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="testing"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onTesting">
         <div v-for="ele in testing" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -120,7 +158,13 @@
     <div class="require-list" :style="{height: formHeight + 'px'}">
       <el-tag class="card-title" type="success" size="small">
         <i class="el-icon-circle-check" /> 已完成</el-tag>
-      <draggable element="ul" class="drag-area" v-model="completed" :options="dragOptions" :move="onMove" @change="onCompleted">
+      <draggable
+        element="ul"
+        class="drag-area"
+        v-model="completed"
+        :options="dragOptions"
+        :move="onMove"
+        @change="onCompleted">
         <div v-for="ele in completed" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
@@ -146,7 +190,7 @@ export default {
     draggable: draggable
   },
 
-  data: function() {
+  data: function () {
     return {
       formHeight: bodyAviHeightTab,
       isDragging: false,
@@ -172,7 +216,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     let releaseId = _self.$route.params.relId;
     if (releaseId && releaseId > 0) {
       _self.relId = parseInt(releaseId);
@@ -207,32 +251,32 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
       _self.userOptions1 = _self.memberFull;
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers1(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions1 = commonQuery.pickListFilter(val, _self.memberFull);
     },
-    
-    queryFilterChange(){
-      let _self =  this;
+
+    queryFilterChange() {
+      let _self = this;
       if (_self.queryFilter === "1") {
         _self.pdResponser = "";
         _self.submitter = "";
         _self.releaseReqQuery();
-      } else if(_self.queryFilter === "2") {
+      } else if (_self.queryFilter === "2") {
         _self.moduleId = "";
         _self.pdResponser = "";
-      } else if(_self.queryFilter === "3") {
+      } else if (_self.queryFilter === "3") {
         _self.moduleId = "";
         _self.submitter = "";
       } else {
@@ -266,7 +310,7 @@ export default {
     },
 
     onTesting(e) {
-      let _self =  this;
+      let _self = this;
       if (e.added && e.added.element) {
         _self.changeReqState(e.added.element, 5);
       } else {
@@ -275,7 +319,7 @@ export default {
     },
 
     onCompleted(e) {
-      let _self =  this;
+      let _self = this;
       if (e.added && e.added.element) {
         _self.changeReqState(e.added.element, 6);
       } else {
@@ -283,52 +327,57 @@ export default {
       }
     },
 
-    confirmClose(element){
-      let _self =  this;
+    confirmClose(element) {
+      let _self = this;
       _self.$confirm("本需求已完成，是否确认关闭？", "需求关闭提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-      .then(() => {
-        _self.changeReqState(element, 0);
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+        .then(() => {
+          _self.changeReqState(element, 0);
+        })
     },
 
-    changeOnWay(reqId, callback){
-      let _self =  this;
+    changeOnWay(reqId, callback) {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/change/on_way",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          reqId: reqId,
-        }
-      })
-      .then(function(res) {
-        let changes = res.data;
-        _self.$nextTick(() => {
-          if (typeof callback == "function") {
-            callback(changes);
+          method: "post",
+          url: "/change/on_way",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            reqId: reqId,
           }
         })
-      })
+        .then(function (res) {
+          let changes = res.data;
+          _self.$nextTick(() => {
+            if (typeof callback == "function") {
+              callback(changes);
+            }
+          })
+        })
     },
 
     changeReqState(element, newStatus) {
-      let _self =  this;
+      let _self = this;
       _self.changeOnWay(element.id, (changeCount) => {
         if (changeCount > 0) {
           _self.$confirm("是否前往变更页面查看？", "需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {reqId: element.id}});
-          })
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  reqId: element.id
+                }
+              });
+            })
         } else {
           const special = element.cmCount > 0 && newStatus == 2;
           if (special && element.status == 3) {
@@ -345,45 +394,45 @@ export default {
             return;
           }
           _self.$axios.post("/req/status_update", {
-            id: element.id,
-            status: newStatus
-          })
-          .then(sres => {
-            if (sres.data < 1) {
-              _self.$message.warning("产品需求状态更新失败！");
-            } else {
-              _self.$message.success("产品需求状态更新成功！");
-              if (newStatus == 0) {
-                _self.$confirm("是否同步关闭所属开发任务？", "操作提示", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "info"
-                })
-                .then(() => {
-                  _self.reqCmsStatusSync(element.id, 0);
-                })
+              id: element.id,
+              status: newStatus
+            })
+            .then(sres => {
+              if (sres.data < 1) {
+                _self.$message.warning("产品需求状态更新失败！");
+              } else {
+                _self.$message.success("产品需求状态更新成功！");
+                if (newStatus == 0) {
+                  _self.$confirm("是否同步关闭所属开发任务？", "操作提示", {
+                      confirmButtonText: "确定",
+                      cancelButtonText: "取消",
+                      type: "info"
+                    })
+                    .then(() => {
+                      _self.reqCmsStatusSync(element.id, 0);
+                    })
+                }
               }
-            }
-            _self.releaseReqQuery();
-          })
+              _self.releaseReqQuery();
+            })
         }
       });
     },
 
-    reqCmsStatusSync(reqId, targetStatus){
-      let _self =  this;
+    reqCmsStatusSync(reqId, targetStatus) {
+      let _self = this;
       _self.$axios.post("/cms/req_cms_sync/" + reqId + "/" + targetStatus)
-      .then(function(res) {
-        if (res.data = 1) {
-          _self.$message.success("同步开发任务状态成功！");
-        } else {
-          _self.$message.warning("同步开发任务状态失败！");
-        }
-      })
+        .then(function (res) {
+          if (res.data = 1) {
+            _self.$message.success("同步开发任务状态成功！");
+          } else {
+            _self.$message.warning("同步开发任务状态失败！");
+          }
+        })
     },
 
-    memberQuery(){
-      let _self =  this;
+    memberQuery() {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.memberFull = result.usersFull;
         _self.userOptions = result.usersFull;
@@ -392,7 +441,7 @@ export default {
     },
 
     releaseQuery() {
-      let _self =  this;
+      let _self = this;
       _self.releases.splice(0, _self.releases.length);
       commonQuery.openRelQuery((result) => {
         _self.releases = result.releasesWithBranch;
@@ -410,33 +459,33 @@ export default {
     },
 
     moduleQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/module/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          isValid: "Y"
-        }
-      })
-      .then(function (res) {
-        let modules = eval(res.data.list);
-        _self.modules.splice(0, _self.modules.length);
-        for (var i = 0; i < modules.length; i++) {
-          if (modules[i].moduleId != 0) {
-            _self.modules.push({
-              label: modules[i].moduleName,
-              value: modules[i].moduleId
-            });
+          method: "post",
+          url: "/module/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            isValid: "Y"
           }
-        }
-      })
+        })
+        .then(function (res) {
+          let modules = eval(res.data.list);
+          _self.modules.splice(0, _self.modules.length);
+          for (var i = 0; i < modules.length; i++) {
+            if (modules[i].moduleId != 0) {
+              _self.modules.push({
+                label: modules[i].moduleName,
+                value: modules[i].moduleId
+              });
+            }
+          }
+        })
     },
 
     releaseReqQuery() {
-      let _self =  this;
+      let _self = this;
       _self.released.splice(0, _self.released.length);
       _self.splited.splice(0, _self.splited.length);
       _self.coding.splice(0, _self.coding.length);
@@ -444,43 +493,49 @@ export default {
       _self.completed.splice(0, _self.completed.length);
 
       _self.$axios.post("/req/rel_query/" + _self.relId + "/1/500")
-      .then(function(res) {
-        let json = eval(res.data.list);
-        if (json.length == 0) {
-          _self.$message.info("该版本尚未纳入任何需求！");
-          return;
-        }
+        .then(function (res) {
+          let json = eval(res.data.list);
+          if (json.length == 0) {
+            _self.$message.info("该版本尚未纳入任何需求！");
+            return;
+          }
 
-        let filterd = json;
-        if (!commonQuery.isNull(_self.moduleId)) {
-          filterd = json.filter(d => {return d.moduleId == _self.moduleId});
-        } else if (!commonQuery.isNull(_self.submitter)) {
-          filterd = json.filter(d => {return d.submitter == _self.submitter});
-        } else if (!commonQuery.isNull(_self.pdResponser)) {
-          filterd = json.filter(d => {return d.pdResponser == _self.pdResponser});
-        }
+          let filterd = json;
+          if (!commonQuery.isNull(_self.moduleId)) {
+            filterd = json.filter(d => {
+              return d.moduleId == _self.moduleId
+            });
+          } else if (!commonQuery.isNull(_self.submitter)) {
+            filterd = json.filter(d => {
+              return d.submitter == _self.submitter
+            });
+          } else if (!commonQuery.isNull(_self.pdResponser)) {
+            filterd = json.filter(d => {
+              return d.pdResponser == _self.pdResponser
+            });
+          }
 
-        filterd.forEach(item => {
-          _self.$set(item, "fixed", item.status == 0);
-          _self.$set(item, "label", "【" + item.proderName + "】" + item.id + " - " + item.summary);
+          filterd.forEach(item => {
+            _self.$set(item, "fixed", item.status == 0);
+            _self.$set(item, "label", "【" + item.proderName + "】" + item.id + " - " + item.summary);
 
-          if (item.status == 2) {
-            _self.released.push(item);
-          }
-          if (item.status == 3) {
-            _self.splited.push(item);
-          }
-          if (item.status == 4) {
-            _self.coding.push(item);
-          }
-          if (item.status == 5) {
-            _self.testing.push(item);
-          }
-          if (item.status ==  6 || item.status ==  0) {
-            _self.completed.push(item);
-          }
-        });
-      })
+            if (item.status == 2) {
+              _self.released.push(item);
+            }
+            if (item.status == 3) {
+              _self.splited.push(item);
+            }
+            if (item.status == 4) {
+              _self.coding.push(item);
+            }
+            if (item.status == 5) {
+              _self.testing.push(item);
+            }
+            if (item.status == 6 || item.status == 0) {
+              _self.completed.push(item);
+            }
+          });
+        })
     }
   }
 };
@@ -540,7 +595,7 @@ export default {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
 }
 
-.require-list + .require-list {
+.require-list+.require-list {
   margin-left: 1%;
 }
 
@@ -568,8 +623,8 @@ export default {
 }
 
 .cms-link {
-  color:#3AB4D7;
-  cursor:pointer;
+  color: #3AB4D7;
+  cursor: pointer;
 }
 
 .specified {
@@ -577,7 +632,7 @@ export default {
   color: #fff !important;
 }
 
-.drag-area div + div {
+.drag-area div+div {
   margin-top: 10px;
 }
 

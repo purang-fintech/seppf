@@ -7,7 +7,7 @@ import {
 // 全局请求参数加上当前用户ID、产品ID、角色ID
 axios.interceptors.request.use(
   config => {
-    let except = ['/user/query', '/user/query_p_r', '/role/p_r_query_user', '/product/query', '/product/update', '/product/delete', '/role/query', '/priv/query', '/base/query'];
+    let except = ['/user/query', '/user/query_p_r', '/role/p_r_query_user', '/product/query', '/product/update', '/product/delete',  '/priv/query', '/base/query'];
     if (except.indexOf(config.url) === -1) {
       config.params = {
         ...config.params,

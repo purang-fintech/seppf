@@ -1,6 +1,7 @@
 <template>
   <div id="fcostCharts" style="width: 99%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,11 +19,11 @@ export default {
   props: ["dfcosts"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let legendData = [];
     let fcostData = [];
     for (let i = 0; i < _self.dfcosts.length; i++) {
-      legendData.push(_self.dfcosts[i].fixCosts); 
+      legendData.push(_self.dfcosts[i].fixCosts);
       fcostData.push({
         value: _self.dfcosts[i].num,
         name: _self.dfcosts[i].fixCosts
@@ -50,26 +51,31 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "修复耗时",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: fcostData
-        }
-      ]
+      series: [{
+        name: "修复耗时",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: fcostData
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("fcostCharts");
 
     let dataCharts = echarts.init(charts, sepp);

@@ -26,7 +26,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import {
+  mapGetters,
+  mapActions
+} from "vuex";
 export default {
   name: "navigator",
 
@@ -125,12 +128,12 @@ export default {
       switch (theme) {
         case "tianpan":
         case "tianpan-compact":
-          return function(nodePathData, x, y, width, height) {
+          return function (nodePathData, x, y, width, height) {
             var r = width >> 1;
             nodePathData.push("M", x, y + r, "a", r, r, 0, 1, 1, 0, 0.01, "z");
           };
         default: {
-          return function(nodePathData, x, y, width, height) {
+          return function (nodePathData, x, y, width, height) {
             nodePathData.push(
               "M",
               x,
@@ -164,7 +167,7 @@ export default {
       var nodePathData = [];
       var connectionThumbData = [];
 
-      self.minder.getRoot().traverse(function(node) {
+      self.minder.getRoot().traverse(function (node) {
         var box = node.getLayoutBox();
         self.pathHandler(nodePathData, box.x, box.y, box.width, box.height);
         if (node.getConnection() && node.parent && node.parent.isExpanded()) {
@@ -241,19 +244,19 @@ export default {
 
       var dragging = false;
 
-      self.paper.on("mousedown", function(e) {
+      self.paper.on("mousedown", function (e) {
         dragging = true;
         moveView(e.getPosition("top"), 200);
         self.$previewNavigator.addClass("grab");
       });
 
-      self.paper.on("mousemove", function(e) {
+      self.paper.on("mousemove", function (e) {
         if (dragging) {
           moveView(e.getPosition("top"));
         }
       });
 
-      $(window).on("mouseup", function() {
+      $(window).on("mouseup", function () {
         dragging = false;
         self.$previewNavigator && self.$previewNavigator.removeClass("grab");
       });

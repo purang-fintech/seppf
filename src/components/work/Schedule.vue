@@ -9,28 +9,28 @@
 
     <el-form :inline="true" size="mini">
       <el-form-item label="计划开始日期">
-        <el-date-picker 
-          v-model="planBegin" 
-          type="daterange" 
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
-          end-placeholder="结束日期" 
+        <el-date-picker
+          v-model="planBegin"
+          type="daterange"
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :picker-options="pickOptions">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="计划结束日期" style="margin-left:10px">
-        <el-date-picker 
-          v-model="planEnd" 
-          type="daterange" 
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
-          end-placeholder="结束日期" 
+        <el-date-picker
+          v-model="planEnd"
+          type="daterange"
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :picker-options="pickOptions">
         </el-date-picker>
       </el-form-item>
@@ -57,12 +57,20 @@
 import GanttElastic from 'gantt-elastic';
 import GanttHeader from "gantt-elastic-header";
 import dayjs from "dayjs";
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 const dayfmt = "YYYY-MM-DD";
 import router from "@/router";
 
-function toRequest(id){
-  router.push({ name: "request", params: { reqId: id }});
+function toRequest(id) {
+  router.push({
+    name: "request",
+    params: {
+      reqId: id
+    }
+  });
 }
 
 export default {
@@ -120,7 +128,7 @@ export default {
         taskMapping: {
           progress: "percent"
         },
-        times: {// 时间刻度调整内容
+        times: { // 时间刻度调整内容
           timeScale: 60 * 1000,
           timeZoom: 20,
           timePerPixel: 0,
@@ -133,7 +141,7 @@ export default {
           stepDuration: 'day', // hour, month
           steps: []
         },
-        scope: {// 时间范围调整内容
+        scope: { // 时间范围调整内容
           before: 15,
           after: 15
         },
@@ -143,7 +151,7 @@ export default {
           label: "",
           html: false
         },
-        row: {// 行高调整内容
+        row: { // 行高调整内容
           height: 25
         },
         calendar: {
@@ -155,7 +163,11 @@ export default {
             height: 20,
             display: true,
             widths: [],
-            maxWidths: { short: 0, medium: 0, long: 0 },
+            maxWidths: {
+              short: 0,
+              medium: 0,
+              long: 0
+            },
             format: {
               short(date) {
                 return dayjs(date)
@@ -187,8 +199,7 @@ export default {
           expander: {
             straight: false
           },
-          columns: [
-            {
+          columns: [{
               id: 1,
               label: "需求任务",
               value: "label",
@@ -196,7 +207,10 @@ export default {
               html: true,
               expander: true,
               events: {
-                click({ data, column }) {
+                click({
+                  data,
+                  column
+                }) {
                   if (data.type == "project" && task.user != "/") {
                     toRequest(data.id);
                   }
@@ -221,7 +235,7 @@ export default {
             },
             {
               id: 3,
-              label: "开始日期", 
+              label: "开始日期",
               value: task => dayjs(task.start).format(dayfmt),
               width: 80,
               style: {
@@ -340,7 +354,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     let dayS = new Date();
     dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 7);
     _self.planEnd.push(dateFormat(dayS, _self.datefmt));
@@ -356,12 +370,17 @@ export default {
   },
 
   methods: {
-    toRequest(id){
-      this.$router.push({ name: "request", params: { reqId: id }});
+    toRequest(id) {
+      this.$router.push({
+        name: "request",
+        params: {
+          reqId: id
+        }
+      });
     },
 
     ganttMissionQuery(onlyDelayed) {
-      let _self =  this;
+      let _self = this;
       if (!_self.planBegin || _self.planBegin.length < 2) {
         _self.$message.warning("查询开始日期不能为空！");
         return;
@@ -388,16 +407,16 @@ export default {
             planEndEnd: planEndEnd
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let result = eval(res.data);
           if (result.length == 0) {
             _self.$message.warning("查询无记录，请确认！");
             return;
-          } 
+          }
           if (result.length > 500) {
             _self.$message.warning("结果超过500条，请缩小时间范围！");
             return;
-          } 
+          }
           let missions = _self.resortData(result, onlyDelayed);
           if (missions.length > 0) {
             _self.tasks = missions;
@@ -409,15 +428,18 @@ export default {
             return;
           }
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("查询任务信息时发生程序错误！");
           console.log(response);
         });
     },
 
     resortData(data, onlyDelayed) {
-      let _self =  this;
-      let type_1 = [], type_2 = [], type_3 = [], type_4 = [];
+      let _self = this;
+      let type_1 = [],
+        type_2 = [],
+        type_3 = [],
+        type_4 = [];
       let reqs = data.filter(item => {
         return item.missionType == "产品需求";
       });
@@ -445,7 +467,7 @@ export default {
             id: parseInt(cmsParentId),
             label: "需求所属开发任务",
             user: "/",
-            start: new Date(reqCms[0].missionBegin).getTime() - 8 * 60 * 60 * 1000,   // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
+            start: new Date(reqCms[0].missionBegin).getTime() - 8 * 60 * 60 * 1000, // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
             type: "project",
             percent: (reqCmsCompleted * 100 / reqCmsAll).toFixed(2),
             duration: new Date(dayjs(reqCmsEs[reqCmsAll - 1].missionEnd).format(dayfmt)).getTime() - new Date(dayjs(reqCms[0].missionBegin).format(dayfmt)).getTime() + 24 * 60 * 60 * 1000,
@@ -459,7 +481,7 @@ export default {
               id: parseInt(d.id + '' + cmsParentId),
               label: d.id + ' - ' + d.missionTitle,
               user: d.missionResponser,
-              start: new Date(d.missionBegin).getTime() - 8 * 60 * 60 * 1000,       // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
+              start: new Date(d.missionBegin).getTime() - 8 * 60 * 60 * 1000, // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
               type: 'task',
               percent: d.statusId == 0 || d.statusId > 5 ? '100.00' : '0.00',
               duration: new Date(d.missionDuration).getTime(),
@@ -493,7 +515,7 @@ export default {
             id: parseInt(tmsParentId),
             label: "需求所属测试任务",
             user: "/",
-            start: new Date(reqTms[0].missionBegin).getTime() - 8 * 60 * 60 * 1000,      // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
+            start: new Date(reqTms[0].missionBegin).getTime() - 8 * 60 * 60 * 1000, // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
             type: "project",
             percent: (reqTmsCompleted * 100 / reqTmsAll).toFixed(2),
             duration: new Date(dayjs(reqTmsEs[reqTmsAll - 1].missionEnd).format(dayfmt)).getTime() - new Date(dayjs(reqTms[0].missionBegin).format(dayfmt)).getTime() + 24 * 60 * 60 * 1000,
@@ -507,7 +529,7 @@ export default {
               id: parseInt(d.id + '' + tmsParentId),
               label: d.missionTitle,
               user: d.missionResponser,
-              start: new Date(d.missionBegin).getTime() - 8 * 60 * 60 * 1000,       // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
+              start: new Date(d.missionBegin).getTime() - 8 * 60 * 60 * 1000, // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
               type: 'task',
               percent: d.statusId == 0 || d.statusId > 2 ? '100.00' : '0.00',
               duration: new Date(d.missionDuration).getTime(),
@@ -525,7 +547,7 @@ export default {
             id: item.id,
             label: "<span class='table-content-tips'>" + item.id + ' - ' + item.missionTitle + "</span>",
             user: item.missionResponser,
-            start: new Date(allMissions[0].missionBegin).getTime() - 8 * 60 * 60 * 1000,       // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
+            start: new Date(allMissions[0].missionBegin).getTime() - 8 * 60 * 60 * 1000, // YYYY-MM-DD默认从8点开始，而YYYY/MM/DD则是从0点开始
             type: 'project',
             percent: totalMission == 0 ? 0 : ((reqTmsCompleted + reqCmsCompleted) * 100 / totalMission).toFixed(2),
             duration: new Date(item.missionDuration).getTime(),
@@ -539,11 +561,11 @@ export default {
 
     arrDateBeginort(arr, keyName) {
       let len = arr.length;
-      for(let i = 0; i < len; i++){
-        for(let j = 0; j < len - 1 - i; j++){
-          if(dayjs(arr[j][keyName]).format(dayfmt) > dayjs(arr[j+1][keyName]).format(dayfmt)) {//相邻元素两两对比
-            let temp = arr[j+1];//元素交换
-            arr[j+1] = arr[j];
+      for (let i = 0; i < len; i++) {
+        for (let j = 0; j < len - 1 - i; j++) {
+          if (dayjs(arr[j][keyName]).format(dayfmt) > dayjs(arr[j + 1][keyName]).format(dayfmt)) { //相邻元素两两对比
+            let temp = arr[j + 1]; //元素交换
+            arr[j + 1] = arr[j];
             arr[j] = temp;
           }
         }
@@ -623,9 +645,7 @@ export default {
   background-color: #3AB4D7 !important;
 }
 
-.schedule-info
-  .vue-switcher-theme--default.vue-switcher-color--default
-  div:after {
+.schedule-info .vue-switcher-theme--default.vue-switcher-color--default div:after {
   background-color: #fff !important;
   border: 1px solid gray !important;
 }

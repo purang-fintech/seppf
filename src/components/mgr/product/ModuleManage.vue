@@ -21,7 +21,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="modform" size="small" :inline="true" :rules="modformRules" ref="ruledForm" label-width="110px" class="module-form">
+      <el-form
+        :model="modform"
+        size="small"
+        :inline="true"
+        :rules="modformRules"
+        ref="ruledForm"
+        label-width="110px"
+        class="module-form">
         <el-form-item label="模块名称" required prop="moduleName">
           <el-input v-model="modform.moduleName" placeholder="模块名称" clearable></el-input>
         </el-form-item>
@@ -31,16 +38,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="产品负责人" prop="pdResponser" required>
-          <el-select v-model="modform.pdResponser" placeholder="请选择" filterable clearable class="config-short" :filter-method="filterUsers1" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions1"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="modform.pdResponser"
+            placeholder="请选择"
+            filterable
+            clearable
+            class="config-short"
+            :filter-method="filterUsers1"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions1" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -48,16 +55,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="开发负责人" prop="devResponser" required>
-          <el-select v-model="modform.devResponser" placeholder="请选择" filterable clearable class="config-short" :filter-method="filterUsers2" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions2"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="modform.devResponser"
+            placeholder="请选择"
+            filterable
+            clearable
+            class="config-short"
+            :filter-method="filterUsers2"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions2" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -65,16 +72,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="测试负责人" prop="testResponser" required>
-          <el-select v-model="modform.testResponser" placeholder="请选择" filterable clearable class="config-short" :filter-method="filterUsers3" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions3"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="modform.testResponser"
+            placeholder="请选择"
+            filterable
+            clearable
+            class="config-short"
+            :filter-method="filterUsers3"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions3" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -83,11 +90,23 @@
         </el-form-item>
         <br>
         <el-form-item label="模块描述" prop="moduleDesc">
-          <el-input v-model="modform.moduleDesc" class="summary" type="textarea" :rows="4" :maxlength="2000" show-word-limit></el-input>
+          <el-input
+            v-model="modform.moduleDesc"
+            class="summary"
+            type="textarea"
+            :rows="4"
+            :maxlength="2000"
+            show-word-limit></el-input>
         </el-form-item>
         <br>
         <el-form-item label="模块代码包" prop="codePackage">
-          <el-input v-model="modform.codePackage" class="summary" type="textarea" :rows="6" :maxlength="2000" show-word-limit></el-input>
+          <el-input
+            v-model="modform.codePackage"
+            class="summary"
+            type="textarea"
+            :rows="6"
+            :maxlength="2000"
+            show-word-limit></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -109,7 +128,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="modform" size="small" :inline="true" :rules="modformRules" ref="ruledFormMod" label-width="110px" class="module-form">
+      <el-form
+        :model="modform"
+        size="small"
+        :inline="true"
+        :rules="modformRules"
+        ref="ruledFormMod"
+        label-width="110px"
+        class="module-form">
         <el-form-item label="模块名称" required prop="moduleName">
           <el-input v-model="modform.moduleName" placeholder="模块名称" clearable></el-input>
         </el-form-item>
@@ -119,16 +145,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="产品负责人" prop="pdResponser" required>
-          <el-select v-model="modform.pdResponser" placeholder="请选择" filterable clearable class="config-short" :filter-method="filterUsers4" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions4"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="modform.pdResponser"
+            placeholder="请选择"
+            filterable
+            clearable
+            class="config-short"
+            :filter-method="filterUsers4"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions4" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -136,16 +162,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="开发负责人" prop="devResponser" required>
-          <el-select v-model="modform.devResponser" placeholder="请选择" filterable clearable class="config-short" :filter-method="filterUsers5" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions5"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="modform.devResponser"
+            placeholder="请选择"
+            filterable
+            clearable
+            class="config-short"
+            :filter-method="filterUsers5"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions5" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -153,16 +179,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="测试负责人" prop="testResponser" required>
-          <el-select v-model="modform.testResponser" placeholder="请选择" filterable clearable class="config-short" :filter-method="filterUsers6" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions6"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="modform.testResponser"
+            placeholder="请选择"
+            filterable
+            clearable
+            class="config-short"
+            :filter-method="filterUsers6"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions6" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -171,11 +197,23 @@
         </el-form-item>
         <br>
         <el-form-item label="模块描述" prop="moduleDesc">
-          <el-input v-model="modform.moduleDesc" class="summary" type="textarea" :rows="4" :maxlength="2000" show-word-limit></el-input>
+          <el-input
+            v-model="modform.moduleDesc"
+            class="summary"
+            type="textarea"
+            :rows="4"
+            :maxlength="2000"
+            show-word-limit></el-input>
         </el-form-item>
         <br>
         <el-form-item label="模块代码包" prop="codePackage">
-          <el-input v-model="modform.codePackage" class="summary" type="textarea" :rows="6" :maxlength="2000" show-word-limit></el-input>
+          <el-input
+            v-model="modform.codePackage"
+            class="summary"
+            type="textarea"
+            :rows="6"
+            :maxlength="2000"
+            show-word-limit></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -185,7 +223,13 @@
     </el-dialog>
 
     <div class="module-main">
-      <el-form ref="form" :model="form" :inline="true" size="mini" label-width="110px" @keydown.native.enter="moduleQuery()">
+      <el-form
+        ref="form"
+        :model="form"
+        :inline="true"
+        size="mini"
+        label-width="110px"
+        @keydown.native.enter="moduleQuery()">
         <el-form-item label="模块名称" clearable>
           <el-input v-model="form.moduleName" placeholder="至少3个字，右模糊" clearable></el-input>
         </el-form-item>
@@ -200,14 +244,27 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="tableData" class="module-table" :max-height="tableHeight" size="mini" stripe :border="showBorder" ref="moduleTable"
-        v-loading="queryLoading" 
-        element-loading-text="查询中..." 
-        element-loading-spinner="el-icon-loading" 
+      <el-table
+        :data="tableData"
+        class="module-table"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        ref="moduleTable"
+        v-loading="queryLoading"
+        element-loading-text="查询中..."
+        element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column type="index" width="50" label="序号" align="center">
         </el-table-column>
-        <el-table-column prop="productCode" label="产品编号" width="120" align="center" sortable show-overflow-tooltip>
+        <el-table-column
+          prop="productCode"
+          label="产品编号"
+          width="120"
+          align="center"
+          sortable
+          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="moduleName" label="模块名称" width="120" align="center" show-overflow-tooltip>
         </el-table-column>
@@ -237,17 +294,18 @@
         </el-table-column>
       </el-table>
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
-        <el-button type="primary" 
-          class="el-icon-download export-btn" 
+        <el-button
+          type="primary"
+          class="el-icon-download export-btn"
           size="mini"
           :disabled="tableData.length == 0"
           plain
@@ -264,7 +322,7 @@
 import TableExport from '@/util/TableExport.js'
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       modalClose: sessionStorage.dialogAutoClose == 1,
@@ -275,7 +333,7 @@ export default {
       queryLoading: false,
       tableHeight: bodyAviHeightNTab - 30 - 45,
       products: [],
-      memberFull : [],
+      memberFull: [],
       userOptions1: [],
       userOptions2: [],
       userOptions3: [],
@@ -308,24 +366,44 @@ export default {
         }
       },
       modformRules: {
-        "pdResponser": [{ required: true, message: "请选择产品负责人", trigger: "change" }],
-        "devResponser": [{ required: true, message: "请选择开发负责人", trigger: "change" }],
-        "testResponser": [{ required: true, message: "请选择测试负责人", trigger: "change" }],
-        moduleName: [
-          { required: true, message: "请输入模块名称", trigger: "blur" },
-          { min: 2, max: 20, message: "长度在 2 到 20 个字", trigger: "blur" }
+        "pdResponser": [{
+          required: true,
+          message: "请选择产品负责人",
+          trigger: "change"
+        }],
+        "devResponser": [{
+          required: true,
+          message: "请选择开发负责人",
+          trigger: "change"
+        }],
+        "testResponser": [{
+          required: true,
+          message: "请选择测试负责人",
+          trigger: "change"
+        }],
+        moduleName: [{
+            required: true,
+            message: "请输入模块名称",
+            trigger: "blur"
+          },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字",
+            trigger: "blur"
+          }
         ]
       }
     };
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     eval(localStorage.getItem("products")).forEach(e => {
       _self.products.push({
-          value: e.productId,
-          code: e.productCode,
-          label: e.productCode + " - " + e.productName
+        value: e.productId,
+        code: e.productCode,
+        label: e.productCode + " - " + e.productName
       });
     });
     _self.memberQuery();
@@ -333,14 +411,14 @@ export default {
   },
 
   watch: {
-    showDialog: function() {
+    showDialog: function () {
       if (this.showDialog) {
         if (this.$refs.ruledForm) {
           this.$refs.ruledForm.clearValidate();
         }
       }
     },
-    
+
     form: {
       handler() {
         this.currentPage = 1;
@@ -359,8 +437,8 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions1 = _self.memberFull;
       _self.userOptions2 = _self.memberFull;
       _self.userOptions3 = _self.memberFull;
@@ -370,40 +448,40 @@ export default {
     },
 
     filterUsers1(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions1 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers2(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions2 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers3(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions3 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers4(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions4 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers5(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions5 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers6(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions6 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
-    memberQuery(callback){
-      let _self =  this;
+    memberQuery(callback) {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.user = result.users;
-        _self.memberFull  = result.usersFull;
+        _self.memberFull = result.usersFull;
         _self.userOptions1 = result.usersFull;
         _self.userOptions2 = result.usersFull;
         _self.userOptions3 = result.usersFull;
@@ -449,7 +527,7 @@ export default {
     },
 
     checkModuleCreate(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -461,7 +539,7 @@ export default {
     },
 
     checkSaveModuleEdit(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -473,30 +551,30 @@ export default {
     },
 
     moduleCreate() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/module/create", {
-        productId: sessionStorage.productId,
-        moduleName: _self.modform.moduleName,
-        pdResponser: _self.modform.pdResponser,
-        devResponser: _self.modform.devResponser,
-        testResponser: _self.modform.testResponser,
-        moduleDesc: _self.modform.moduleDesc,
-        codePackage: _self.modform.codePackage
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.showDialog = false;
-          _self.$message.success("保存成功！");
-          _self.moduleQuery();
-        } else {
-          _self.$notify.error("保存失败");
-          console.log(response);
-        }
-      })
+          productId: sessionStorage.productId,
+          moduleName: _self.modform.moduleName,
+          pdResponser: _self.modform.pdResponser,
+          devResponser: _self.modform.devResponser,
+          testResponser: _self.modform.testResponser,
+          moduleDesc: _self.modform.moduleDesc,
+          codePackage: _self.modform.codePackage
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.showDialog = false;
+            _self.$message.success("保存成功！");
+            _self.moduleQuery();
+          } else {
+            _self.$notify.error("保存失败");
+            console.log(response);
+          }
+        })
     },
 
     moduleQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       if (_self.form.moduleName != "" && _self.form.moduleName.length < 3) {
         _self.$message.info("至少输入3个字或者不输入！");
@@ -504,26 +582,26 @@ export default {
         return;
       }
       _self.$axios({
-        method: "post",
-        url: "/module/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          moduleName: _self.form.moduleName,
-          isValid: _self.form.isValid.selected,
-          pageNum: _self.currentPage,
-          pageSize: _self.pageSize
-        }
-      })
-      .then(function(res) {
-        _self.tableData = eval(res.data.list);
-        _self.pageInfo = res.data;
-        setTimeout(() => {
-          _self.queryChanged = false;
-          _self.queryLoading = false;
-        }, 200);
-      })
+          method: "post",
+          url: "/module/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            moduleName: _self.form.moduleName,
+            isValid: _self.form.isValid.selected,
+            pageNum: _self.currentPage,
+            pageSize: _self.pageSize
+          }
+        })
+        .then(function (res) {
+          _self.tableData = eval(res.data.list);
+          _self.pageInfo = res.data;
+          setTimeout(() => {
+            _self.queryChanged = false;
+            _self.queryLoading = false;
+          }, 200);
+        })
     },
 
     editModule(data) {
@@ -542,53 +620,53 @@ export default {
     },
 
     saveModuleEdit() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/module/update", {
-        productId: sessionStorage.productId,
-        pdResponser: _self.modform.pdResponser,
-        devResponser: _self.modform.devResponser,
-        testResponser: _self.modform.testResponser,
-        moduleId: _self.currentModuleId,
-        moduleName: _self.modform.moduleName,
-        isValid: _self.modform.isValid.selected,
-        moduleDesc: _self.modform.moduleDesc,
-        codePackage: _self.modform.codePackage
-      })
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.showDialogMod = false;
-          _self.$message.success("修改成功！");
-          _self.moduleQuery();
-        } else {
-          _self.$notify.error("修改失败");
-          console.log(response);
-        }
-      })
+          productId: sessionStorage.productId,
+          pdResponser: _self.modform.pdResponser,
+          devResponser: _self.modform.devResponser,
+          testResponser: _self.modform.testResponser,
+          moduleId: _self.currentModuleId,
+          moduleName: _self.modform.moduleName,
+          isValid: _self.modform.isValid.selected,
+          moduleDesc: _self.modform.moduleDesc,
+          codePackage: _self.modform.codePackage
+        })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.showDialogMod = false;
+            _self.$message.success("修改成功！");
+            _self.moduleQuery();
+          } else {
+            _self.$notify.error("修改失败");
+            console.log(response);
+          }
+        })
     },
 
     deleteModule(data) {
       this.$confirm("确定要删除当前记录吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "error"
-      })
-      .then(() => {
-        this.saveModuleDelete(data.moduleId);
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        })
+        .then(() => {
+          this.saveModuleDelete(data.moduleId);
+        })
     },
 
     saveModuleDelete(moduleId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/module/delete/" + moduleId)
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.$message.success("删除成功！");
-          _self.moduleQuery();
-        } else {
-          _self.$notify.error("删除失败");
-          console.log(response);
-        }
-      })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.$message.success("删除成功！");
+            _self.moduleQuery();
+          } else {
+            _self.$notify.error("删除失败");
+            console.log(response);
+          }
+        })
     }
   }
 };

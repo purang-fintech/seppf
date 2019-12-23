@@ -26,7 +26,13 @@
           <template slot="title">
             <i class="el-icon-info"></i> 构建基本信息
           </template>
-          <el-form :model="newform" :rules="formRules" ref="ruledForm" size="mini" :inline="true" label-width="100px">
+          <el-form
+            :model="newform"
+            :rules="formRules"
+            ref="ruledForm"
+            size="mini"
+            :inline="true"
+            label-width="100px">
             <el-form-item label="构建版本" prop="relId">
               <el-select v-model="newform.relId" @change="relReqQuery(newform.relId)" style="width:180px" clearable>
                 <el-option v-for="opt in newform.releases" :value="opt.value" :key="opt.value" :label="opt.label + '[' + opt.rdate + ']'"></el-option>
@@ -53,18 +59,27 @@
             <i class="iconfont icon-computer"></i> 更新文件
           </template>
           <el-form :model="newform" :rules="formRules" ref="ruledForm1" class="modules-ruled-form">
-            <el-button v-no-more-click v-show="newform.buildFiles.length ==0" type="primary" sizi="mini" icon="el-icon-plus" @click="addRow()"
-                       style="width:100%">新增模块
+            <el-button
+              v-no-more-click
+              v-show="newform.buildFiles.length ==0"
+              type="primary"
+              sizi="mini"
+              icon="el-icon-plus"
+              @click="addRow()"
+              style="width:100%">新增模块
             </el-button>
-            <el-table v-show="newform.buildFiles.length !=0" :data="newform.buildFiles" :rules="formRules" size="mini" :show-header="true"
-                      :highlight-current-row="false">
+            <el-table
+              v-show="newform.buildFiles.length !=0"
+              :data="newform.buildFiles"
+              :rules="formRules"
+              size="mini"
+              :show-header="true"
+              :highlight-current-row="false">
               <el-table-column label="组件实例" min-width="15%" align="center">
                 <template slot-scope="scope">
                   <el-form-item :prop="'buildFiles[' + scope.$index + '].instance'" :rules='formRules.instance'>
-                    <el-select v-model="scope.row.instance" placeholder="组件实例" @change="getParamKeyOfInstance(scope.row.instance)"
-                               :disabled="scope.row.instance != ''">
-                      <el-option v-for="instance in unSelectedInstance" :value="instance.value" :key="instance.value"
-                                 :label="instance.label"></el-option>
+                    <el-select v-model="scope.row.instance" placeholder="组件实例" @change="getParamKeyOfInstance(scope.row.instance)" :disabled="scope.row.instance != ''">
+                      <el-option v-for="instance in unSelectedInstance" :value="instance.value" :key="instance.value" :label="instance.label"></el-option>
                     </el-select>
                   </el-form-item>
                 </template>
@@ -81,7 +96,13 @@
               <el-table-column label="文件列表" header-align="center">
                 <template slot-scope="scope">
                   <el-form-item :prop="'buildFiles[' + scope.$index + '].paramValue'" :rules='formRules.paramValue'>
-                    <el-input v-model="scope.row.paramValue" placeholder="发布文件内容，按空格或者回车分割" type="textarea" resize="none" :rows="2" class="build-attach-upload">
+                    <el-input
+                      v-model="scope.row.paramValue"
+                      placeholder="发布文件内容，按空格或者回车分割"
+                      type="textarea"
+                      resize="none"
+                      :rows="2"
+                      class="build-attach-upload">
                     </el-input>
                   </el-form-item>
                 </template>
@@ -102,7 +123,13 @@
           </template>
           <el-form :model="newform" ref="newform" size="mini" :inline="false" label-width="0">
             <el-form-item prop="others">
-              <el-input v-model="newform.others" class="build-attach-upload" type="textarea" :rows="5" show-word-limit :maxlength="2000"></el-input>
+              <el-input
+                v-model="newform.others"
+                class="build-attach-upload"
+                type="textarea"
+                :rows="5"
+                show-word-limit
+                :maxlength="2000"></el-input>
             </el-form-item>
           </el-form>
         </el-collapse-item>
@@ -159,7 +186,13 @@
           <template slot="title">
             <i class="el-icon-info"></i> 构建明细信息
           </template>
-          <el-form :model="mform" :rules="mformRules" ref="uruledmform" size="mini" :inline="true" label-width="80px">
+          <el-form
+            :model="mform"
+            :rules="mformRules"
+            ref="uruledmform"
+            size="mini"
+            :inline="true"
+            label-width="80px">
             <el-form-item label="构建版本" prop="relId" required>
               <el-select v-model="mform.relId" disabled style="width:180px">
                 <el-option v-for="opt in releases" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -181,17 +214,21 @@
             <i class="iconfont icon-computer"></i> 更新文件
           </template>
           <el-form :model="mform" :rules="mformRules" ref="uruledmform1" class="modules-ruled-form">
-            <el-button v-no-more-click v-show="mform.buildFiles.length ==0" type="primary" sizi="mini" icon="el-icon-plus"
-                       @click="updateAddRow(mform.Id)" style="width:100%">新增模块
+            <el-button
+              v-no-more-click
+              v-show="mform.buildFiles.length ==0"
+              type="primary"
+              sizi="mini"
+              icon="el-icon-plus"
+              @click="updateAddRow(mform.Id)"
+              style="width:100%">新增模块
             </el-button>
             <el-table v-show="mform.buildFiles.length !=0" :data="mform.buildFiles" size="mini" :show-header="true">
               <el-table-column label="组件实例" min-width="15%" align="center">
                 <template slot-scope="scope">
                   <el-form-item :prop="'buildFiles[' + scope.$index + '].instance'" :rules='formRules.instance'>
-                    <el-select v-model="scope.row.instance" clearable placeholder="实例名" @change="modParamKeyOfInstance(scope.row.instance)"
-                               :disabled="scope.row.instance != ''">
-                      <el-option v-for="instance in modUnSelectedInstance" :value="instance.value" :key="instance.value"
-                                 :label="instance.label"></el-option>
+                    <el-select v-model="scope.row.instance" clearable placeholder="实例名" @change="modParamKeyOfInstance(scope.row.instance)" :disabled="scope.row.instance != ''">
+                      <el-option v-for="instance in modUnSelectedInstance" :value="instance.value" :key="instance.value" :label="instance.label"></el-option>
                     </el-select>
                   </el-form-item>
                 </template>
@@ -228,7 +265,13 @@
           </template>
           <el-form :model="mform" size="mini" :inline="false" label-width="0">
             <el-form-item prop="others">
-              <el-input v-model="mform.others" type="textarea" :rows="5" class="build-attach-upload" :maxlength="2000" show-word-limit></el-input>
+              <el-input
+                v-model="mform.others"
+                type="textarea"
+                :rows="5"
+                class="build-attach-upload"
+                :maxlength="2000"
+                show-word-limit></el-input>
             </el-form-item>
           </el-form>
         </el-collapse-item>
@@ -291,7 +334,7 @@
               <el-input v-model="buildDetail.description" size="mini" style="width:775px" disabled></el-input>
             </el-form-item>
             <el-form-item label="产品需求">
-              <el-input  style="width:775px" v-model="buildDetail.reqId + ' - ' + buildDetail.reqSummary" size="mini" disabled></el-input>
+              <el-input style="width:775px" v-model="buildDetail.reqId + ' - ' + buildDetail.reqSummary" size="mini" disabled></el-input>
             </el-form-item>
             <br>
             <el-form-item label="需求提交时间">
@@ -345,8 +388,14 @@
             </el-table-column>
             <el-table-column label="文件内容" width="700px" align="center">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.paramValue" type="textarea" :rows="2" class="build-attach-upload" :maxlength="2000" show-word-limit
-                          readonly></el-input>
+                <el-input
+                  v-model="scope.row.paramValue"
+                  type="textarea"
+                  :rows="2"
+                  class="build-attach-upload"
+                  :maxlength="2000"
+                  show-word-limit
+                  readonly></el-input>
               </template>
             </el-table-column>
           </el-table>
@@ -422,15 +471,8 @@
         </el-form-item>
         <el-form-item label="发布提交人">
           <el-select v-model="buildForm.submitter" clearable filterable :filter-method="filterUsers" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+            <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -474,9 +516,21 @@
         element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column prop="id" label="构建编号" align="center" width="100" sortable>
         </el-table-column>
-        <el-table-column prop="relCode" label="版本号" align="center" width="120" sortable show-overflow-tooltip>
+        <el-table-column
+          prop="relCode"
+          label="版本号"
+          align="center"
+          width="120"
+          sortable
+          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="id" label="产品需求" header-align="center" min-width="30%" sortable show-overflow-tooltip>
+        <el-table-column
+          prop="id"
+          label="产品需求"
+          header-align="center"
+          min-width="30%"
+          sortable
+          show-overflow-tooltip>
           <template slot-scope="scope">
             <span class="breq-sum-tips" @click.stop="toRequest(scope.row.reqId)">{{scope.row.reqId}} - {{scope.row.reqSummary}}</span>
           </template>
@@ -493,7 +547,7 @@
         <el-table-column width="120" align="center" label="操作">
           <template slot-scope="scope">
             <el-button v-no-more-click type="warning" size="mini" @click.stop="editBuildInfo(scope.row)" :disabled="!scope.row.editAble">编辑</el-button>
-            <el-button v-no-more-click type="success" size="mini"@click="routeToDeploy(scope.row)" :disabled="!scope.row.buildAble">构建</el-button>
+            <el-button v-no-more-click type="success" size="mini" @click="routeToDeploy(scope.row)" :disabled="!scope.row.buildAble">构建</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -507,7 +561,8 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
-        <el-button type="primary"
+        <el-button
+          type="primary"
           class="el-icon-download export-btn"
           size="mini"
           :disabled="tableData.length == 0"
@@ -522,240 +577,293 @@
 </template>
 
 <script>
-  import commonQuery from "@/components/util/CommonQuery.vue";
-  import {dateFormat, pickOptions} from "@/util/date.js";
-  import TableExport from '@/util/TableExport.js'
-  export default {
-    data: function () {
-      return {
-        noteIdsSet: new Set(),
-        timer: null,
-        noteIds: [],
-        showBorder: sessionStorage.tableShowBorder == 1,
-        modalClose: sessionStorage.dialogAutoClose == 1,
-        newActive: "info",
-        pageInfo: {},
-        maximize: false,
-        maximize1: false,
-        maximize2: false,
-        queryLoading: false,
-        subLoading: false,
-        currentRelNote: {},
-        currentNoteBuild: {},
-        showDialog: false,
-        releases: [],
-        reqs: [],
-        expandKeys: [],
-        showDetail: false,
-        buildStatus: [],
-        fillUpActive: false,
-        buttonWidth: 0,
-        buttonHeight: 0,
-        seen: false,
-        copy: "",
-        buildResults: [],
-        envTypes: [],
-        responser: "",
-        tableData: [],
-        showDialogMod: false,
-        timefmt: defaultTimeFormat,
-        datefmt: defaultDateFormat,
-        activeName: "info",
-        activeNameMod: "info",
-        buildDetail: {
-          ip: "",
-        },
-        filesIsFilled: false,
-        othersIsFilled: false,
-        attachmentIsFilled: false,
-        currentReqDetail: {
-          attachs: [],
-          data: {}
-        },
-        currentBuildDetail: {},
-        url: {},
-        tableHeight: bodyAviHeightNTab - 70 - 45,
-        members: [],
-        memberFull: [],
-        userOptions: [],
-        reqStatuses: [],
-        buildForm: {
-          reqId: "",
-          relId: "",
-          hideClosed: true,
-          submitter: "",
-          status: [1, 2],
-          reqStatus: [3, 4, 5, 6],
-          files: "",
-          configs: "",
-          others: "",
-          attachment: ""
-        },
-        existsReqs: [],
-        form: {
-          reqId: "",
-          submitter: "",
-          relId: "",
-          status: "",
-          creatDate: "",
-          summory: ""
-        },
-        currentPage: 1,
-        pageSize: parseInt(sessionStorage.tablePageSize) || 10,
-        queryChanged: false,
-        mform: {
-          id: "",
-          relId: "",
-          reqId: "",
-          id: "",
-          status: "",
-          buildFiles: [],
-          configs: "",
-          others: "",
-          attachment: "",
-          description: "",
-          fileList: [],
-        },
-
-        newform: {
-          reqId: "",
-          relId: "",
-          id: "",
-          releases: [],
-          files: "",
-          others: "",
-          attachment: "",
-          description: "",
-          fileList: [],
-          buildFiles: []
-        },
-
-        FileInstances: [],
-        modFileInstances: [],
-        restoredFileInstances: [],
-
-        paramKeys: [],
-        formRules: {
-          relId: [{required: true, message: '构建版本不能为空，请选择构建版本', trigger: 'change'}],
-          reqId: [{required: true, message: '产品需求号不能为空，请选择产品需求号', trigger: 'change'}],
-          description:
-            [{required: true, message: '构建描述不能为空', trigger: 'blur'},
-              {min: 5, max: 50, message: '长度在 5 到 50 个字', trigger: 'blur'}],
-          instance: [{required: true, message: '文件实例不能为空，请选择文件实例', trigger: 'change'}],
-          paramKey: [{required: false, message: '文件类型不能为空，请选择文件类型', trigger: 'change'}],
-          paramValue: [{required: true, message: '文件内容不能为空，填写文件或移除此行', trigger: 'blur'}]
-        },
-        mformRules: {
-          description:
-            [{required: true, message: '构建描述不能为空', trigger: 'blur'},
-              {min: 5, max: 50, message: '长度在 5 到 50 个字', trigger: 'blur'}],
-          instance: [{required: true, message: '文件实例不能为空，请选择文件实例', trigger: 'change'}],
-          paramKey: [{required: false, message: '文件类型不能为空，请选择文件类型', trigger: 'change'}],
-          paramValue: [{required: true, message: '文件内容不能为空，填写文件或移除此行', trigger: 'blur'}]
-        }
-      };
-    },
-
-    created: function () {
-      let _self =  this;
-
-      _self.buildStatus.splice(0, _self.buildStatus.length);
-      let releaseNoteStatus = localStorage.getItem("releaseNoteStatus");
-      eval(releaseNoteStatus).forEach(item => {
-        _self.buildStatus.push({
-          value: item.statusId,
-          label: item.statusName
-        });
-      });
-
-      _self.reqStatuses.splice(0, _self.reqStatuses.length);
-      let requirementStatus = localStorage.getItem("requirementStatus");
-      eval(requirementStatus).forEach(item => {
-        _self.reqStatuses.push({
-          value: item.statusId,
-          label: item.statusName
-        });
-      });
-
-      _self.envTypes.splice(0, _self.envTypes.length);
-      let environmentType = localStorage.getItem("environmentType");
-      eval(environmentType).forEach(item => {
-        _self.envTypes.push({
-          value: item.typeId,
-          label: item.typeName
-        });
-      });
-
-      _self.releaseQuery();
-      _self.getAllBuildInstances();
-      _self.memberQuery(_self.releasenoteQuery);
-    },
-
-    watch: {
+import commonQuery from "@/components/util/CommonQuery.vue";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
+import TableExport from '@/util/TableExport.js'
+export default {
+  data: function () {
+    return {
+      noteIdsSet: new Set(),
+      timer: null,
+      noteIds: [],
+      showBorder: sessionStorage.tableShowBorder == 1,
+      modalClose: sessionStorage.dialogAutoClose == 1,
+      newActive: "info",
+      pageInfo: {},
+      maximize: false,
+      maximize1: false,
+      maximize2: false,
+      queryLoading: false,
+      subLoading: false,
+      currentRelNote: {},
+      currentNoteBuild: {},
+      showDialog: false,
+      releases: [],
+      reqs: [],
+      expandKeys: [],
+      showDetail: false,
+      buildStatus: [],
+      fillUpActive: false,
+      buttonWidth: 0,
+      buttonHeight: 0,
+      seen: false,
+      copy: "",
+      buildResults: [],
+      envTypes: [],
+      responser: "",
+      tableData: [],
+      showDialogMod: false,
+      timefmt: defaultTimeFormat,
+      datefmt: defaultDateFormat,
+      activeName: "info",
+      activeNameMod: "info",
+      buildDetail: {
+        ip: "",
+      },
+      filesIsFilled: false,
+      othersIsFilled: false,
+      attachmentIsFilled: false,
+      currentReqDetail: {
+        attachs: [],
+        data: {}
+      },
+      currentBuildDetail: {},
+      url: {},
+      tableHeight: bodyAviHeightNTab - 70 - 45,
+      members: [],
+      memberFull: [],
+      userOptions: [],
+      reqStatuses: [],
       buildForm: {
-        handler() {
-          this.currentPage = 1;
-          this.queryChanged = true;
-        },
-        deep: true,
-        immediate: true
+        reqId: "",
+        relId: "",
+        hideClosed: true,
+        submitter: "",
+        status: [1, 2],
+        reqStatus: [3, 4, 5, 6],
+        files: "",
+        configs: "",
+        others: "",
+        attachment: ""
+      },
+      existsReqs: [],
+      form: {
+        reqId: "",
+        submitter: "",
+        relId: "",
+        status: "",
+        creatDate: "",
+        summory: ""
+      },
+      currentPage: 1,
+      pageSize: parseInt(sessionStorage.tablePageSize) || 10,
+      queryChanged: false,
+      mform: {
+        id: "",
+        relId: "",
+        reqId: "",
+        id: "",
+        status: "",
+        buildFiles: [],
+        configs: "",
+        others: "",
+        attachment: "",
+        description: "",
+        fileList: [],
       },
 
-      'tableData.length': function (val) {
-        if (val == 0) {
-          this.currentPage = 1;
-          this.releaseQuery();
-        }
+      newform: {
+        reqId: "",
+        relId: "",
+        id: "",
+        releases: [],
+        files: "",
+        others: "",
+        attachment: "",
+        description: "",
+        fileList: [],
+        buildFiles: []
+      },
+
+      FileInstances: [],
+      modFileInstances: [],
+      restoredFileInstances: [],
+
+      paramKeys: [],
+      formRules: {
+        relId: [{
+          required: true,
+          message: '构建版本不能为空，请选择构建版本',
+          trigger: 'change'
+        }],
+        reqId: [{
+          required: true,
+          message: '产品需求号不能为空，请选择产品需求号',
+          trigger: 'change'
+        }],
+        description: [{
+            required: true,
+            message: '构建描述不能为空',
+            trigger: 'blur'
+          },
+          {
+            min: 5,
+            max: 50,
+            message: '长度在 5 到 50 个字',
+            trigger: 'blur'
+          }
+        ],
+        instance: [{
+          required: true,
+          message: '文件实例不能为空，请选择文件实例',
+          trigger: 'change'
+        }],
+        paramKey: [{
+          required: false,
+          message: '文件类型不能为空，请选择文件类型',
+          trigger: 'change'
+        }],
+        paramValue: [{
+          required: true,
+          message: '文件内容不能为空，填写文件或移除此行',
+          trigger: 'blur'
+        }]
+      },
+      mformRules: {
+        description: [{
+            required: true,
+            message: '构建描述不能为空',
+            trigger: 'blur'
+          },
+          {
+            min: 5,
+            max: 50,
+            message: '长度在 5 到 50 个字',
+            trigger: 'blur'
+          }
+        ],
+        instance: [{
+          required: true,
+          message: '文件实例不能为空，请选择文件实例',
+          trigger: 'change'
+        }],
+        paramKey: [{
+          required: false,
+          message: '文件类型不能为空，请选择文件类型',
+          trigger: 'change'
+        }],
+        paramValue: [{
+          required: true,
+          message: '文件内容不能为空，填写文件或移除此行',
+          trigger: 'blur'
+        }]
       }
+    };
+  },
+
+  created: function () {
+    let _self = this;
+
+    _self.buildStatus.splice(0, _self.buildStatus.length);
+    let releaseNoteStatus = localStorage.getItem("releaseNoteStatus");
+    eval(releaseNoteStatus).forEach(item => {
+      _self.buildStatus.push({
+        value: item.statusId,
+        label: item.statusName
+      });
+    });
+
+    _self.reqStatuses.splice(0, _self.reqStatuses.length);
+    let requirementStatus = localStorage.getItem("requirementStatus");
+    eval(requirementStatus).forEach(item => {
+      _self.reqStatuses.push({
+        value: item.statusId,
+        label: item.statusName
+      });
+    });
+
+    _self.envTypes.splice(0, _self.envTypes.length);
+    let environmentType = localStorage.getItem("environmentType");
+    eval(environmentType).forEach(item => {
+      _self.envTypes.push({
+        value: item.typeId,
+        label: item.typeName
+      });
+    });
+
+    _self.releaseQuery();
+    _self.getAllBuildInstances();
+    _self.memberQuery(_self.releasenoteQuery);
+  },
+
+  watch: {
+    buildForm: {
+      handler() {
+        this.currentPage = 1;
+        this.queryChanged = true;
+      },
+      deep: true,
+      immediate: true
     },
 
-    computed: {
-      unSelectedInstance: function () {
-        return this.FileInstances.filter(function (instance) {
-          return instance.isSelected == false
-        })
-      },
-
-      modUnSelectedInstance: function () {
-        return this.restoredFileInstances.filter(function (instance) {
-          return instance.isSelected == false
-        })
-      },
-
-      checkedData: function() {
-        let _self = this;
-        let isManagers = commonQuery.roleAllow([2, 10, 3, 4, 7]);
-        let currentUser = parseInt(sessionStorage.userId);
-        _self.tableData.forEach(row => {
-          _self.$set(row, "editAble", isManagers || currentUser == row.devResponser || currentUser == row.submitter);
-          _self.$set(row, "buildAble", isManagers || currentUser == row.devResponser || currentUser == row.testResponser);
-        });
-        return _self.tableData;
+    'tableData.length': function (val) {
+      if (val == 0) {
+        this.currentPage = 1;
+        this.releaseQuery();
       }
+    }
+  },
+
+  computed: {
+    unSelectedInstance: function () {
+      return this.FileInstances.filter(function (instance) {
+        return instance.isSelected == false
+      })
     },
 
-    methods: {
-      resetFilterText() {
-        let _self =  this;
-        _self.userOptions = _self.memberFull;
-      },
+    modUnSelectedInstance: function () {
+      return this.restoredFileInstances.filter(function (instance) {
+        return instance.isSelected == false
+      })
+    },
 
-      filterUsers(val) {
-        let _self =  this;
-        _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
-      },
+    checkedData: function () {
+      let _self = this;
+      let isManagers = commonQuery.roleAllow([2, 10, 3, 4, 7]);
+      let currentUser = parseInt(sessionStorage.userId);
+      _self.tableData.forEach(row => {
+        _self.$set(row, "editAble", isManagers || currentUser == row.devResponser || currentUser == row.submitter);
+        _self.$set(row, "buildAble", isManagers || currentUser == row.devResponser || currentUser == row.testResponser);
+      });
+      return _self.tableData;
+    }
+  },
 
-      maxRowCount(text) {
-        if (commonQuery.isNull(text)) {
-          return 1;
-        }
-        let count = text.split(/\n/).length;
-        return count > 2 ? 2 : count;
-      },
+  methods: {
+    resetFilterText() {
+      let _self = this;
+      _self.userOptions = _self.memberFull;
+    },
 
-      getAllBuildInstances() {
-        let _self =  this;
-        _self.$axios({
+    filterUsers(val) {
+      let _self = this;
+      _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
+    },
+
+    maxRowCount(text) {
+      if (commonQuery.isNull(text)) {
+        return 1;
+      }
+      let count = text.split(/\n/).length;
+      return count > 2 ? 2 : count;
+    },
+
+    getAllBuildInstances() {
+      let _self = this;
+      _self.$axios({
           method: "get",
           url: "/build/build-instances",
           headers: {
@@ -765,7 +873,7 @@
         .then(function (res) {
           let json = eval(res.data);
           _self.FileInstances.splice(0, _self.FileInstances.length);
-          _self.modFileInstances.splice(0,_self.modFileInstances.length);
+          _self.modFileInstances.splice(0, _self.modFileInstances.length);
           for (let i = 0; i < json.length; i++) {
             _self.FileInstances.push({
               isSelected: false,
@@ -779,33 +887,33 @@
             });
           }
         })
-      },
+    },
 
-      restoreInstance(row) {
-        let _self =  this;
-        _self.restoredFileInstances.splice(0, _self.restoredFileInstances.length);
-        _self.restoredFileInstances = JSON.parse(JSON.stringify(_self.modFileInstances));
-        if (row.buildFiles) {
-          row.buildFiles.forEach(item => {
-            _self.restoredFileInstances.forEach(a => {
-              if (a.value == item.instance) {
-                _self.$set(a, "isSelected", true)
-              }
-            })
-          })
-        }
-      },
-
-      getParamKeyOfInstance(instance) {
-        let _self =  this;
-        if (instance != "") {
-          _self.FileInstances.forEach(item => {
-            if (item.value == instance) {
-              _self.$set(item, "isSelected", true)
+    restoreInstance(row) {
+      let _self = this;
+      _self.restoredFileInstances.splice(0, _self.restoredFileInstances.length);
+      _self.restoredFileInstances = JSON.parse(JSON.stringify(_self.modFileInstances));
+      if (row.buildFiles) {
+        row.buildFiles.forEach(item => {
+          _self.restoredFileInstances.forEach(a => {
+            if (a.value == item.instance) {
+              _self.$set(a, "isSelected", true)
             }
           })
-        }
-        _self.$axios({
+        })
+      }
+    },
+
+    getParamKeyOfInstance(instance) {
+      let _self = this;
+      if (instance != "") {
+        _self.FileInstances.forEach(item => {
+          if (item.value == instance) {
+            _self.$set(item, "isSelected", true)
+          }
+        })
+      }
+      _self.$axios({
           method: "get",
           url: "/build/params/" + instance,
           headers: {
@@ -822,18 +930,18 @@
             }
           });
         })
-      },
+    },
 
-      modParamKeyOfInstance(instance) {
-        let _self =  this;
-        if (instance != "") {
-          _self.restoredFileInstances.forEach(item => {
-            if (item.value == instance) {
-              _self.$set(item, "isSelected", true)
-            }
-          })
-        }
-        _self.$axios({
+    modParamKeyOfInstance(instance) {
+      let _self = this;
+      if (instance != "") {
+        _self.restoredFileInstances.forEach(item => {
+          if (item.value == instance) {
+            _self.$set(item, "isSelected", true)
+          }
+        })
+      }
+      _self.$axios({
           method: "get",
           url: "/build/params/" + instance,
           headers: {
@@ -849,166 +957,173 @@
             }
           });
         })
-      },
+    },
 
-      addRow() {
-        let _self =  this;
-        var ins = {
-          id: "",
-          instance: "",
-        }
-        _self.newform.buildFiles.push(ins)
-      },
+    addRow() {
+      let _self = this;
+      var ins = {
+        id: "",
+        instance: "",
+      }
+      _self.newform.buildFiles.push(ins)
+    },
 
-      removeRow(index, row) {
-        let _self =  this;
-        _self.newform.buildFiles.splice(index, 1);
+    removeRow(index, row) {
+      let _self = this;
+      _self.newform.buildFiles.splice(index, 1);
 
-        if (row.instance != "") {
-          _self.FileInstances.forEach(item => {
-            if (item.value == row.instance) {
-              _self.$set(item, "isSelected", false)
-            }
-          })
-        }
-      },
-
-      updateAddRow(noteId) {
-        let _self =  this;
-        var ins = {
-          id: "",
-          noteId: noteId,
-          instance: "",
-        }
-        _self.mform.buildFiles.push(ins)
-      },
-
-      updateRemoveRow(index, row) {
-        let _self =  this;
-        _self.mform.buildFiles.splice(index, 1);
-
-        if (row.instance != "") {
-          _self.restoredFileInstances.forEach(item => {
-            if (item.value == row.instance) {
-              _self.$set(item, "isSelected", false)
-            }
-          })
-        }
-      },
-
-      formatTime(row) {
-        return row.buildInterval / 1000;
-      },
-
-      routeToDeploy(data) {
-        this.$router.push({ name: 'buildDeployment', query: { 'noteId': data.id, 'relCode': data.relCode, 'buildType': 'BUILD_DEPLOY' }});
-      },
-
-      handleCurrentChange(current) {
-        if (this.queryChanged == true) {
-          this.currentPage = 1;
-        } else {
-          this.currentPage = current;
-        }
-        this.releasenoteQuery();
-      },
-
-      handleSizeChange(size) {
-        this.pageSize = size;
-        this.currentPage = 1;
-        this.releasenoteQuery();
-      },
-
-      exportCSV(fileName = 'result', tableRef = 'table') {
-        const columns = this.$refs[tableRef].$children.filter(t => t.prop != null)
-        TableExport(this.tableData, columns, fileName)
-      },
-
-      copyToClip(elementId) {
-        let _self =  this;
-        let elem = document.getElementById(elementId);
-        elem.select();
-        document.execCommand("copy");
-        _self.copy = '完成';
-      },
-
-      mouseEnter(elementId) {
-        let _self =  this;
-        let elem = document.getElementById(elementId);
-        _self.buttonWidth = elem.offsetWidth - 10 + 'px';
-        _self.buttonHeight = elem.offsetTop + 5 + 'px';
-        _self.copy = "复制";
-        _self.seen = true;
-      },
-
-      mouseLeave(e) {
-        let _self =  this;
-        _self.seen = false;
-      },
-
-      toRequest(data) {
-        this.$router.push({
-          name: "request",
-          params: {
-            id: data
+      if (row.instance != "") {
+        _self.FileInstances.forEach(item => {
+          if (item.value == row.instance) {
+            _self.$set(item, "isSelected", false)
           }
-        });
-      },
+        })
+      }
+    },
 
-      openAttach(file) {
-        commonQuery.attachmentDownload(file);
-      },
+    updateAddRow(noteId) {
+      let _self = this;
+      var ins = {
+        id: "",
+        noteId: noteId,
+        instance: "",
+      }
+      _self.mform.buildFiles.push(ins)
+    },
 
-      editBuildInfo(row) {
-        let _self =  this;
-        _self.restoreInstance(row);
-        _self.showDialogMod = true;
-        _self.mform.id = row.id;
-        _self.mform.relId = row.relId;
-        _self.mform.reqId = row.reqId;
-        _self.mform.status = row.status;
-        _self.mform.buildFiles = JSON.parse(JSON.stringify(row.buildFiles));
-        _self.mform.description = row.description;
-        _self.mform.others = row.others;
-        _self.mform.attachment = row.attachment;
-        _self.mform.fileList = _self.getAttach(row.attachment);
-        _self.relReqQuery(row.relId);
-      },
+    updateRemoveRow(index, row) {
+      let _self = this;
+      _self.mform.buildFiles.splice(index, 1);
 
-      buildDetailQuery(row) {
-        let _self =  this;
-        _self.buildDetail = row;
-        _self.buildDetail.attachs = _self.getAttach(_self.buildDetail.attachment);
-        if (0 == _self.buildDetail.buildFiles.length) {
-          _self.filesIsFilled = false;
-        } else {
-          _self.filesIsFilled = _self.buildDetail.buildFiles.length > 0;
+      if (row.instance != "") {
+        _self.restoredFileInstances.forEach(item => {
+          if (item.value == row.instance) {
+            _self.$set(item, "isSelected", false)
+          }
+        })
+      }
+    },
+
+    formatTime(row) {
+      return row.buildInterval / 1000;
+    },
+
+    routeToDeploy(data) {
+      this.$router.push({
+        name: 'buildDeployment',
+        query: {
+          'noteId': data.id,
+          'relCode': data.relCode,
+          'buildType': 'BUILD_DEPLOY'
         }
-        if (null == _self.buildDetail.others || _self.buildDetail.others == "") {
-          _self.othersIsFilled = false;
-        } else {
-          _self.othersIsFilled = _self.buildDetail.others.replace(/\s*/g, "").length > 0;
-        }
-        if (null == _self.buildDetail.attachment || _self.buildDetail.attachment == "") {
-          _self.attachmentIsFilled = false;
-        } else {
-          _self.attachmentIsFilled = _self.buildDetail.attachment.replace(/\s*/g, "").length > 0;
-        }
-      },
+      });
+    },
 
-      showBuildDetail(row, event) {
-        let _self =  this;
-        _self.showDetail = true;
-        _self.buildDetailQuery(row);
-      },
+    handleCurrentChange(current) {
+      if (this.queryChanged == true) {
+        this.currentPage = 1;
+      } else {
+        this.currentPage = current;
+      }
+      this.releasenoteQuery();
+    },
 
-      releaseNoteCreate() {
-        let _self =  this;
-        let attachment = [];
-        _self.newform.fileList.forEach(item => {
-          attachment.push(item.id);
-        });
-        _self.$axios.post("/build/releasenote_create", {
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.currentPage = 1;
+      this.releasenoteQuery();
+    },
+
+    exportCSV(fileName = 'result', tableRef = 'table') {
+      const columns = this.$refs[tableRef].$children.filter(t => t.prop != null)
+      TableExport(this.tableData, columns, fileName)
+    },
+
+    copyToClip(elementId) {
+      let _self = this;
+      let elem = document.getElementById(elementId);
+      elem.select();
+      document.execCommand("copy");
+      _self.copy = '完成';
+    },
+
+    mouseEnter(elementId) {
+      let _self = this;
+      let elem = document.getElementById(elementId);
+      _self.buttonWidth = elem.offsetWidth - 10 + 'px';
+      _self.buttonHeight = elem.offsetTop + 5 + 'px';
+      _self.copy = "复制";
+      _self.seen = true;
+    },
+
+    mouseLeave(e) {
+      let _self = this;
+      _self.seen = false;
+    },
+
+    toRequest(data) {
+      this.$router.push({
+        name: "request",
+        params: {
+          id: data
+        }
+      });
+    },
+
+    openAttach(file) {
+      commonQuery.attachmentDownload(file);
+    },
+
+    editBuildInfo(row) {
+      let _self = this;
+      _self.restoreInstance(row);
+      _self.showDialogMod = true;
+      _self.mform.id = row.id;
+      _self.mform.relId = row.relId;
+      _self.mform.reqId = row.reqId;
+      _self.mform.status = row.status;
+      _self.mform.buildFiles = JSON.parse(JSON.stringify(row.buildFiles));
+      _self.mform.description = row.description;
+      _self.mform.others = row.others;
+      _self.mform.attachment = row.attachment;
+      _self.mform.fileList = _self.getAttach(row.attachment);
+      _self.relReqQuery(row.relId);
+    },
+
+    buildDetailQuery(row) {
+      let _self = this;
+      _self.buildDetail = row;
+      _self.buildDetail.attachs = _self.getAttach(_self.buildDetail.attachment);
+      if (0 == _self.buildDetail.buildFiles.length) {
+        _self.filesIsFilled = false;
+      } else {
+        _self.filesIsFilled = _self.buildDetail.buildFiles.length > 0;
+      }
+      if (null == _self.buildDetail.others || _self.buildDetail.others == "") {
+        _self.othersIsFilled = false;
+      } else {
+        _self.othersIsFilled = _self.buildDetail.others.replace(/\s*/g, "").length > 0;
+      }
+      if (null == _self.buildDetail.attachment || _self.buildDetail.attachment == "") {
+        _self.attachmentIsFilled = false;
+      } else {
+        _self.attachmentIsFilled = _self.buildDetail.attachment.replace(/\s*/g, "").length > 0;
+      }
+    },
+
+    showBuildDetail(row, event) {
+      let _self = this;
+      _self.showDetail = true;
+      _self.buildDetailQuery(row);
+    },
+
+    releaseNoteCreate() {
+      let _self = this;
+      let attachment = [];
+      _self.newform.fileList.forEach(item => {
+        attachment.push(item.id);
+      });
+      _self.$axios.post("/build/releasenote_create", {
           attachment: attachment.toString(),
           buildFiles: _self.newform.buildFiles,
           description: _self.newform.description,
@@ -1028,15 +1143,15 @@
             console.log(res);
           }
         })
-      },
+    },
 
-      releaseNoteUpdate() {
-        let _self =  this;
-        let attachs = [];
-        _self.mform.fileList.forEach(item => {
-          attachs.push(item.id);
-        });
-        _self.$axios.post("/build/releasenote_update", {
+    releaseNoteUpdate() {
+      let _self = this;
+      let attachs = [];
+      _self.mform.fileList.forEach(item => {
+        attachs.push(item.id);
+      });
+      _self.$axios.post("/build/releasenote_update", {
           attachment: attachs.toString(),
           buildFiles: _self.mform.buildFiles,
           description: _self.mform.description,
@@ -1052,173 +1167,173 @@
           _self.$message.success("构建信息修改成功！");
           _self.releasenoteQuery();
         })
-      },
+    },
 
-      memberQuery(callback) {
-        let _self =  this;
-        commonQuery.memberQuery((result) => {
-          _self.members = result.users;
-          _self.memberFull = result.usersFull;
-          _self.userOptions = result.usersFull;
-          if (typeof callback == "function") {
-            callback();
-          }
-        });
-      },
-
-      beforeUpload(file) {
-        if (file.size / 1024 / 1024 > 50) {
-          this.$message.info("单个文件不能超过 50MB！");
-          return false;
+    memberQuery(callback) {
+      let _self = this;
+      commonQuery.memberQuery((result) => {
+        _self.members = result.users;
+        _self.memberFull = result.usersFull;
+        _self.userOptions = result.usersFull;
+        if (typeof callback == "function") {
+          callback();
         }
-      },
+      });
+    },
 
-      fileExceeded(files, fileList) {
-        this.$message.info("文件个数超出限制！");
-        return;
-      },
+    beforeUpload(file) {
+      if (file.size / 1024 / 1024 > 50) {
+        this.$message.info("单个文件不能超过 50MB！");
+        return false;
+      }
+    },
 
-      uploadComplete(res, file, fileList) {
-        let _self =  this;
-        _self.newform.fileList = fileList;
-      },
+    fileExceeded(files, fileList) {
+      this.$message.info("文件个数超出限制！");
+      return;
+    },
 
-      uploadCompleteMod(res, file, fileList) {
-        let _self =  this;
-        _self.mform.fileList = fileList;
-      },
+    uploadComplete(res, file, fileList) {
+      let _self = this;
+      _self.newform.fileList = fileList;
+    },
 
-      handleRemoveMod(file, fileList) {
-        let _self =  this;
-        _self.$message.success("文件删除成功！");
-        _self.mform.fileList = fileList;
-      },
+    uploadCompleteMod(res, file, fileList) {
+      let _self = this;
+      _self.mform.fileList = fileList;
+    },
 
-      saveBuildInfoCreate(formName1, formName2) {
-        let _self =  this;
-        _self.$refs[formName1].validate((valid) => {
-          if (!valid) {
-            _self.$notify.error("表单校验不通过，无法提交！");
-            return;
-          } else {
-            _self.$refs[formName2].validate((valid) => {
-              if (!valid) {
-                _self.$notify.error("表单校验不通过，无法提交！");
-                return;
-              } else {
-                _self.releaseNoteCreate();
-              }
-            });
-          }
-        });
-      },
+    handleRemoveMod(file, fileList) {
+      let _self = this;
+      _self.$message.success("文件删除成功！");
+      _self.mform.fileList = fileList;
+    },
 
-      saveBuildInfoUpdate(formName1, formName2) {
-        let _self =  this;
-        _self.$refs[formName1].validate((valid) => {
-          if (!valid) {
-            _self.$notify.error("表单校验不通过，无法提交！");
-            return;
-          } else {
-            _self.$refs[formName2].validate((valid) => {
-              if (!valid) {
-                _self.$notify.error("表单校验不通过，无法提交！");
-                return;
-              } else {
-                _self.releaseNoteUpdate();
-              }
-            });
-          }
-        });
-      },
-
-      handleRemove(file, fileList) {
-        let _self =  this;
-        commonQuery.attachmentDelete(file, fileList, (res) => {
-          _self.newform.fileList = res;
-        })
-      },
-
-      handlePreview(file) {
-        commonQuery.attachmentDownload(file);
-      },
-
-      getAttach(attachId) {
-        return commonQuery.attachmentQuery(attachId);
-      },
-
-      uploadAction(params) {
-        let _self =  this;
-        let file = params.file;
-        let fileList = _self.newform.fileList || [];
-        let refedUpload = _self.showDialog ? _self.$refs.upload : _self.$refs.uploadMod;
-
-        if (file.name.indexOf("_V") > -1) {
-          _self.$message.warning("请去除文件名中包含的字符串： _V");
-          refedUpload.uploadFiles = fileList.filter(item => {
-              return item.status == "success";
-            }) || [];
+    saveBuildInfoCreate(formName1, formName2) {
+      let _self = this;
+      _self.$refs[formName1].validate((valid) => {
+        if (!valid) {
+          _self.$notify.error("表单校验不通过，无法提交！");
           return;
-        }
-        commonQuery.attachmentUpload(file, fileList, (res) => {
-          _self.newform.fileList = res;
-        })
-      },
-
-      uploadActionMod(params) {
-        let _self =  this;
-        let file = params.file;
-        let fileList = _self.mform.fileList || [];
-        let refedUpload = _self.showDialog ? _self.$refs.upload : _self.$refs.uploadMod;
-
-        if (file.name.indexOf("_V") > -1) {
-          _self.$message.warning("请去除文件名中包含的字符串： _V");
-          refedUpload.uploadFiles =
-            fileList.filter(item => {
-              return item.status == "success";
-            }) || [];
-          return;
-        }
-        commonQuery.attachmentUpload(file, fileList, (res) => {
-          _self.mform.fileList = res;
-        })
-      },
-
-      releaseQuery() {
-        let _self =  this;
-         _self.releases.splice(0,  _self.releases.length);
-        if (_self.buildForm.hideClosed == true) {
-          commonQuery.openRelQuery((result) => {
-            _self.releases = result.releasesWithBranch;
-          })
         } else {
-          commonQuery.releaseQuery((result) => {
-            _self.releases = result.releasesWithBranch;
-          })
+          _self.$refs[formName2].validate((valid) => {
+            if (!valid) {
+              _self.$notify.error("表单校验不通过，无法提交！");
+              return;
+            } else {
+              _self.releaseNoteCreate();
+            }
+          });
         }
-      },
+      });
+    },
 
-      openReleaseQuery() {
-        let _self =  this;
-         _self.newform.releases.splice(0,  _self.newform.releases.length);
-        commonQuery.openRelQuery((result) => {
-          _self.newform.releases = result.releasesWithBranch;
-        })
-      },
-
-      relReqQuery(relId) {
-        let _self =  this;
-        _self.newform.reqId = "";
-        if (!relId) {
-          _self.reqs.splice(0, _self.reqs.length); //清空数组
+    saveBuildInfoUpdate(formName1, formName2) {
+      let _self = this;
+      _self.$refs[formName1].validate((valid) => {
+        if (!valid) {
+          _self.$notify.error("表单校验不通过，无法提交！");
           return;
+        } else {
+          _self.$refs[formName2].validate((valid) => {
+            if (!valid) {
+              _self.$notify.error("表单校验不通过，无法提交！");
+              return;
+            } else {
+              _self.releaseNoteUpdate();
+            }
+          });
         }
-        this.$nextTick(_ => {
-          if (_self.$refs.ruledForm) {
-            _self.$refs.ruledForm.clearValidate();
-          }
-        });
-        _self.$axios.post("/req/rel_query/" + relId + "/1/500")
+      });
+    },
+
+    handleRemove(file, fileList) {
+      let _self = this;
+      commonQuery.attachmentDelete(file, fileList, (res) => {
+        _self.newform.fileList = res;
+      })
+    },
+
+    handlePreview(file) {
+      commonQuery.attachmentDownload(file);
+    },
+
+    getAttach(attachId) {
+      return commonQuery.attachmentQuery(attachId);
+    },
+
+    uploadAction(params) {
+      let _self = this;
+      let file = params.file;
+      let fileList = _self.newform.fileList || [];
+      let refedUpload = _self.showDialog ? _self.$refs.upload : _self.$refs.uploadMod;
+
+      if (file.name.indexOf("_V") > -1) {
+        _self.$message.warning("请去除文件名中包含的字符串： _V");
+        refedUpload.uploadFiles = fileList.filter(item => {
+          return item.status == "success";
+        }) || [];
+        return;
+      }
+      commonQuery.attachmentUpload(file, fileList, (res) => {
+        _self.newform.fileList = res;
+      })
+    },
+
+    uploadActionMod(params) {
+      let _self = this;
+      let file = params.file;
+      let fileList = _self.mform.fileList || [];
+      let refedUpload = _self.showDialog ? _self.$refs.upload : _self.$refs.uploadMod;
+
+      if (file.name.indexOf("_V") > -1) {
+        _self.$message.warning("请去除文件名中包含的字符串： _V");
+        refedUpload.uploadFiles =
+          fileList.filter(item => {
+            return item.status == "success";
+          }) || [];
+        return;
+      }
+      commonQuery.attachmentUpload(file, fileList, (res) => {
+        _self.mform.fileList = res;
+      })
+    },
+
+    releaseQuery() {
+      let _self = this;
+      _self.releases.splice(0, _self.releases.length);
+      if (_self.buildForm.hideClosed == true) {
+        commonQuery.openRelQuery((result) => {
+          _self.releases = result.releasesWithBranch;
+        })
+      } else {
+        commonQuery.releaseQuery((result) => {
+          _self.releases = result.releasesWithBranch;
+        })
+      }
+    },
+
+    openReleaseQuery() {
+      let _self = this;
+      _self.newform.releases.splice(0, _self.newform.releases.length);
+      commonQuery.openRelQuery((result) => {
+        _self.newform.releases = result.releasesWithBranch;
+      })
+    },
+
+    relReqQuery(relId) {
+      let _self = this;
+      _self.newform.reqId = "";
+      if (!relId) {
+        _self.reqs.splice(0, _self.reqs.length); //清空数组
+        return;
+      }
+      this.$nextTick(_ => {
+        if (_self.$refs.ruledForm) {
+          _self.$refs.ruledForm.clearValidate();
+        }
+      });
+      _self.$axios.post("/req/rel_query/" + relId + "/1/500")
         .then(function (res) {
           let reqsData = [];
           reqsData = eval(res.data.list);
@@ -1231,12 +1346,12 @@
             });
           }
         })
-      },
+    },
 
-      releasenoteQuery() {
-        let _self =  this;
-        _self.queryLoading = true;
-        _self.$axios({
+    releasenoteQuery() {
+      let _self = this;
+      _self.queryLoading = true;
+      _self.$axios({
           method: "post",
           url: "/build/releasenote_query",
           headers: {
@@ -1266,120 +1381,120 @@
           _self.queryLoading = false;
           _self.$notify.error("发生错误");
         });
-      },
+    },
 
-      newBuild() {
-        let _self =  this;
-        _self.showDialog = true;
-        _self.openReleaseQuery();
-        if (_self.$refs.ruledForm) {
-          _self.$refs.ruledForm.resetFields();
-        }
+    newBuild() {
+      let _self = this;
+      _self.showDialog = true;
+      _self.openReleaseQuery();
+      if (_self.$refs.ruledForm) {
+        _self.$refs.ruledForm.resetFields();
       }
     }
-  };
+  }
+};
 </script>
 
 <style>
-  .build-form {
-    width: 97% !important;
-    border: 1px solid #e4edf3;
-    border-radius: 2px;
-    padding: 1.5%;
-    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12),
+.build-form {
+  width: 97% !important;
+  border: 1px solid #e4edf3;
+  border-radius: 2px;
+  padding: 1.5%;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12),
     0 0 6px 0 rgba(0, 0, 0, 0.04);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-  }
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+}
 
-  .build-form .el-form-item .el-input {
-    width: 180px;
-  }
+.build-form .el-form-item .el-input {
+  width: 180px;
+}
 
-  .build-form .el-form-item .wide-select .el-input {
-    width: 500px;
-  }
+.build-form .el-form-item .wide-select .el-input {
+  width: 500px;
+}
 
-  .build-form .el-form-item .muti-select .el-input {
-    width: 180px;
-  }
+.build-form .el-form-item .muti-select .el-input {
+  width: 180px;
+}
 
-  .text-box {
-    height: 20px;
-  }
+.text-box {
+  height: 20px;
+}
 
-  .build-form .el-table .cell {
-    padding-right: 0px;
-  }
+.build-form .el-table .cell {
+  padding-right: 0px;
+}
 
-  .show-message {
-    width: 450px;
-    position: absolute;
-    top: 20px;
-  }
+.show-message {
+  width: 450px;
+  position: absolute;
+  top: 20px;
+}
 
-  .build-attach-upload {
-    width: 100%;
-  }
+.build-attach-upload {
+  width: 100%;
+}
 
-  .build-attach-upload .el-upload--text {
-    width: 100%;
-    height: 80px;
-  }
+.build-attach-upload .el-upload--text {
+  width: 100%;
+  height: 80px;
+}
 
-  .build-attach-upload .el-upload-dragger {
-    width: 100%;
-    height: 80px;
-  }
+.build-attach-upload .el-upload-dragger {
+  width: 100%;
+  height: 80px;
+}
 
-  .build-attach-upload .el-upload-dragger .el-icon-upload {
-    margin: 0;
-    font-size: 40px;
-  }
+.build-attach-upload .el-upload-dragger .el-icon-upload {
+  margin: 0;
+  font-size: 40px;
+}
 
-  .breq-sum-tips {
-    color: #3AB4D7 !important;
-    cursor: pointer !important;
-  }
+.breq-sum-tips {
+  color: #3AB4D7 !important;
+  cursor: pointer !important;
+}
 
-  .build-detail-collapse .el-collapse-item__header i {
-    font-size: 15px;
-  }
+.build-detail-collapse .el-collapse-item__header i {
+  font-size: 15px;
+}
 
-  .build-detail-collapse .el-button i {
-    font-size: 18px;
-  }
+.build-detail-collapse .el-button i {
+  font-size: 18px;
+}
 
-  .build-detail-collapse .el-collapse-item__content {
-    padding: 10px 20px 20px 40px
-  }
+.build-detail-collapse .el-collapse-item__content {
+  padding: 10px 20px 20px 40px
+}
 
-  .build-detail-collapse .el-collapse-item__arrow {
-    font-weight: 600;
-    line-height: 45px;
-  }
+.build-detail-collapse .el-collapse-item__arrow {
+  font-weight: 600;
+  line-height: 45px;
+}
 
-  .build-detail-collapse .modules-ruled-form .el-form-item {
-    margin: 0;
-  }
+.build-detail-collapse .modules-ruled-form .el-form-item {
+  margin: 0;
+}
 
-  .build-detail-collapse .modules-ruled-form .el-form-item__content {
-    vertical-align: middle;
-  }
+.build-detail-collapse .modules-ruled-form .el-form-item__content {
+  vertical-align: middle;
+}
 
-  .modules-ruled-form .build-attach-upload textarea {
-    min-height: 40px;
-    line-height: 33px;
-  }
+.modules-ruled-form .build-attach-upload textarea {
+  min-height: 40px;
+  line-height: 33px;
+}
 
-  .float-button {
-    position: absolute;
-    font-size: 14px;
-    color: #4d4d4d;
-    background-color: white;
-    padding: 2px 8px;
-    margin: 8px;
-    border-radius: 2px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.05)
-  }
+.float-button {
+  position: absolute;
+  font-size: 14px;
+  color: #4d4d4d;
+  background-color: white;
+  padding: 2px 8px;
+  margin: 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.05)
+}
 </style>

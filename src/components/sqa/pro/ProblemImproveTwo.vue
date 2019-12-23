@@ -1,6 +1,7 @@
 <template>
   <div id="proImproveTwoAna" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,7 +19,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
 
     let improveOpts = _self.sortData(eval(localStorage.getItem("problemImprove")), "type", "typeDesc", "children");
     let problemImprove = [];
@@ -34,7 +35,7 @@ export default {
     _self.datas.forEach(data => {
       let improveAll = data.improves == '尚未明确' ? [] : data.improves.split(",");
       if (improveAll.length == 0) {
-        legendData.push('尚未明确'); 
+        legendData.push('尚未明确');
         improveData.push({
           value: data.num,
           name: '尚未明确'
@@ -46,7 +47,7 @@ export default {
         let improveTwo = improveOne.children.find(item => {
           return item.subType == improveAll[1];
         });
-        legendData.push(improveTwo.subDesc); 
+        legendData.push(improveTwo.subDesc);
         improveData.push({
           value: data.num,
           name: improveTwo.subDesc
@@ -75,31 +76,36 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "改进措施二级分类",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: improveData,
-          label: {
-            normal: {
-              formatter: '{b} ({d}%)',
-            }
+      series: [{
+        name: "改进措施二级分类",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: improveData,
+        label: {
+          normal: {
+            formatter: '{b} ({d}%)',
           }
         }
-      ]
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("proImproveTwoAna");
 
     let dataCharts = echarts.init(charts, sepp);
@@ -113,12 +119,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({

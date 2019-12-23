@@ -10,12 +10,14 @@
           width="20%"
           :modal="modal"
           :show-close="showClose">
-          <span><el-progress :percentage="process"></el-progress></span>
+          <span>
+            <el-progress :percentage="process"></el-progress>
+          </span>
         </el-dialog>
       </div>
 
       <div class="sum-info">
-        <a class="confirm-send" @click="sendEmail" v-if="img && img != '' && isDisplayed"  ref="confirmSend">
+        <a class="confirm-send" @click="sendEmail" v-if="img && img != '' && isDisplayed" ref="confirmSend">
           <i class="el-icon-message"></i> 一键发送邮件
         </a>
         <a class="confirm-send" :href="emailSet" v-if="img && img != '' && isDisplayed" ref="confirmSend">
@@ -29,11 +31,16 @@
           <el-breadcrumb-item>出口标准及结论</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <el-table :data="reportSum" size="mini" :border="showBorder"stripe class="sum-info" 
-        :cell-class-name="standardCheck" 
-        v-loading.fullscreen.lock="sumLoading" 
-        element-loading-text="数据较多，请耐心等待..." 
-        element-loading-spinner="el-icon-loading" 
+      <el-table
+        :data="reportSum"
+        size="mini"
+        :border="showBorder"
+        stripe
+        class="sum-info"
+        :cell-class-name="standardCheck"
+        v-loading.fullscreen.lock="sumLoading"
+        element-loading-text="数据较多，请耐心等待..."
+        element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column type="index" label="序号" width="50" align="center">
         </el-table-column>
@@ -310,7 +317,7 @@ import defectVerifyCost from "@/components/sep/analysis/DefectVerifyCost.vue";
 import html2canvas from "html2canvas/dist/html2canvas.min.js";
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       urlParams: {},
@@ -323,8 +330,7 @@ export default {
       miniFail: false,
       sumLoading: false,
       emergencyPlan: "",
-      emergency:
-        "1、未关闭缺陷的应急处理方式，必须经产品、运维、开发、测试共同认可，该方案仅适用于上表标准5、6\n2、版本全量或者部分回滚的处理方案",
+      emergency: "1、未关闭缺陷的应急处理方式，必须经产品、运维、开发、测试共同认可，该方案仅适用于上表标准5、6\n2、版本全量或者部分回滚的处理方案",
       sqaSuggestion: "",
       suggestion: "1、产品需求与设计角度\n2、版本管理、开发、测试等环节",
       reportId: "",
@@ -343,10 +349,10 @@ export default {
       emailSet: "",
       tos: [],
       ccs: [],
-      imgUrl:"",
-      subject:"",
-      emailTo:"",
-      emailCc:"",
+      imgUrl: "",
+      subject: "",
+      emailTo: "",
+      emailCc: "",
       modal: false,
       showClose: false,
       isSendEmail: false,
@@ -372,7 +378,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
 
     _self.reportTypes.splice(0, _self.reportTypes.length);
     let reportType = localStorage.getItem("reportType");
@@ -393,14 +399,14 @@ export default {
     });
 
     _self.reportId = _self.$route.query.reportId;
-    _self.$nextTick(function() {
+    _self.$nextTick(function () {
       _self.reportQuery();
     });
   },
 
   methods: {
     sendEmail() {
-      let _self =  this;
+      let _self = this;
       if (commonQuery.isNull(_self.emailTo) && commonQuery.isNull(_self.emailCc)) {
         _self.$message.warning("收件人列表为空，请补充信息！");
         return;
@@ -415,26 +421,26 @@ export default {
       }).then((response) => {
         _self.isSendEmail = true;
         let i = 0;
-        _self.timer = setInterval( () => {
+        _self.timer = setInterval(() => {
           i++;
           _self.process = i * 10;
-          if ( i >=11 ) {
+          if (i >= 11) {
             clearInterval(_self.timer);
             _self.process = 100;
             _self.isSendEmail = false,
-            _self.$message.success("邮件发送成功");
+              _self.$message.success("邮件发送成功");
             return;
           }
         }, 100);
-      }).catch((e)=>{
+      }).catch((e) => {
         _self.isSendEmail = true;
         let i = 0;
-        _self.timer = setInterval( () => {
+        _self.timer = setInterval(() => {
           i++;
           if (i >= 9) {
             clearInterval(_self.timer);
             _self.isSendEmail = false,
-            _self.$notify.error("邮件发送失败");
+              _self.$notify.error("邮件发送失败");
             return;
           }
           _self.process = i * 10;
@@ -442,12 +448,12 @@ export default {
       })
     },
 
-    hasData(data){
+    hasData(data) {
       return data != null && (data.length > 1 || (data.length === 1 && data[0].num != 0))
     },
 
     getDefectDirection() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/analysis/defect_direction",
@@ -459,16 +465,16 @@ export default {
             planType: _self.baseInfo.planType
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.defectDirection = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
         });
     },
 
     getDefectDistribution() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/analysis/defect_distribution",
@@ -480,30 +486,30 @@ export default {
             planType: _self.baseInfo.planType
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.defectDistribute = res.data;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
         });
     },
 
     getSummary() {
-      let _self =  this;
+      let _self = this;
       _self.sumLoading = true;
       let params =
-        _self.baseInfo.reportType === 1
-          ? {
-              relId: _self.baseInfo.relId,
-              reportId: _self.reportId,
-              reportDate: _self.baseInfo.reportDate,
-              planType: _self.baseInfo.planType
-            }
-          : {
-              relId: _self.baseInfo.relId,
-              reportId: _self.reportId,
-              planType: _self.baseInfo.planType
-            };
+        _self.baseInfo.reportType === 1 ?
+        {
+          relId: _self.baseInfo.relId,
+          reportId: _self.reportId,
+          reportDate: _self.baseInfo.reportDate,
+          planType: _self.baseInfo.planType
+        } :
+        {
+          relId: _self.baseInfo.relId,
+          reportId: _self.reportId,
+          planType: _self.baseInfo.planType
+        };
       _self.$axios({
           method: "post",
           url: "/report/sum_query",
@@ -512,13 +518,12 @@ export default {
           },
           params: params
         })
-        .then(function(res) {
+        .then(function (res) {
           let json = res.data;
           let tableData = [];
           tableData.push({
             standard: "需求测试用例覆盖率100%",
-            actData:
-              (json.coveredReq * 100 / json.totalReq).toFixed(2) +
+            actData: (json.coveredReq * 100 / json.totalReq).toFixed(2) +
               "% (" +
               json.coveredReq +
               "/" +
@@ -528,8 +533,7 @@ export default {
           });
           tableData.push({
             standard: "测试用例执行率100%",
-            actData:
-              (json.runedCase * 100 / json.totalCase).toFixed(2) +
+            actData: (json.runedCase * 100 / json.totalCase).toFixed(2) +
               "% (" +
               json.runedCase +
               "/" +
@@ -539,15 +543,13 @@ export default {
           });
           tableData.push({
             standard: "测试用例执行通过率95%",
-            actData:
-              (json.passedCase * 100 / json.totalCase).toFixed(2) +
+            actData: (json.passedCase * 100 / json.totalCase).toFixed(2) +
               "% (" +
               json.passedCase +
               "/" +
               json.totalCase +
               ")",
-            result:
-              json.passedCase / json.totalCase < 0.95 ? "不通过" : "通过"
+            result: json.passedCase / json.totalCase < 0.95 ? "不通过" : "通过"
           });
           tableData.push({
             standard: "致命、严重未关闭缺陷数为0",
@@ -556,8 +558,7 @@ export default {
           });
           tableData.push({
             standard: "一般遗留缺陷率应低于总缺陷数的5%",
-            actData:
-              (json.lMidNc * 100 / json.totalDefect).toFixed(2) +
+            actData: (json.lMidNc * 100 / json.totalDefect).toFixed(2) +
               "% (" +
               json.lMidNc +
               "/" +
@@ -567,8 +568,7 @@ export default {
           });
           tableData.push({
             standard: "建议类遗留缺陷率总和应低于10%",
-            actData:
-              (json.lLowNc * 100 / json.totalDefect).toFixed(2) +
+            actData: (json.lLowNc * 100 / json.totalDefect).toFixed(2) +
               "% (" +
               json.lLowNc +
               "/" +
@@ -592,18 +592,23 @@ export default {
           _self.reqs = json.relReq;
           _self.cases = json.relCase;
           _self.defects = json.relDefect;
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.sumLoading = false;
           });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.sumLoading = false;
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    standardCheck({ row, column, rowIndex, columnIndex }) {
+    standardCheck({
+      row,
+      column,
+      rowIndex,
+      columnIndex
+    }) {
       if (row.result && columnIndex === 3) {
         if (row.result.indexOf("不通过") > -1) {
           return "failed-items";
@@ -614,8 +619,8 @@ export default {
     },
 
     campture() {
-      let _self =  this;
-      
+      let _self = this;
+
       if (!sessionStorage.userId) {
         _self.$message.warning("您未登录，不可操作该功能！");
         return;
@@ -626,16 +631,18 @@ export default {
       }
       document.body.scrollTop = document.documentElement.scrollTop = 0;
       _self.isDisplayed = false;
-      _self.$nextTick(function() {
+      _self.$nextTick(function () {
         setTimeout(() => {
-          html2canvas(document.body).then(function(canvas) {
+          html2canvas(document.body).then(function (canvas) {
             let base64img = canvas.toDataURL("image/png");
             let data = window.atob(base64img.split(",")[1]);
             var ia = new Uint8Array(data.length);
             for (var i = 0; i < data.length; i++) {
               ia[i] = data.charCodeAt(i);
             }
-            let blob = new Blob([ia], { type: "image/png" });
+            let blob = new Blob([ia], {
+              type: "image/png"
+            });
             _self.upload(blob);
           });
         }, 200);
@@ -643,7 +650,7 @@ export default {
     },
 
     updateTestReport(url) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/report/update", {
         id: _self.reportId,
         emergencyPlan: _self.emergencyPlan,
@@ -653,9 +660,9 @@ export default {
     },
 
     reportQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/report/info_query/" + _self.reportId)
-        .then(function(res) {
+        .then(function (res) {
           let json = eval(res.data);
           if (json.length === 0) {
             _self.$message.info("数据异常，无法查询报告信息");
@@ -667,11 +674,11 @@ export default {
             return item.value === json[0].reportType;
           }).label;
           _self.baseInfo.namedPlan =
-            json[0].planType === 0
-              ? ""
-              : _self.testPeriod.find(item => {
-                  return item.value === json[0].planType;
-                }).label;
+            json[0].planType === 0 ?
+            "" :
+            _self.testPeriod.find(item => {
+              return item.value === json[0].planType;
+            }).label;
           if (json[0].emailTo && json[0].emailTo != "") {
             _self.tos = Array.from(new Set(json[0].emailTo.split(",")));
           }
@@ -679,9 +686,9 @@ export default {
             _self.ccs = Array.from(new Set(json[0].emailCc.split(",")));
           }
           let len =
-            _self.tos.length > _self.ccs.length
-              ? _self.tos.length
-              : _self.ccs.length;
+            _self.tos.length > _self.ccs.length ?
+            _self.tos.length :
+            _self.ccs.length;
           for (let z = 0; z < len; z++) {
             let to = z > _self.tos.length ? "" : _self.tos[z];
             let cc = z > _self.ccs.length ? "" : _self.ccs[z];
@@ -690,7 +697,7 @@ export default {
               cc: cc
             });
           }
-          _self.$nextTick(function() {
+          _self.$nextTick(function () {
             _self.memberQuery();
             _self.missionQuery();
             _self.testMissionQuery();
@@ -699,14 +706,14 @@ export default {
           _self.getDefectDirection();
           _self.getDefectDistribution();
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
     missionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/cms/query",
@@ -717,16 +724,16 @@ export default {
             relId: _self.baseInfo.relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.cms = eval(res.data.list);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
         });
     },
 
     testMissionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/tms/query",
@@ -737,21 +744,21 @@ export default {
             relId: _self.baseInfo.relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tms = eval(res.data.list);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
         });
     },
 
-    memberQuery(){
+    memberQuery() {
       let result = commonQuery.memberQueryProduct(this.baseInfo.productId);
       this.users = result.users;
     },
 
     upload(data) {
-      let _self =  this;
+      let _self = this;
       let resStr = "";
       if (_self.result === "1") {
         resStr = "测试通过，同意发布生产";
@@ -770,11 +777,11 @@ export default {
           },
           data: datas
         })
-        .then(function(res) {
-          _self.img =  res.data.url;
+        .then(function (res) {
+          _self.img = res.data.url;
           _self.imgUrl = res.data.url;
-          _self.$nextTick(function() {
-            let _self =  this;
+          _self.$nextTick(function () {
+            let _self = this;
             _self.updateTestReport(_self.img);
             let maxWidth = document.body.clientWidth * 4 / 5;
             let to = _self.tos;
@@ -831,7 +838,7 @@ export default {
             _self.isDisplayed = true;
           });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -945,7 +952,7 @@ body {
   line-height: 20px;
 }
 
-.sum-info .el-form-item + .sum-info .el-form-item {
+.sum-info .el-form-item+.sum-info .el-form-item {
   margin-left: 1%;
 }
 
@@ -992,16 +999,16 @@ body {
   font-weight: 700;
 }
 
-.no-data{
+.no-data {
   font-size: 20px;
   text-align: center;
-  margin-top: 15%; 
+  margin-top: 15%;
   font-weight: 700;
   color: #fff;
 }
 
 .emali-class {
-  color:#EE6F6F !important;
+  color: #EE6F6F !important;
   margin-top: 0 !important;
   float: right !important;
 }

@@ -1,6 +1,6 @@
 ﻿<template>
   <div>
-    <div class="query-condition-pro"> 
+    <div class="query-condition-pro">
       <el-form :inline="true" size="small">
         <el-form-item>
           <el-radio-group v-model="proAnaMode" size="small">
@@ -10,15 +10,15 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-date-picker 
-            v-model="proAnaPeriod" 
-            type="daterange" 
+          <el-date-picker
+            v-model="proAnaPeriod"
+            type="daterange"
             size="small"
-            align="right" 
-            unlink-panels 
-            :value-format="datefmt" 
-            range-separator="至" 
-            start-placeholder="开始日期" 
+            align="right"
+            unlink-panels
+            :value-format="datefmt"
+            range-separator="至"
+            start-placeholder="开始日期"
             end-placeholder="结束日期"
             @change="checkProPeriod()"
             :clearable="false"
@@ -31,16 +31,17 @@
           </el-select>
         </el-form-item>
         <el-form-item label="负责人">
-          <el-select v-model="proResponser" size="small" @change="refreshProData()" style="width:200px" filterable clearable :filter-method="filterUsers" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="proResponser"
+            size="small"
+            @change="refreshProData()"
+            style="width:200px"
+            filterable
+            clearable
+            :filter-method="filterUsers"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -81,7 +82,7 @@
         <v-pro-influence :datas="proInfluences" v-if="null != proInfluences && proInfluences.length > 0"></v-pro-influence>
         <h1 v-if="proInfluences == null || proInfluences == ''" class="no-data">线上问题严重程度分布<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
 
     <div>
       <div class="bug-container">
@@ -92,7 +93,7 @@
         <v-pro-close-cost :datas="proCloseCost" v-if="null != proCloseCost && proCloseCost.length > 0"></v-pro-close-cost>
         <h1 v-if="proCloseCost == null || proCloseCost == ''" class="no-data">线上问题关闭时效分析<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
 
     <div>
       <div class="bug-container">
@@ -103,7 +104,7 @@
         <v-pro-type-two :datas="proTypeTwo" v-if="null != proTypeTwo && proTypeTwo.length > 0"></v-pro-type-two>
         <h1 v-if="proTypeTwo == null || proTypeTwo == ''" class="no-data">线上问题二级分类分布<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
 
     <div>
       <div class="bug-container">
@@ -114,12 +115,15 @@
         <v-pro-improve-two :datas="proImproveTwo" v-if="null != proImproveTwo && proImproveTwo.length > 0"></v-pro-improve-two>
         <h1 v-if="proImproveTwo == null || proImproveTwo == ''" class="no-data">线上问题改进措施二级分类<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
   </div>
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import problemSubmitter from "./pro/ProblemSubmitter.vue";
 import problemResponser from "./pro/ProblemResponser.vue";
 import problemPriority from "./pro/ProblemPriority.vue";
@@ -134,7 +138,7 @@ import problemResolveCost from "./pro/ProblemResolveCost.vue";
 import problemCloseCost from "./pro/ProblemCloseCost.vue";
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       datefmt: defaultDateFormat,
       pickOptions: pickOptions,
@@ -149,14 +153,14 @@ export default {
       proResponsers: [],
       proModules: [],
       proStatuss: [],
-      proPriorities:[],
-      proInfluences:[],
-      proTypeOne:[],
-      proTypeTwo:[],
-      proImproveOne:[],
-      proImproveTwo:[],
-      proResolveCost:[],
-      proCloseCost:[]
+      proPriorities: [],
+      proInfluences: [],
+      proTypeOne: [],
+      proTypeTwo: [],
+      proImproveOne: [],
+      proImproveTwo: [],
+      proResolveCost: [],
+      proCloseCost: []
     }
   },
 
@@ -183,17 +187,17 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
-    
-    setDefaultPeriod(){
+
+    setDefaultPeriod() {
       let date = new Date();
       let oldDay = new Date();
       let qTimeEnd = dateFormat(date, this.datefmt);
@@ -204,8 +208,8 @@ export default {
       this.proAnaPeriod.push(qTimeEnd);
     },
 
-    refreshProData(){
-      let _self =  this;
+    refreshProData() {
+      let _self = this;
       _self.proSubmitters.splice(0, _self.proSubmitters.length);
       _self.problemSubmitter();
       _self.proResponsers.splice(0, _self.proResponsers.length);
@@ -232,10 +236,10 @@ export default {
       _self.problemCloseCost();
     },
 
-    checkProPeriod(){
+    checkProPeriod() {
       let start = this.proAnaPeriod[0];
       let end = this.proAnaPeriod[1];
-      let period = (Date.parse(end.replace('/-/g','/')) - Date.parse(start.replace('/-/g','/'))) / (3600 * 1000 * 24);
+      let period = (Date.parse(end.replace('/-/g', '/')) - Date.parse(start.replace('/-/g', '/'))) / (3600 * 1000 * 24);
       if (period > 183) {
         this.$message.info("请查询六个月以内的数据！");
         this.setDefaultPeriod();
@@ -244,8 +248,8 @@ export default {
       this.refreshProData();
     },
 
-    problemSubmitter(){
-      let _self =  this;
+    problemSubmitter() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proSubmitter",
@@ -260,17 +264,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proSubmitters = _self.sortData(eval(res.data), "submitter", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemResponser(){
-      let _self =  this;
+    problemResponser() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proResponser",
@@ -285,17 +289,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proResponsers = _self.sortData(eval(res.data), "responser", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemModule(){
-      let _self =  this;
+    problemModule() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proModule",
@@ -310,17 +314,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proModules = _self.sortData(eval(res.data), "moduleName", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemStatus(){
-      let _self =  this;
+    problemStatus() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proStatus",
@@ -335,17 +339,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proStatuss = _self.sortData(eval(res.data), "status", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemPriority(){
-      let _self =  this;
+    problemPriority() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proPriority",
@@ -360,17 +364,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proPriorities = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemInfluence(){
-      let _self =  this;
+    problemInfluence() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proInfluence",
@@ -385,17 +389,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proInfluences = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemTypeOne(){
-      let _self =  this;
+    problemTypeOne() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proTypeOne",
@@ -410,17 +414,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proTypeOne = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemTypeTwo(){
-      let _self =  this;
+    problemTypeTwo() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proTypeTwo",
@@ -435,17 +439,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proTypeTwo = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemImproveOne(){
-      let _self =  this;
+    problemImproveOne() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proImproveOne",
@@ -460,17 +464,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proImproveOne = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemImproveTwo(){
-      let _self =  this;
+    problemImproveTwo() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proImproveTwo",
@@ -485,17 +489,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proImproveTwo = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemResolveCost(){
-      let _self =  this;
+    problemResolveCost() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proResolveCost",
@@ -510,17 +514,17 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proResolveCost = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    problemCloseCost(){
-      let _self =  this;
+    problemCloseCost() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/proCloseCost",
@@ -535,10 +539,10 @@ export default {
             responser: _self.proResponser
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.proCloseCost = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -550,12 +554,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -566,8 +570,8 @@ export default {
       return result;
     },
 
-    memberQuery(){
-      let _self =  this;
+    memberQuery() {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.memberFull = result.usersFull;
         _self.userOptions = result.usersFull;
@@ -575,7 +579,7 @@ export default {
     },
 
     moduleQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/module/query",
@@ -583,7 +587,7 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           var json = eval(res.data.list);
           for (var i = 0; i < json.length; i++) {
             _self.appModules.push({
@@ -592,7 +596,7 @@ export default {
             });
           }
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -619,7 +623,7 @@ export default {
   vertical-align: middle;
 }
 
-.bug-container{
+.bug-container {
   width: 49%;
   height: 300px;
   display: inline-block;
@@ -629,7 +633,7 @@ export default {
   background-color: #3b434e;
 }
 
-.bug-container+.bug-container{
+.bug-container+.bug-container {
   margin-left: 1%;
 }
 

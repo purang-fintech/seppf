@@ -1,19 +1,21 @@
-<template >
-<div class="move-group ">
-  <div class="move-up menu-btn" :disabled="disabled1" @click="ArrangeUp">
-    <i class="tab-icons"></i>
-    <span>上移</span>
+<template>
+  <div class="move-group ">
+    <div class="move-up menu-btn" :disabled="disabled1" @click="ArrangeUp">
+      <i class="tab-icons"></i>
+      <span>上移</span>
+    </div>
+    <div class="move-down menu-btn" :disabled="disabled2" @click="ArrangeDown">
+      <i class="tab-icons"></i>
+      <span>下移</span>
+    </div>
   </div>
-  <div class="move-down menu-btn" :disabled="disabled2" @click="ArrangeDown">
-    <i class="tab-icons"></i>
-    <span>下移</span>
-  </div>
-</div>
 
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {
+  mapGetters
+} from 'vuex'
 export default {
   name: 'move_box',
   computed: {
@@ -40,5 +42,4 @@ export default {
     }
   }
 }
-
 </script>

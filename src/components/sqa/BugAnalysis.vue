@@ -20,11 +20,14 @@
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import DefectAnalysis from './DefectAnalysis.vue';
 import ProblemAnalysis from './ProblemAnalysis.vue';
 export default {
-  data: function() {
+  data: function () {
     return {
       activeName: "defect"
     }
@@ -35,10 +38,8 @@ export default {
     vProblem: ProblemAnalysis
   },
 
-  created() {
-  },
+  created() {},
 
-  methods: {
-  }
+  methods: {}
 };
 </script>

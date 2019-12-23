@@ -28,7 +28,13 @@
           <el-breadcrumb-item>已关联开发需求</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <el-table :data="relatedReqs" style="width: 100%;" :max-height="tableHeight - 30" stripe size="mini" :border="showBorder">
+      <el-table
+        :data="relatedReqs"
+        style="width: 100%;"
+        :max-height="tableHeight - 30"
+        stripe
+        size="mini"
+        :border="showBorder">
         <el-table-column prop="id" label="产品需求号" width="100" align="center" sortable>
         </el-table-column>
         <el-table-column prop="relCode" label="版本号" width="120" align="center">
@@ -37,7 +43,7 @@
         </el-table-column>
         <el-table-column prop="summary" label="需求摘要" header-align="center">
         </el-table-column>
-        <el-table-column  width="90" align="center" label="操作">
+        <el-table-column width="90" align="center" label="操作">
           <template slot-scope="scope">
             <el-button v-no-more-click type="text" size="mini" @click="unrelate(scope.row.id)" :disabled="prodForbbiden()">解除关联</el-button>
           </template>
@@ -49,7 +55,7 @@
 
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       relatedReqs: [], //已关联的REQ
@@ -69,93 +75,97 @@ export default {
 
   methods: {
     relate() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/case/relate_save", {
-        caseId: _self.caseId,
-        ids: _self.reqIds.toString(),
-        relateType: 2
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.$message.success("关联成功！");
-          _self.reqIds = [];
-          _self.relatedReqQuery();
-        } else {
-          _self.$message.info("关联失败！");
-        }
-      })
+          caseId: _self.caseId,
+          ids: _self.reqIds.toString(),
+          relateType: 2
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.$message.success("关联成功！");
+            _self.reqIds = [];
+            _self.relatedReqQuery();
+          } else {
+            _self.$message.info("关联失败！");
+          }
+        })
     },
 
     unrelate(id) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/case/relate_delete", {
-        caseId: _self.caseId,
-        id: id,
-        relateType: 2
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.$message.success("解除关联成功");
-          _self.relatedReqQuery();
-        } else {
-          _self.$message.info("解除关联失败");
-        }
-      })
+          caseId: _self.caseId,
+          id: id,
+          relateType: 2
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.$message.success("解除关联成功");
+            _self.relatedReqQuery();
+          } else {
+            _self.$message.info("解除关联失败");
+          }
+        })
     },
 
-    prodForbbiden(){
+    prodForbbiden() {
       return parseInt(this.currentProd) != parseInt(sessionStorage.productId);
     },
 
     relatedReqQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/case/releted_req/" + _self.caseId)
-      .then(function(res) {
-        _self.relatedReqs = eval(res.data);
-        let relatedIds = [];
-        _self.relatedReqs.forEach(d => {relatedIds.push(d.id)});
-        _self.reqs.forEach(item => {
-          _self.$set(item, "disabled", relatedIds.indexOf(item.value) > -1);
-        });
-      })
+        .then(function (res) {
+          _self.relatedReqs = eval(res.data);
+          let relatedIds = [];
+          _self.relatedReqs.forEach(d => {
+            relatedIds.push(d.id)
+          });
+          _self.reqs.forEach(item => {
+            _self.$set(item, "disabled", relatedIds.indexOf(item.value) > -1);
+          });
+        })
     },
 
     openRelQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/release/opening",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(function (res) {
-        let releases = eval(res.data);
-        _self.openReleases.splice(0, _self.openReleases.length);
-        for (let i = releases.length - 1; i >= 0; i--) {
-          _self.openReleases.push({
-            label: "[" + releases[i].branchName + "]" + releases[i].relCode,
-            value: releases[i].id
-          });
-        }
-      })
+          method: "post",
+          url: "/release/opening",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(function (res) {
+          let releases = eval(res.data);
+          _self.openReleases.splice(0, _self.openReleases.length);
+          for (let i = releases.length - 1; i >= 0; i--) {
+            _self.openReleases.push({
+              label: "[" + releases[i].branchName + "]" + releases[i].relCode,
+              value: releases[i].id
+            });
+          }
+        })
     },
 
     relReqQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/req/rel_query/" + _self.relId + "/1/500")
-      .then(function(res) {
-        let related = [];
-        _self.relatedReqs.forEach(d => {related.push(d.id)});
-        _self.reqs.splice(0, _self.reqs.length);
-        eval(res.data.list).forEach(item => {
-          _self.reqs.push({
-            value: item.id,
-            label: item.id + " - " + item.summary,
-            disabled: related.indexOf(item.id) > -1
+        .then(function (res) {
+          let related = [];
+          _self.relatedReqs.forEach(d => {
+            related.push(d.id)
           });
-        });
-      })
+          _self.reqs.splice(0, _self.reqs.length);
+          eval(res.data.list).forEach(item => {
+            _self.reqs.push({
+              value: item.id,
+              label: item.id + " - " + item.summary,
+              disabled: related.indexOf(item.id) > -1
+            });
+          });
+        })
     }
   },
 

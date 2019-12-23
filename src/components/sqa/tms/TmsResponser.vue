@@ -1,6 +1,7 @@
 <template>
   <div id="tmsResponser" style="width:100%; height:300px"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -9,7 +10,7 @@ require("echarts/lib/component/toolbox");
 require("echarts/lib/component/title");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,11 +19,11 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let usersData = [];
     let responserData = [];
     _self.datas.forEach(item => {
-      usersData.push(item.responser); 
+      usersData.push(item.responser);
       responserData.push({
         value: item.num
       });
@@ -36,7 +37,9 @@ export default {
       },
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "shadow" }
+        axisPointer: {
+          type: "shadow"
+        }
       },
       grid: {
         top: 60,
@@ -50,9 +53,16 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -66,19 +76,17 @@ export default {
           formatter: "{value}"
         }
       },
-      series: [
-        {
-          name: "任务数",
-          type: "bar",
-          barMaxWidth: '50',
-          data: responserData
-        }
-      ]
+      series: [{
+        name: "任务数",
+        type: "bar",
+        barMaxWidth: '50',
+        data: responserData
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("tmsResponser");
 
     let dataCharts = echarts.init(charts, sepp);

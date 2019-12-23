@@ -20,36 +20,35 @@
 </template>
 
 <script>
-  import editMenu from './top_menu/edit_menu/edit_menu'
-  import viewMenu from './top_menu/view_menu/view_menu'
-  export default {
-    name: 'headerVue',
-    data() {
-      return {
-        switchShow: {
-          showEditMenu: true,
-          showViewMenu: false
-        }
-      }
-    },
-    components: {
-      editMenu,
-      viewMenu
-    },
-    methods: {
-      showMenu: function (e) {
-        for (var variable in this.switchShow) {
-          if (this.switchShow.hasOwnProperty(variable)) {
-            this.switchShow[variable] = false
-          }
-        }
-        this['switchShow'][e.target.className.replace('btn-', '')] = true
+import editMenu from './top_menu/edit_menu/edit_menu'
+import viewMenu from './top_menu/view_menu/view_menu'
+export default {
+  name: 'headerVue',
+  data() {
+    return {
+      switchShow: {
+        showEditMenu: true,
+        showViewMenu: false
       }
     }
+  },
+  components: {
+    editMenu,
+    viewMenu
+  },
+  methods: {
+    showMenu: function (e) {
+      for (var variable in this.switchShow) {
+        if (this.switchShow.hasOwnProperty(variable)) {
+          this.switchShow[variable] = false
+        }
+      }
+      this['switchShow'][e.target.className.replace('btn-', '')] = true
+    }
   }
-
+}
 </script>
 
 <style lang="scss">
-  @import "@/assets/style/minder/header.scss";
+@import "@/assets/style/minder/header.scss";
 </style>

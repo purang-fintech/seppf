@@ -53,60 +53,59 @@
 </template>
 
 <script>
-  export default {
-    name: "BuildPipeline",
-    data() {
-      return {
-        // pipelineStep: {},
-        stages: [],
-        jobName: "ContinousCompile",
-        buildStatus: 'FAILED',
-        buildVersion: 4243,
-        show: true,
-        blockHeight: document.body.clientHeight - 200
-      }
+export default {
+  name: "BuildPipeline",
+  data() {
+    return {
+      // pipelineStep: {},
+      stages: [],
+      jobName: "ContinousCompile",
+      buildStatus: 'FAILED',
+      buildVersion: 4243,
+      show: true,
+      blockHeight: document.body.clientHeight - 200
+    }
+  },
+  props: {
+    pipelineData: {},
+  },
+  watch: {
+    pipelineStep() {}
+  },
+  methods: {
+    timestampToTime(timestamp) {
+      let date = new Date(timestamp) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      let h = date.getHours() + ':'
+      let m = date.getMinutes() + ':'
+      let s = date.getSeconds()
+      return Y + M + D + h + m + s
     },
-    props: {
-      pipelineData: {},
-    },
-    watch: {
-      pipelineStep() {
-      }
-    },
-    methods: {
-      timestampToTime(timestamp) {
-        let date = new Date(timestamp) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-        let Y = date.getFullYear() + '-'
-        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-        let D = date.getDate() + ' '
-        let h = date.getHours() + ':'
-        let m = date.getMinutes() + ':'
-        let s = date.getSeconds()
-        return Y + M + D + h + m + s
-      },
-    },
-    created() {
-      if (this.$route.query.jobName && this.$route.query.buildVersion && this.$route.query.buildStatus) {
-        this.jobName = this.$route.query.jobName;
-        this.buildVersion = this.$route.query.buildVersion;
-        this.buildStatus = this.$route.query.buildStatus;
-      }
+  },
+  created() {
+    if (this.$route.query.jobName && this.$route.query.buildVersion && this.$route.query.buildStatus) {
+      this.jobName = this.$route.query.jobName;
+      this.buildVersion = this.$route.query.buildVersion;
+      this.buildStatus = this.$route.query.buildStatus;
     }
   }
+}
 </script>
 
 <style>
-  .pipeline-steps .el-timeline .el-timeline-item:last-child .el-timeline-item__tail {
-    display: block !important;
-  }
+.pipeline-steps .el-timeline .el-timeline-item:last-child .el-timeline-item__tail {
+  display: block !important;
+}
 
-  .pipeline-steps .el-timeline:last-child .el-timeline-item .el-timeline-item__tail {
-    display: none !important;
-  }
+.pipeline-steps .el-timeline:last-child .el-timeline-item .el-timeline-item__tail {
+  display: none !important;
+}
 
-  .pipeline-steps {
-    max-height: 600px;
-    padding: 0 30px;
-    overflow-y: auto;
-  }
+.pipeline-steps {
+  max-height: 600px;
+  padding: 0 30px;
+  overflow-y: auto;
+}
 </style>

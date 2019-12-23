@@ -1,6 +1,7 @@
 <template>
   <div id="vcostCharts" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/pie");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,11 +19,11 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let legendData = [];
     let vcostData = [];
     _self.datas.forEach(data => {
-      legendData.push(data.verifyCosts); 
+      legendData.push(data.verifyCosts);
       vcostData.push({
         value: data.num,
         name: data.verifyCosts
@@ -50,31 +51,36 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
-      series: [
-        {
-          name: "验证耗时",
-          type: "pie",
-          radius: "60%",
-          center: ["40%", "50%"],
-          data: vcostData,
-          label: {
-            normal: {
-              formatter: '{b} ({d}%)',
-            }
+      series: [{
+        name: "验证耗时",
+        type: "pie",
+        radius: "60%",
+        center: ["40%", "50%"],
+        data: vcostData,
+        label: {
+          normal: {
+            formatter: '{b} ({d}%)',
           }
         }
-      ]
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("vcostCharts");
 
     let dataCharts = echarts.init(charts, sepp);

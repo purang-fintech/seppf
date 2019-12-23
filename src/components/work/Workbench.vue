@@ -8,10 +8,16 @@
       <el-card v-for="(item, index) in userProducts" :key="index" class="project-list" shadow="never" @dblclick.native="chooseProject(item)">
         <div slot="header">
           <el-popover placement="right-start" width="150" trigger="hover" title="拥有角色：" popper-class="role-list">
-            <p v-for="(role, index) in getRoles(item.productId).roleNames" :key="index"><i class="el-icon-user"/>{{role}}</p>
+            <p v-for="(role, index) in getRoles(item.productId).roleNames" :key="index"><i class="el-icon-user" />{{role}}</p>
             <span style="color:#FFF" slot="reference">{{item.productName}}</span>
           </el-popover>
-          <el-link type="primary" style="float:right" @click="chooseProject(item)" :disabled="productName==item.productName" :underline="false" icon="el-icon-right">进入</el-link>
+          <el-link
+            type="primary"
+            style="float:right"
+            @click="chooseProject(item)"
+            :disabled="productName==item.productName"
+            :underline="false"
+            icon="el-icon-right">进入</el-link>
         </div>
       </el-card>
       <el-card class="project-list" shadow="never" :class="[userProducts.length%4 > 0 ? 'special-list-wb': 'normal-list-wb']">
@@ -484,7 +490,9 @@
 </template>
 
 <script>
-import { dateFormat } from "@/util/date.js";
+import {
+  dateFormat
+} from "@/util/date.js";
 import commonQuery from '../util/CommonQuery.vue';
 import createProduct from "@/components/mgr/product/ProductCreate.vue";
 export default {
@@ -590,18 +598,44 @@ export default {
       activeName: "",
       reqCount: 0,
       bugCount: 0,
-      colors: [
-        {percentage: 20, color: '#EE6F6F'}, 
-        {percentage: 40, color: '#DEAF6C'}, 
-        {percentage: 60, color: '#9CA9C4'}, 
-        {percentage: 80, color: '#3AB4D7'}, 
-        {percentage: 100, color: '#6BBD6B'}
+      colors: [{
+          percentage: 20,
+          color: '#EE6F6F'
+        },
+        {
+          percentage: 40,
+          color: '#DEAF6C'
+        },
+        {
+          percentage: 60,
+          color: '#9CA9C4'
+        },
+        {
+          percentage: 80,
+          color: '#3AB4D7'
+        },
+        {
+          percentage: 100,
+          color: '#6BBD6B'
+        }
       ],
       schedule: {
-        req: { value: 100, name: "产品需求"},
-        cms: { value: 100, name: "开发任务"},
-        test: { value: 100, name: "测试执行"},
-        bug: { value: 100, name: "产品缺陷"}
+        req: {
+          value: 100,
+          name: "产品需求"
+        },
+        cms: {
+          value: 100,
+          name: "开发任务"
+        },
+        test: {
+          value: 100,
+          name: "测试执行"
+        },
+        bug: {
+          value: 100,
+          name: "产品缺陷"
+        }
       },
       progressWidth: 250,
       isMounted: false
@@ -613,12 +647,24 @@ export default {
   },
 
   watch: {
-    activeName: function(val) {
+    activeName: function (val) {
       this.schedule = {
-        req: { value: 100, name: "产品需求"},
-        cms: { value: 100, name: "开发任务"},
-        test: { value: 100, name: "测试执行"},
-        bug: { value: 100, name: "产品缺陷"}
+        req: {
+          value: 100,
+          name: "产品需求"
+        },
+        cms: {
+          value: 100,
+          name: "开发任务"
+        },
+        test: {
+          value: 100,
+          name: "测试执行"
+        },
+        bug: {
+          value: 100,
+          name: "产品缺陷"
+        }
       };
       let release = this.release.allData.find(item => {
         return item.relCode === val;
@@ -630,7 +676,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.userProducts.splice(0, _self.userProducts.length);
     let userPrivs = localStorage.getItem("userProducts");
     if (commonQuery.isNull(userPrivs) || eval(JSON.parse(userPrivs)).length == 0) {
@@ -656,26 +702,26 @@ export default {
       _self.userDefined.push(parseInt(d));
     });
 
-    _self.productReleaseQuery();    //版本/迭代数据
-    _self.productRequestQuery();    //需求数据
-    _self.productMissionQuery();    //开发任务数据
-    _self.productDefectQuery();   //缺陷数据
-    _self.productTestingQuery();    //测试用例数据
-    _self.productPipelineQuery();   //部署流水线数据
+    _self.productReleaseQuery(); //版本/迭代数据
+    _self.productRequestQuery(); //需求数据
+    _self.productMissionQuery(); //开发任务数据
+    _self.productDefectQuery(); //缺陷数据
+    _self.productTestingQuery(); //测试用例数据
+    _self.productPipelineQuery(); //部署流水线数据
 
     if (_self.toBeShown(2)) {
       _self.productWarningQuery();
     }
-    if (_self.toBeShown(8)) {   //代码规范扫描
+    if (_self.toBeShown(8)) { //代码规范扫描
       _self.productCodeHealthyQuery();
     }
-    if (_self.toBeShown(9)) {   //代码安全扫描
+    if (_self.toBeShown(9)) { //代码安全扫描
       _self.productCodeSecurityQuery();
     }
-    if (_self.toBeShown(10) || _self.toBeShown(11)) {   //自动化测试用例情况
+    if (_self.toBeShown(10) || _self.toBeShown(11)) { //自动化测试用例情况
       _self.productAutotestQuery();
     }
-    if (_self.toBeShown(12)) {    //代码测试覆盖率情况
+    if (_self.toBeShown(12)) { //代码测试覆盖率情况
       _self.productCoverageQuery();
     }
   },
@@ -686,7 +732,7 @@ export default {
   },
 
   methods: {
-    chooseProject(item){
+    chooseProject(item) {
       if (sessionStorage.productName == item.productName) {
         return;
       }
@@ -700,107 +746,138 @@ export default {
       window.location.reload();
     },
 
-    saveCreate(){
+    saveCreate() {
       this.$refs.createProduct.checkProductCreate();
     },
 
-    getRoles(productId){
+    getRoles(productId) {
       if (this.userProducts.length == 0) {
-        return {roles: [], roleNames: []};
+        return {
+          roles: [],
+          roleNames: []
+        };
       }
-      return this.userProducts.find(item => {return item.productId == productId});
+      return this.userProducts.find(item => {
+        return item.productId == productId
+      });
     },
 
-    toBeShown(index){
+    toBeShown(index) {
       return this.userDefined.indexOf(index) > -1;
     },
 
     toRequest(id) {
-      this.$router.push({ name: "dashboard", params: { relId: id, type: "req" } });
+      this.$router.push({
+        name: "dashboard",
+        params: {
+          relId: id,
+          type: "req"
+        }
+      });
     },
 
     toMission(id) {
-      this.$router.push({ name: "dashboard", params: { relId: id, type: "cms" } });
+      this.$router.push({
+        name: "dashboard",
+        params: {
+          relId: id,
+          type: "cms"
+        }
+      });
     },
 
     toExec(id) {
-      this.$router.push({ name: "testexec", params: { relId: id } });
+      this.$router.push({
+        name: "testexec",
+        params: {
+          relId: id
+        }
+      });
     },
 
     toDefect(id) {
-      this.$router.push({ name: "defect", params: { relId: id } });
+      this.$router.push({
+        name: "defect",
+        params: {
+          relId: id
+        }
+      });
     },
 
     productReleaseQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/dashboard/release")
-      .then(function(res) {
-        let result = res.data;
-        if (!result || result.allData.length == 0) {
-          _self.$message.warning("该产品没有待发布版本 / 迭代计划！");
-          return;
-        }
-        _self.release.allData = result.allData;
-        _self.release.mineData = result.mineData;
-        _self.release.count = result.count;
-        _self.release.mine = result.mine;
-        _self.activeName = _self.release.allData[0].relCode;
-      })
+        .then(function (res) {
+          let result = res.data;
+          if (!result || result.allData.length == 0) {
+            _self.$message.warning("该产品没有待发布版本 / 迭代计划！");
+            return;
+          }
+          _self.release.allData = result.allData;
+          _self.release.mineData = result.mineData;
+          _self.release.count = result.count;
+          _self.release.mine = result.mine;
+          _self.activeName = _self.release.allData[0].relCode;
+        })
     },
 
     productRequestQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/dashboard/request")
-      .then(function(res) {
-        let result = res.data;
-        // 后端只查了status为1、2、3、4、5的数据
-        _self.requirement.allData = result.allData;
-        _self.requirement.mineData = result.mineData;
-        _self.requirement.pooledData = result.allData.filter(item => {return item.status == 1});
-        _self.requirement.devingData = result.allData.filter(item => {return item.status > 1});
-        _self.requirement.pooled = _self.requirement.pooledData.length;
-        _self.requirement.deving = _self.requirement.devingData.length;
-        _self.requirement.mine = result.mine;
-      })
+        .then(function (res) {
+          let result = res.data;
+          // 后端只查了status为1、2、3、4、5的数据
+          _self.requirement.allData = result.allData;
+          _self.requirement.mineData = result.mineData;
+          _self.requirement.pooledData = result.allData.filter(item => {
+            return item.status == 1
+          });
+          _self.requirement.devingData = result.allData.filter(item => {
+            return item.status > 1
+          });
+          _self.requirement.pooled = _self.requirement.pooledData.length;
+          _self.requirement.deving = _self.requirement.devingData.length;
+          _self.requirement.mine = result.mine;
+        })
     },
 
     productMissionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/dashboard/cms")
-      .then(function(res) {
-        let result = res.data;
-        _self.cms.allData = result.allData;
-        _self.cms.mineData = result.mineData;
-        _self.cms.count = result.count;
-        _self.cms.mine = result.mine;
-      })
+        .then(function (res) {
+          let result = res.data;
+          _self.cms.allData = result.allData;
+          _self.cms.mineData = result.mineData;
+          _self.cms.count = result.count;
+          _self.cms.mine = result.mine;
+        })
     },
 
     productDefectQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/dashboard/defect")
-      .then(function(res) {
-        let result = res.data;
-        _self.defect.allData = result.allData;
-        _self.defect.mineData = result.mineData;
-        _self.defect.count = result.count;
-        _self.defect.mine = result.mine;
-      })
+        .then(function (res) {
+          let result = res.data;
+          _self.defect.allData = result.allData;
+          _self.defect.mineData = result.mineData;
+          _self.defect.count = result.count;
+          _self.defect.mine = result.mine;
+        })
     },
 
     productTestingQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/dashboard/testing")
-      .then(function(res) {
-        let result = res.data;
-        _self.testcase.count = result.count;
-        _self.testcase.notPassed = result.notPassed;
-        _self.testcase.mine = result.mine;
-      })
+        .then(function (res) {
+          let result = res.data;
+          _self.testcase.count = result.count;
+          _self.testcase.notPassed = result.notPassed;
+          _self.testcase.mine = result.mine;
+        })
     },
 
     productPipelineQuery() {
-      let _self =  this;
+      let _self = this;
       // _self.$axios.post("/dashboard/pipeline")
       // .then(function(res) {
       //   let result = res.data;
@@ -810,7 +887,7 @@ export default {
     },
 
     productWarningQuery() {
-      let _self =  this;
+      let _self = this;
       // _self.$axios.post("/dashboard/warning")
       // .then(function(res) {
       //   let result = res.data;
@@ -820,18 +897,18 @@ export default {
     },
 
     productCodeHealthyQuery() {
-      let _self =  this;
+      let _self = this;
       // _self.$axios.post("/dashboard/code_healthy")
       // .then(function(res) {
       //   let result = res.data;
-        // _self.codeScan.addition = result.addition;
+      // _self.codeScan.addition = result.addition;
       //   _self.codeScan.all = result.all;
       //   _self.codeScan.mine = result.mine;
       // })
     },
 
     productCodeSecurityQuery() {
-      let _self =  this;
+      let _self = this;
       // _self.$axios.post("/dashboard/code_security")
       // .then(function(res) {
       //   let result = res.data;
@@ -842,7 +919,7 @@ export default {
     },
 
     productAutotestQuery() {
-      let _self =  this;
+      let _self = this;
       // _self.$axios.post("/dashboard/autotest")
       // .then(function(res) {
       //   let result = res.data;
@@ -858,7 +935,7 @@ export default {
     },
 
     productCoverageQuery() {
-      let _self =  this;
+      let _self = this;
       // _self.$axios.post("/dashboard/coverage")
       // .then(function(res) {
       //   let result = res.data;
@@ -875,7 +952,7 @@ export default {
     },
 
     relRequestSchedule(relId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/index/rel_req_query",
@@ -886,7 +963,7 @@ export default {
             relId: relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let results = eval(res.data);
           if (results.length === 0) {
             _self.schedule.req.value = 0;
@@ -900,7 +977,7 @@ export default {
     },
 
     relMissionSchedule(relId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/index/rel_cms_query",
@@ -911,21 +988,21 @@ export default {
             relId: relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let results = eval(res.data);
           if (results.length === 0) {
             _self.schedule.cms.value = 0;
             return;
           }
           let completed = results.filter(item => {
-            return item.status == 0 || item.status >= 5; 
+            return item.status == 0 || item.status >= 5;
           });
           _self.schedule.cms.value = parseInt((completed.length / results.length) * 100);
         })
     },
 
     relTestSchedule(relId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/index/rel_test_query",
@@ -936,7 +1013,7 @@ export default {
             relId: relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (!res.data || res.data.caseCount === 0) {
             _self.schedule.test.value = 0;
             return;
@@ -948,7 +1025,7 @@ export default {
     },
 
     relDefectSchedule(relId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/index/rel_bug_query",
@@ -959,7 +1036,7 @@ export default {
             relId: relId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let results = eval(res.data);
           if (results.length == 0) {
             _self.schedule.bug.value = 0;
@@ -976,9 +1053,10 @@ export default {
 </script>
 
 <style>
-.my-project, .project-work, .release-progress {
-  margin-bottom: 1%; 
-  border-radius: 0; 
+.my-project,
+.project-work,
+.release-progress {
+  border-radius: 0;
 }
 
 .my-project .el-card__body,
@@ -987,9 +1065,8 @@ export default {
 }
 
 .special-list-wb {
-  position:absolute;
+  position: absolute;
   width: 23.6% !important;
-  padding: 10px !important;
 }
 
 .normal-list-wb {
@@ -997,7 +1074,7 @@ export default {
 }
 
 .special-list-wb .el-card__header,
-.normal-list-wb .el-card__header{
+.normal-list-wb .el-card__header {
   padding: 10px !important;
 }
 
@@ -1009,7 +1086,7 @@ export default {
   background-color: #4d5a6b !important;
 }
 
-.project-list .el-card__header{
+.project-list .el-card__header {
   padding: 10px 20px;
   border: none;
 }
@@ -1027,12 +1104,12 @@ export default {
   background-color: #4d5a6b !important;
 }
 
-.index-content .el-card__header>div>span{
+.index-content .el-card__header>div>span {
   color: #FFF;
   font-size: 15px;
 }
 
-.work-card .el-card__header{
+.work-card .el-card__header {
   padding: 12px 20px 0;
   height: 45px;
   margin: 0;
@@ -1040,20 +1117,20 @@ export default {
 
 .work-card .work-content {
   margin: 20px 0;
-  display:inline-block;
-} 
+  display: inline-block;
+}
 
 .work-card .work-content .content-name {
-  text-align:center;
-  font-size:15px;
-  color:#FFF;
+  text-align: center;
+  font-size: 15px;
+  color: #FFF;
 }
 
 .work-card .work-content .content-number {
   font-size: 26px;
   font-weight: 600;
   margin-top: 30px;
-  text-align:center;
+  text-align: center;
 }
 
 .work-card .special-divider {
@@ -1070,7 +1147,7 @@ export default {
   background-color: #3b434e;
 }
 
-.index-content .el-card__header>div>a{
+.index-content .el-card__header>div>a {
   float: right;
   margin-left: 10px;
   height: 21px;
@@ -1078,7 +1155,7 @@ export default {
   font-size: 14px;
 }
 
-.index-content .el-link i{
+.index-content .el-link i {
   margin-left: 2px;
 }
 
@@ -1099,13 +1176,13 @@ export default {
   border: none;
 }
 
-.release-progress .el-tabs .el-tabs__content{
+.release-progress .el-tabs .el-tabs__content {
   background-color: #4d5a6b !important;
   border: 1px solid #EBEEF5;
   border-radius: 2px;
 }
 
-.release-progress .el-progress__text{
+.release-progress .el-progress__text {
   color: #fff;
 }
 
@@ -1161,12 +1238,12 @@ export default {
   font-weight: 600;
 }
 
-.role-list p{
-  font-size:14px;
-  margin:8px 0 0 15px;
+.role-list p {
+  font-size: 14px;
+  margin: 8px 0 0 15px;
 }
 
-.role-list p i{
-  margin-right:5px;
+.role-list p i {
+  margin-right: 5px;
 }
 </style>

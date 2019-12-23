@@ -9,21 +9,22 @@
     <iframe src="/static/docs/index.html" style="border:none;width:100%;height:13200px;overflow:auto"></iframe>
   </div>
 </template>
+
 <script>
-  export default {
-    props: ["collapsed"],
+export default {
+  props: ["collapsed"],
 
-    created() {
-      let _self =  this;
-      _self.init();
-    },
+  created() {
+    let _self = this;
+    _self.init();
+  },
 
-    methods: {
-      init() {
-        if (document.body.clientWidth < 1600 && !this.collapsed) {
-          this.$message.warning("检测到您页面宽度不足，建议收起侧边栏！");
-        }
+  methods: {
+    init() {
+      if (document.body.clientWidth < 1600 && !this.collapsed) {
+        this.$message.warning("检测到您页面宽度不足，建议收起侧边栏！");
       }
     }
   }
+}
 </script>

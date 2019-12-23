@@ -11,13 +11,15 @@
 
     <el-dialog :close-on-click-modal="modalClose" title="用户授权" :visible.sync="showDialog" width="600px">
       <el-form :model="grfrom" size="small" :inline="false" label-width="100px" class="grant-form">
-        <el-form-item label="产品" required>
-          <el-select v-model="grfrom.products" placeholder="支持多选" style="width:400px" filterable clearable multiple collapse-tags>
-            <el-option v-for="opt in roleform.products.options" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="角色" required>
-          <el-select v-model="grfrom.roles" placeholder="支持多选" style="width:400px" filterable clearable multiple collapse-tags>
+          <el-select
+            v-model="grfrom.roles"
+            placeholder="支持多选"
+            style="width:400px"
+            filterable
+            clearable
+            multiple
+            collapse-tags>
             <el-option v-for="opt in roles" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
           </el-select>
         </el-form-item>
@@ -29,35 +31,36 @@
     </el-dialog>
 
     <div class="priv-main">
-      <el-form ref="form" :model="roleform" :inline="true" size="mini" @keydown.native.enter="userPrivQuery()" label-width="90px">
-        <el-form-item label="用户">
-          <el-select v-model="roleform.users.selected" @change="setGrantEditable()" placeholder="可输入过滤" filterable clearable :filter-method="filterUsers" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+      <el-form
+        ref="form"
+        :model="roleform"
+        :inline="true"
+        size="mini"
+        @keydown.native.enter="userPrivQuery()"
+        label-width="120px">
+        <el-form-item label="用户账户/ 姓名">
+          <el-select
+            v-model="roleform.users.selected"
+            @change="setGrantEditable()"
+            placeholder="可输入过滤"
+            filterable
+            clearable
+            :filter-method="filterUsers"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;marginleft:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否有效">
+        <el-form-item label="用户是否有效">
           <el-select v-model="roleform.isValid.selected" placeholder="请选择" clearable>
             <el-option v-for="opt in roleform.isValid.options" :value="opt" :key="opt" :label="opt"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="产品">
-          <el-select v-model="roleform.products.selected" placeholder="请选择" filterable clearable>
-            <el-option v-for="opt in roleform.products.options" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="角色">
+        <el-form-item label="角色代码 / 名称">
           <el-select v-model="roleform.role" placeholder="请选择" filterable clearable>
             <el-option v-for="opt in roles" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
           </el-select>
@@ -77,11 +80,18 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="tableData" class="priv-table" :max-height="tableHeight" size="mini" @selection-change="selectionChange" stripe :border="showBorder"
+      <el-table
+        :data="tableData"
+        class="priv-table"
+        :max-height="tableHeight"
+        size="mini"
+        @selection-change="selectionChange"
+        stripe
+        :border="showBorder"
         ref="privTable"
-        v-loading="queryLoading" 
-        element-loading-text="查询中..." 
-        element-loading-spinner="el-icon-loading" 
+        v-loading="queryLoading"
+        element-loading-text="查询中..."
+        element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column type="selection" width="80" align="center">
         </el-table-column>
@@ -104,17 +114,18 @@
         </el-table-column>
       </el-table>
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
-        <el-button type="primary" 
-          class="el-icon-download export-btn" 
+        <el-button
+          type="primary"
+          class="el-icon-download export-btn"
           size="mini"
           :disabled="tableData.length == 0"
           plain
@@ -128,11 +139,13 @@
 </template>
 
 <script>
-import { dateFormat } from "@/util/date.js";
+import {
+  dateFormat
+} from "@/util/date.js";
 import TableExport from '@/util/TableExport.js'
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       modalClose: sessionStorage.dialogAutoClose == 1,
@@ -149,10 +162,6 @@ export default {
           selected: "",
           options: []
         },
-        products: {
-          selected: "",
-          options: []
-        },
         isValid: {
           selected: "Y",
           options: ["Y", "N"]
@@ -164,7 +173,6 @@ export default {
       pageSize: parseInt(sessionStorage.tablePageSize) || 10,
       queryChanged: false,
       grfrom: {
-        products: [],
         roles: []
       },
       showDialog: false
@@ -190,9 +198,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
-    _self.productQuery();
-    
+    let _self = this;
     _self.roles.splice(0, _self.roles.length);
     let userRoles = localStorage.getItem("userRoles");
     eval(userRoles).forEach(item => {
@@ -209,18 +215,18 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
-    
+
     handleCurrentChange(current) {
-      let _self =  this;
+      let _self = this;
       if (_self.queryChanged == true) {
         _self.currentPage = 1;
       } else {
@@ -230,7 +236,7 @@ export default {
     },
 
     handleSizeChange(size) {
-      let _self =  this;
+      let _self = this;
       _self.pageSize = size;
       _self.currentPage = 1;
       _self.userPrivQuery();
@@ -242,12 +248,12 @@ export default {
     },
 
     selectionChange(rows) {
-      let _self =  this;
+      let _self = this;
       _self.roleform.privs = rows;
     },
 
-    setGrantEditable(){
-      let _self =  this;
+    setGrantEditable() {
+      let _self = this;
       if (null === _self.roleform.users.selected || _self.roleform.users.selected === "") {
         _self.grantDisabled = true;
       } else {
@@ -255,20 +261,19 @@ export default {
       }
     },
 
-    beginGrant(){
-      let _self =  this;
-      _self.showDialog=true;
-      _self.grfrom.products = [];
+    beginGrant() {
+      let _self = this;
+      _self.showDialog = true;
       _self.grfrom.roles = [];
     },
 
     privBatchDelete() {
-      let _self =  this;
+      let _self = this;
       _self.$confirm("确定要删除全部选中权限吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "error"
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        })
         .then(() => {
           _self.savePrivBatchDelete();
         })
@@ -276,9 +281,9 @@ export default {
     },
 
     savePrivBatchDelete() {
-      let _self =  this;
+      let _self = this;
       let privilleges = [];
-      for (let i = 0; i < _self.roleform.privs.length; i ++) {
+      for (let i = 0; i < _self.roleform.privs.length; i++) {
         privilleges.push(_self.roleform.privs[i].privId);
       }
       _self.$axios({
@@ -291,7 +296,7 @@ export default {
             privId: privilleges.toString()
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.$message.success("权限移除成功！");
             _self.userPrivQuery();
@@ -300,19 +305,12 @@ export default {
             console.log(response);
           }
         })
-        .catch(function(response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     roleGrant() {
-      let _self =  this;
-      if (
-        _self.grfrom.products.length === 0 ||
-        _self.grfrom.roles.length === 0
-      ) {
-        _self.$message.info("请选择产品和角色！");
+      let _self = this;
+      if (_self.grfrom.roles.length === 0) {
+        _self.$message.info("请选择角色！");
         return;
       }
       _self.$axios({
@@ -322,12 +320,11 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
-            products: _self.grfrom.products.toString(),
             roles: _self.grfrom.roles.toString(),
             operUser: _self.roleform.users.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.showDialog = false;
             _self.$message.success("授权保存成功！");
@@ -337,26 +334,21 @@ export default {
             console.log(response);
           }
         })
-        .catch(function(response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     deletePriv(data) {
       this.$confirm("确定要删除当前权限吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "error"
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        })
         .then(() => {
           this.savePrivDelete(data.privId);
         })
-        .catch(() => {});
     },
 
     savePrivDelete(privId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/priv/delete",
@@ -367,7 +359,7 @@ export default {
             privId: privId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.$message.success("权限移除成功！");
             _self.userPrivQuery();
@@ -376,46 +368,10 @@ export default {
             console.log(res);
           }
         })
-        .catch(function(response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
-
-    productQuery() {
-      let _self =  this;
-      _self.$axios({
-          method: "post",
-          url: "/product/query",
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded"
-          },
-          params: {
-            isValid: "Y"
-          }
-        })
-        .then(function(res) {
-          let json = eval(res.data.list);
-          _self.roleform.products.options.splice(
-            0,
-            _self.roleform.products.options.length
-          );
-          for (let i = 0; i < json.length; i++) {
-            _self.roleform.products.options.push({
-              value: json[i].productId,
-              label: json[i].productCode + " - " + json[i].productName
-            });
-          }
-        })
-        .catch(function(response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
-    },
-
-    memberQuery(callback){
-      let _self =  this;
+    memberQuery(callback) {
+      let _self = this;
       commonQuery.memberQueryAll((result) => {
         _self.memberFull = result.usersFull;
         _self.userOptions = result.usersFull;
@@ -426,7 +382,7 @@ export default {
     },
 
     userPrivQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -435,7 +391,7 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
-            productId: _self.roleform.products.selected,
+            productId: sessionStorage.productId,
             userId: _self.roleform.users.selected,
             roleId: _self.roleform.role,
             isValid: _self.roleform.isValid.selected,
@@ -443,7 +399,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tableData = eval(res.data.list);
           _self.pageInfo = res.data;
           setTimeout(() => {
@@ -451,8 +407,10 @@ export default {
             _self.queryLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
+          _self.queryChanged = false;
+          _self.queryLoading = false;
           console.log(response);
         });
     }
@@ -490,6 +448,6 @@ export default {
 }
 
 .grant-form {
-  height: 200px;;
+  height: 200px;
 }
 </style>

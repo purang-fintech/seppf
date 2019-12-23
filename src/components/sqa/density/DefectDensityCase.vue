@@ -1,6 +1,7 @@
 <template>
   <div id="densityCaseCharts" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -13,7 +14,7 @@ require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -21,7 +22,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let relsData = [];
     let seriesData = [];
     let legendData1 = [];
@@ -42,12 +43,12 @@ export default {
         data.children.forEach(child => {
           if (child.period === item.periodId) {
             numsBug.push(child.totalBug);
-            numsCase.push( child.caseNum);
+            numsCase.push(child.caseNum);
           }
         });
       });
 
-      legendData1.push(item.alias+ '缺陷数');
+      legendData1.push(item.alias + '缺陷数');
       seriesData.push({
         name: item.alias + '缺陷数',
         type: "bar",
@@ -132,10 +133,20 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line", "bar"] },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          magicType: {
+            show: true,
+            type: ["line", "bar"]
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -150,8 +161,7 @@ export default {
         },
         data: relsData
       },
-      yAxis: [
-        {
+      yAxis: [{
           type: "value",
           name: "缺陷用例比",
           axisLabel: {
@@ -177,7 +187,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("densityCaseCharts");
 
     let dataCharts = echarts.init(charts, sepp);

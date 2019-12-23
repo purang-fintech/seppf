@@ -1,6 +1,7 @@
 <template>
   <div id="densityReqCharts" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -13,7 +14,7 @@ require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -21,7 +22,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let relsData = [];
     let legendData = [];
     let seriesData = [];
@@ -118,10 +119,20 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line", "bar"] },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          magicType: {
+            show: true,
+            type: ["line", "bar"]
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -136,8 +147,7 @@ export default {
         },
         data: relsData
       },
-      yAxis: [
-        {
+      yAxis: [{
           type: "value",
           name: "整版密度",
           axisLabel: {
@@ -163,7 +173,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("densityReqCharts");
 
     let dataCharts = echarts.init(charts, sepp);

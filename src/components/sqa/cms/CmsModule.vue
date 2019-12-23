@@ -1,6 +1,7 @@
 <template>
   <div id="cmsModuleAna" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -9,7 +10,7 @@ require("echarts/lib/component/toolbox");
 require("echarts/lib/component/title");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -17,7 +18,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let usersData = [];
     let seriesData = [];
 
@@ -36,16 +37,25 @@ export default {
       },
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "shadow" }
+        axisPointer: {
+          type: "shadow"
+        }
       },
       toolbox: {
         right: 0,
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -66,20 +76,18 @@ export default {
           formatter: "{value}"
         }
       },
-      series: [
-        {
-          name: "模块名称",
-          type: "bar",
-          barMaxWidth: '50',
-          stack: "数量",
-          data: seriesData
-        }
-      ]
+      series: [{
+        name: "模块名称",
+        type: "bar",
+        barMaxWidth: '50',
+        stack: "数量",
+        data: seriesData
+      }]
     };
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("cmsModuleAna");
 
     let dataCharts = echarts.init(charts, sepp);

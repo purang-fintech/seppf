@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="login-wrap">
     <div class="ms-title">{{ title }}</div>
-      <div class="login-tabs">
+    <div class="login-tabs">
       <el-tabs v-model="activeName" type="border-card">
         <el-tab-pane name="ldap" :disabled="ldapDisabled || outerNetwork">
           <span slot="label">
@@ -16,7 +16,13 @@
                 </el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input type="password" placeholder="AD账号密码" class="input-userd" v-model="ruleFormL.password" suffix-icon="iconfont icon-lock" clearable></el-input>
+                <el-input
+                  type="password"
+                  placeholder="AD账号密码"
+                  class="input-userd"
+                  v-model="ruleFormL.password"
+                  suffix-icon="iconfont icon-lock"
+                  clearable></el-input>
               </el-form-item>
               <el-checkbox class="remember" v-model="ruleFormL.rememberPassword">记住密码</el-checkbox>
               <div class="login-btn">
@@ -40,7 +46,13 @@
                 </el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input type="password" placeholder="账号密码" v-model="ruleFormN.password" class="input-userd" suffix-icon="iconfont icon-lock" clearable></el-input>
+                <el-input
+                  type="password"
+                  placeholder="账号密码"
+                  v-model="ruleFormN.password"
+                  class="input-userd"
+                  suffix-icon="iconfont icon-lock"
+                  clearable></el-input>
               </el-form-item>
               <el-checkbox class="remember" v-model="ruleFormN.rememberPassword">记住密码</el-checkbox>
               <el-button class="remember" type="text" @click="beginReg()">新用户注册</el-button>
@@ -85,13 +97,25 @@
     <el-dialog :close-on-click-modal="modalClose" :visible.sync="showApplyPriv" :title="userName + ' 欢迎您！ 请选择要申请的产品和角色：'" width="880px">
       <div class="float-body" style="padding-top:40px;height:auto">
         <el-form :model="applyForm" :inline="false" size="middium" label-width="120px">
-          <el-form-item label="产品选择" >
-            <el-select v-model="applyForm.products" placeholder="请选择" multiple collapse-tags clearable style="width:95%">
+          <el-form-item label="产品选择">
+            <el-select
+              v-model="applyForm.products"
+              placeholder="请选择"
+              multiple
+              collapse-tags
+              clearable
+              style="width:95%">
               <el-option v-for="opt in products" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="角色选择">
-            <el-select v-model="applyForm.roles" placeholder="请选择" multiple collapse-tags clearable style="width:95%">
+            <el-select
+              v-model="applyForm.roles"
+              placeholder="请选择"
+              multiple
+              collapse-tags
+              clearable
+              style="width:95%">
               <el-option v-for="opt in roles" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
             </el-select>
           </el-form-item>
@@ -103,11 +127,17 @@
       </div>
     </el-dialog>
 
-    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showChoice" :title="userName + ' 欢迎您！ 请选择项目/产品：'" fullscreen :show-close="false" custom-class="pro-choice">
+    <el-dialog
+      :close-on-click-modal="modalClose"
+      :visible.sync="showChoice"
+      :title="userName + ' 欢迎您！ 请选择项目/产品：'"
+      fullscreen
+      :show-close="false"
+      custom-class="pro-choice">
       <el-card v-for="(item, index) in float.products" :key="index" class="product-list" shadow="never" @dblclick.native="commitChoice(item)">
         <div slot="header">
           <el-popover placement="right-start" width="150" trigger="hover" title="拥有角色：" popper-class="role-list">
-            <p v-for="(role, index) in getRoles(item.productId).roleNames" :key="index"><i class="el-icon-user"/>{{role}}</p>
+            <p v-for="(role, index) in getRoles(item.productId).roleNames" :key="index"><i class="el-icon-user" />{{role}}</p>
             <span slot="reference">{{item.productName}}</span>
           </el-popover>
           <el-link type="primary" style="float:right;font-size:16px" @click="commitChoice(item)" :underline="false" icon="el-icon-right">进入</el-link>
@@ -119,7 +149,13 @@
         </div>
       </el-card>
       <div slot="footer">
-        <el-button v-no-more-click type="primary" icon="el-icon-circle-close" @click="cancelLogin()" size="small" style="margin-right:3.1%">取消</el-button>
+        <el-button
+          v-no-more-click
+          type="primary"
+          icon="el-icon-circle-close"
+          @click="cancelLogin()"
+          size="small"
+          style="margin-right:3.1%">取消</el-button>
       </div>
     </el-dialog>
 
@@ -134,8 +170,14 @@
         <el-button v-no-more-click type="primary" size="small" @click="zoomed = false">确认</el-button>
       </div>
     </el-dialog>
-    
-    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showReg" width="800px" title="用户注册" custom-class="reg-dialog" :fullscreen="maximize">
+
+    <el-dialog
+      :close-on-click-modal="modalClose"
+      :visible.sync="showReg"
+      width="800px"
+      title="用户注册"
+      custom-class="reg-dialog"
+      :fullscreen="maximize">
       <div slot="title">
         <span style="font-size:18px">用户注册</span>
         <button class="el-dialog__headerbtn" style="right:40px" @click="maximize=!maximize">
@@ -147,7 +189,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form ref="regForm" :model="regform" :inline="false" :rules="regRules" size="meddium" label-width="100px" style="padding:20px 40px">
+      <el-form
+        ref="regForm"
+        :model="regform"
+        :inline="false"
+        :rules="regRules"
+        size="meddium"
+        label-width="100px"
+        style="padding:20px 40px">
         <el-form-item label="登录账号" prop="userAccount">
           <el-input v-model="regform.userAccount" placeholder="5到15个英文字母，不区分大小写" clearable suffix-icon="iconfont icon-mine"></el-input>
         </el-form-item>
@@ -175,7 +224,7 @@ const emailPatern = /^[a-zA-Z0-9]+([._\\-]*[a-zA-Z0-9])*@([a-zA-Z0-9]+[-a-zA-Z0-
 import commonQuery from "@/components/util/CommonQuery.vue";
 import createProduct from "@/components/mgr/product/ProductCreate.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       maximize: false,
       outerNetwork: window.location.href.indexOf("seqcer.") > -1,
@@ -193,16 +242,24 @@ export default {
       ruleFormL: {
         account: "GUEST",
         password: "",
-        rememberPassword : true
+        rememberPassword: true
       },
       ruleFormN: {
         account: "GUEST",
         password: "",
-        rememberPassword : true
+        rememberPassword: true
       },
       rules: {
-        account: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+        account: [{
+          required: true,
+          message: "请输入用户名",
+          trigger: "blur"
+        }],
+        password: [{
+          required: true,
+          message: "请输入密码",
+          trigger: "blur"
+        }]
       },
       menus: [],
       showNew: false,
@@ -225,17 +282,38 @@ export default {
       regform: {
         userAccount: "",
         password: "",
-        userEmail:"",
+        userEmail: "",
         userName: ""
       },
       regRules: {
-        userAccount: [
-          { required: true, message: "请输入用户账号", trigger: "blur" },
-          { min: 5, max: 15, message: "长度在 5 到 15 个字", trigger: "blur" }
+        userAccount: [{
+            required: true,
+            message: "请输入用户账号",
+            trigger: "blur"
+          },
+          {
+            min: 5,
+            max: 15,
+            message: "长度在 5 到 15 个字",
+            trigger: "blur"
+          }
         ],
-        userEmail: [{type: 'email', required: true, message: "请输入格式正确的邮箱地址", trigger: "blur" }],
-        userName: [{ required: true, message: "请输入用户姓名", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+        userEmail: [{
+          type: 'email',
+          required: true,
+          message: "请输入格式正确的邮箱地址",
+          trigger: "blur"
+        }],
+        userName: [{
+          required: true,
+          message: "请输入用户姓名",
+          trigger: "blur"
+        }],
+        password: [{
+          required: true,
+          message: "请输入密码",
+          trigger: "blur"
+        }]
       },
       showReg: false,
       userNew: false
@@ -249,18 +327,18 @@ export default {
   created() {
     sessionStorage.clear();
     localStorage.removeItem("userProducts");
-    this.$axios.get("/menus/configs",{}).then(resp=>{
-       this.menus = resp.data;
+    this.$axios.get("/menus/configs", {}).then(resp => {
+      this.menus = resp.data;
     });
     this.listDomains();
     this.activeName = this.outerNetwork ? "normal" : "ldap";
     this.normalDisabled = !this.outerNetwork && navigator.platform.indexOf("Mac") == -1;
     this.ruleFormL.account = localStorage.userAccount ? localStorage.userAccount : this.ruleFormL.account;
     this.ruleFormL.password = localStorage.userPassword ? localStorage.userPassword : this.ruleFormL.password;
-    this.ruleFormL.rememberPassword = localStorage.rememberPassword != null && localStorage.rememberPassword === "true" ?  true : false;
+    this.ruleFormL.rememberPassword = localStorage.rememberPassword != null && localStorage.rememberPassword === "true" ? true : false;
     this.ruleFormN.account = localStorage.userAccount ? localStorage.userAccount : this.ruleFormN.account;
     this.ruleFormN.password = localStorage.userPassword ? localStorage.userPassword : this.ruleFormN.password;
-    this.ruleFormN.rememberPassword = localStorage.rememberPassword != null && localStorage.rememberPassword === "true" ?  true : false;
+    this.ruleFormN.rememberPassword = localStorage.rememberPassword != null && localStorage.rememberPassword === "true" ? true : false;
   },
 
   mounted() {
@@ -274,16 +352,18 @@ export default {
       }
     },
 
-    saveCreate(){
+    saveCreate() {
       this.$refs.newProduct.checkProductCreate();
     },
 
-    getRoles(productId){
-      return this.float.products.find(item => {return item.productId == productId});
+    getRoles(productId) {
+      return this.float.products.find(item => {
+        return item.productId == productId
+      });
     },
 
-    beginReg(){
-      let _self =  this;
+    beginReg() {
+      let _self = this;
       _self.showReg = true;
       _self.$nextTick(_ => {
         setTimeout(() => {
@@ -292,8 +372,8 @@ export default {
       });
     },
 
-    queryBaseInfo(){
-      let _self =  this;
+    queryBaseInfo() {
+      let _self = this;
       _self.showApplyPriv = true;
       _self.products.splice(0, _self.products.length);
       _self.roles.splice(0, _self.roles.length);
@@ -305,42 +385,46 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let result = res.data;
           eval(res.data.product).forEach(e => {
             _self.products.push({
-                value: e.productId,
-                code: e.productCode,
-                label: e.productCode + " - " + e.productName
+              value: e.productId,
+              code: e.productCode,
+              label: e.productCode + " - " + e.productName
             });
           });
           eval(res.data.userRoles).forEach(e => {
             _self.roles.push({
-                value: e.roleId,
-                code: e.roleCode,
-                label: e.roleCode + " - " + e.roleName
+              value: e.roleId,
+              code: e.roleCode,
+              label: e.roleCode + " - " + e.roleName
             });
           });
         })
-        .catch(function(response) {
-          _self.$notify.error("后端服务未就绪，请稍等！"); 
+        .catch(function (response) {
+          _self.$notify.error("后端服务未就绪，请稍等！");
           console.log(response);
         });
     },
 
-    commitApply(){
-      let _self =  this;
+    commitApply() {
+      let _self = this;
       let applyProducts = [];
       let applyRoles = [];
       _self.errors.splice(0, _self.errors.length);
 
-      _self.products.filter(item => {return _self.applyForm.products.indexOf(item.value) != -1}).forEach(d => {
+      _self.products.filter(item => {
+        return _self.applyForm.products.indexOf(item.value) != -1
+      }).forEach(d => {
         applyProducts.push({
           id: d.value,
           product: d.label
         });
       });
-      _self.roles.filter(item => {return _self.applyForm.roles.indexOf(item.value) != -1}).forEach(d => {
+      _self.roles.filter(item => {
+        return _self.applyForm.roles.indexOf(item.value) != -1
+      }).forEach(d => {
         applyRoles.push({
           id: d.value,
           role: d.label
@@ -359,7 +443,7 @@ export default {
             userId: sessionStorage.userId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let results = eval(res.data);
           if (results.length == 0) {
             _self.$message.success("权限申请已提交，请等待处理！");
@@ -373,7 +457,7 @@ export default {
     },
 
     applyPriv(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$message.warning("表单校验不通过，请确认！");
@@ -391,12 +475,12 @@ export default {
     },
 
     SHA256(password) {
-       let sha256 = require("js-sha256").sha256;
-       return sha256(password);
+      let sha256 = require("js-sha256").sha256;
+      return sha256(password);
     },
 
     submitForm(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$message.warning("表单校验不通过，请确认！");
@@ -411,8 +495,8 @@ export default {
       });
     },
 
-    checkSaveUserReg(formName){
-      let _self =  this;
+    checkSaveUserReg(formName) {
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$message.warning("表单校验不通过，请确认！");
@@ -427,8 +511,8 @@ export default {
       });
     },
 
-    saveUserReg(){
-      let _self =  this;
+    saveUserReg() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/user/register",
@@ -436,13 +520,13 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
-            userAccount:_self.regform.userAccount.toUpperCase(),
+            userAccount: _self.regform.userAccount.toUpperCase(),
             password: _self.SHA256(_self.regform.password),
-            userName:_self.regform.userName,
-            userEmail:_self.regform.userEmail.toUpperCase()
+            userName: _self.regform.userName,
+            userEmail: _self.regform.userEmail.toUpperCase()
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.$message.success("注册成功，请登录！");
             _self.showReg = false;
@@ -458,7 +542,7 @@ export default {
     },
 
     normalAuth(callback) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/user/normal_auth",
@@ -470,7 +554,7 @@ export default {
             password: _self.SHA256(_self.ruleFormN.password)
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let result = res.data.result;
           let user = res.data.user;
           if (result === 0) {
@@ -494,7 +578,7 @@ export default {
               _self.queryFaviconFile(user.faviconId);
             }
             _self.userSettingQuery();
-            _self.$nextTick(function() {
+            _self.$nextTick(function () {
               if (typeof callback == "function") {
                 setTimeout(() => {
                   callback();
@@ -505,8 +589,8 @@ export default {
         })
     },
 
-    listDomains(){
-      let _self =  this;
+    listDomains() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/user/list_domain",
@@ -514,7 +598,7 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.domain.opts.splice(0, _self.domain.opts.length);
           let jsonArray = eval(res.data);
           if (null == res.data || jsonArray.length == 0) {
@@ -533,14 +617,14 @@ export default {
           });
           _self.domain.selected = jsonArray[0];
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$message.warning("后端服务未就绪，请稍等！");
           console.log(response);
         });
     },
 
     LdapAuth(callback) {
-      let _self =  this;
+      let _self = this;
       if (
         _self.ruleFormL.account.indexOf("@") > -1 ||
         _self.ruleFormL.account.toUpperCase().indexOf(".COM") > -1
@@ -560,7 +644,7 @@ export default {
             password: _self.ruleFormL.password //暂不加密，或者考虑使用AES
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let result = res.data.result;
           let user = res.data.user;
           if (result === 0) {
@@ -586,7 +670,7 @@ export default {
               _self.queryFaviconFile(user.faviconId);
             }
             _self.userSettingQuery();
-            _self.$nextTick(function() {
+            _self.$nextTick(function () {
               if (typeof callback == "function") {
                 setTimeout(() => {
                   callback();
@@ -598,9 +682,9 @@ export default {
     },
 
     queryFaviconFile(fileId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/file/query/" + fileId)
-        .then(function(res) {
+        .then(function (res) {
           if (!res.data || res.data.length == 0) {
             _self.userFavicon = "/static/img/baby.png";
             return;
@@ -615,7 +699,7 @@ export default {
     },
 
     commitChoice(item) {
-      let _self =  this;
+      let _self = this;
       localStorage.setItem("lastProduct", item.productId);
       localStorage.setItem("userProducts", JSON.stringify(_self.float.products));
 
@@ -629,12 +713,12 @@ export default {
       sessionStorage.setItem("productId", item.productId);
       sessionStorage.setItem("roles", item.roles.toString());
       sessionStorage.setItem("roleNames", item.roleNames);
-      
+
       if (_self.userNew) {
         _self.$router.push({
           path: "/user",
           replace: true
-        });        
+        });
       } else {
         if (localStorage.lastUrl && null != localStorage.lastUrl && localStorage.lastUrl != "" && _self.checkAuth(localStorage.lastUrl, item.roles)) {
           _self.$router.push({
@@ -651,12 +735,12 @@ export default {
     },
 
     checkAuth(path, roles) {
-      for (let i = 0; i < this.menus.length; i ++) {
-        for (let j = 0; j < this.menus[i].subs.length; j ++) {
+      for (let i = 0; i < this.menus.length; i++) {
+        for (let j = 0; j < this.menus[i].subs.length; j++) {
           let menu = this.menus[i].subs[j];
           if (path == menu.index) {
             let authed = false;
-            for(let k = 0; k < roles.length; k ++) {
+            for (let k = 0; k < roles.length; k++) {
               authed = menu.roleIds.indexOf(parseInt(roles[k])) > -1
             }
             return authed || menu.shows.indexOf(-1) > -1;
@@ -665,96 +749,96 @@ export default {
       }
     },
 
-    cancelLogin(){
+    cancelLogin() {
       this.showChoice = false;
       sessionStorage.clear();
     },
 
     queryUserRole() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/role/p_r_query_user",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          userId: _self.userId
-        }
-      })
-      .then(function(res) {
-        let privileges = eval(res.data);
-        if (privileges.length == 0) {
-          _self.$confirm("是否现在申请？", "您没有任何产品的可用角色", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "info"
-            })
-            .then(() => {
-              _self.queryBaseInfo();
-              _self.showApplyPriv = true;
+          method: "post",
+          url: "/role/p_r_query_user",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            userId: _self.userId
+          }
+        })
+        .then(function (res) {
+          let privileges = eval(res.data);
+          if (privileges.length == 0) {
+            _self.$confirm("是否现在申请？", "您没有任何产品的可用角色", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "info"
+              })
+              .then(() => {
+                _self.queryBaseInfo();
+                _self.showApplyPriv = true;
+                return;
+              })
+              .catch(() => {
+                _self.$confirm("是否现在创建？", "创建一个新的产品/项目", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "info"
+                  })
+                  .then(() => {
+                    _self.showCreateNew = true;
+                    return;
+                  })
+              });
+          }
+          let sortedPrivs = _self.sortData(privileges, "productId", "productName", "productCode", "children");
+          _self.float.products.splice(0, _self.float.products.length);
+          sortedPrivs.forEach(item => {
+            let roles = [];
+            let roleNames = [];
+            if (!item.children || item.children.length == 0) {
               return;
-            })
-            .catch(() => {
-              _self.$confirm("是否现在创建？", "创建一个新的产品/项目", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "info"
-                })
-                .then(() => {
-                  _self.showCreateNew = true;
-                  return;
-                })
+            }
+            item.children.forEach(role => {
+              roles.push(role.roleId);
+              roleNames.push(role.roleName);
             });
-        }
-        let sortedPrivs = _self.sortData(privileges, "productId", "productName", "productCode", "children");
-        _self.float.products.splice(0, _self.float.products.length);
-        sortedPrivs.forEach(item => {
-          let roles = []; 
-          let roleNames = [];
-          if (!item.children || item.children.length == 0) {
+            _self.float.products.push({
+              productId: item.productId,
+              roles: roles,
+              roleNames: roleNames,
+              productName: item.productName,
+              productCode: item.productCode
+            });
+          });
+          if (commonQuery.isNull(localStorage.lastProduct)) {
+            _self.showChoice = true;
             return;
           }
-          item.children.forEach(role => {
-            roles.push(role.roleId);
-            roleNames.push(role.roleName);
-          });
-          _self.float.products.push({
-            productId: item.productId,
-            roles: roles,
-            roleNames: roleNames,
-            productName: item.productName,
-            productCode: item.productCode
-          });
-        });
-        if (commonQuery.isNull(localStorage.lastProduct)) {
-          _self.showChoice = true;
-          return;
-        }
-        let lastProduct = _self.float.products.find(d => {
-          return d.productId == parseInt(localStorage.lastProduct);
+          let lastProduct = _self.float.products.find(d => {
+            return d.productId == parseInt(localStorage.lastProduct);
+          })
+          if (!lastProduct) {
+            _self.showChoice = true;
+            return;
+          }
+          if (sessionStorage.autoLogin && sessionStorage.autoLogin == 1) {
+            _self.commitChoice(lastProduct);
+          } else {
+            _self.showChoice = true;
+          }
         })
-        if (!lastProduct) {
-          _self.showChoice = true;
-          return;
-        }
-        if (sessionStorage.autoLogin && sessionStorage.autoLogin == 1) {
-          _self.commitChoice(lastProduct);
-        } else {
-          _self.showChoice = true;
-        }
-      })
     },
 
-    userSettingQuery(){
-      let _self =  this;
+    userSettingQuery() {
+      let _self = this;
       _self.$axios.post("/user/setting/query/" + _self.userId)
-      .then(function(res) {
-        let settings = res.data;
-        for (let p in settings) {
-          sessionStorage.setItem(p, settings[p]);
-        }
-      })
+        .then(function (res) {
+          let settings = res.data;
+          for (let p in settings) {
+            sessionStorage.setItem(p, settings[p]);
+          }
+        })
     },
 
     sortData(json, idKey, labelKey, codeKey, childKey) {
@@ -763,12 +847,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -816,16 +900,16 @@ export default {
 
 <style>
 .ms-login .el-input i,
-.reg-dialog .el-input i{
+.reg-dialog .el-input i {
   margin: 0 10px;
   font-size: 20px !important;
 }
 
-.reg-dialog .el-switch .el-switch__label:not(.is-active){
+.reg-dialog .el-switch .el-switch__label:not(.is-active) {
   color: #9e9e9e;
 }
 
-.input-userd .el-input__inner{
+.input-userd .el-input__inner {
   border: 1px solid #DCDFE6;
 }
 
@@ -877,7 +961,7 @@ export default {
   width: 120px;
 }
 
-.ms-login .el-input{
+.ms-login .el-input {
   width: 100% !important;
 }
 
@@ -925,7 +1009,7 @@ export default {
   color: yellow;
 }
 
-.pro-choice .el-dialog__body{
+.pro-choice .el-dialog__body {
   overflow-y: auto;
   padding: 2% 3% 2% 4%;
 }
@@ -939,12 +1023,12 @@ export default {
 }
 
 .special-list-login {
-  position:absolute;
-  width:22.3% !important;
+  position: absolute;
+  width: 22.3% !important;
 }
 
 .normal-list-login {
-  width:23.8%;
+  width: 23.8%;
 }
 
 .product-list .el-card__header {
@@ -955,7 +1039,7 @@ export default {
   background-color: #4d5a6b;
 }
 
-.product-list .el-card__header span>span{
+.product-list .el-card__header span>span {
   color: #fff;
 }
 
@@ -973,12 +1057,12 @@ export default {
   font-weight: 600;
 }
 
-.role-list p{
-  font-size:14px;
-  margin:8px 0 0 15px;
+.role-list p {
+  font-size: 14px;
+  margin: 8px 0 0 15px;
 }
 
-.role-list p i{
-  margin-right:5px;
+.role-list p i {
+  margin-right: 5px;
 }
 </style>

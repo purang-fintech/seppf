@@ -20,18 +20,18 @@
         <el-select v-if="anaMode==='1'" v-model="relId" size="small" @change="refreshData()" placeholder="请选择版本号">
           <el-option v-for="opt in releases" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
         </el-select>
-        
-        <el-date-picker 
-          v-if="anaMode==='2'" 
-          v-model="anaPeriod" 
+
+        <el-date-picker
+          v-if="anaMode==='2'"
+          v-model="anaPeriod"
           style="vertical-align:middle"
-          type="daterange" 
+          type="daterange"
           size="small"
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="checkPeriod()"
           :clearable="false"
@@ -84,7 +84,10 @@
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import reqType from "./req/ReqType.vue";
 import reqPriority from "./req/ReqPriority.vue";
 import reqStatus from "./req/ReqStatus.vue";
@@ -95,7 +98,7 @@ import reqSubmitter from "./req/ReqSubmitter.vue";
 import reqOffset from "./req/ReqOffset.vue";
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       anaMode: "1",
       anaPeriod: [],
@@ -131,7 +134,7 @@ export default {
   },
 
   methods: {
-    setDefaultPeriod(){
+    setDefaultPeriod() {
       let date = new Date();
       let qTimeEnd = dateFormat(date, this.datefmt);
       date.setTime(date.getTime() - 3600 * 1000 * 24 * 90);
@@ -141,7 +144,7 @@ export default {
       this.anaPeriod.push(qTimeEnd);
     },
 
-    transQueryMode(){
+    transQueryMode() {
       if (this.anaMode == 1) {
         this.releaseQuery(this.refreshData);
       } else {
@@ -151,10 +154,10 @@ export default {
       }
     },
 
-    checkPeriod(){
+    checkPeriod() {
       let start = this.anaPeriod[0];
       let end = this.anaPeriod[1];
-      let period = (Date.parse(end.replace('/-/g','/')) - Date.parse(start.replace('/-/g','/'))) / (3600 * 1000 * 24);
+      let period = (Date.parse(end.replace('/-/g', '/')) - Date.parse(start.replace('/-/g', '/'))) / (3600 * 1000 * 24);
       if (period > 183) {
         this.$message.info("请查询六个月以内的数据！");
         this.anaPeriod.splice(0, this.anaPeriod.length);
@@ -164,7 +167,7 @@ export default {
       this.refreshData();
     },
 
-    refreshData(){
+    refreshData() {
       this.types.splice(0, this.types.length);
       this.reqType();
       this.prioritys.splice(0, this.prioritys.length);
@@ -189,12 +192,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -205,160 +208,160 @@ export default {
       return result;
     },
 
-    reqType(){
-      let _self =  this;
+    reqType() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqType",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.types = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/reqType",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.types = eval(res.data);
+        })
     },
 
-    reqPriority(){
-      let _self =  this;
+    reqPriority() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqPriority",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.prioritys = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/reqPriority",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.prioritys = eval(res.data);
+        })
     },
 
-    reqModule(){
-      let _self =  this;
+    reqModule() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqModule",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.modules = _self.sortData(eval(res.data), "moduleName", "children");
-      })
+          method: "post",
+          url: "/sqa/reqModule",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.modules = _self.sortData(eval(res.data), "moduleName", "children");
+        })
     },
 
-    reqClose(){
-      let _self =  this;
+    reqClose() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqClose",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.closes = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/reqClose",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.closes = eval(res.data);
+        })
     },
 
-    reqStatus(){
-      let _self =  this;
+    reqStatus() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqStatus",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.statuss = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/reqStatus",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.statuss = eval(res.data);
+        })
     },
 
-    reqChange(){
-      let _self =  this;
+    reqChange() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqChange",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.changes = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/reqChange",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.changes = eval(res.data);
+        })
     },
 
-    reqSubmitter(){
-      let _self =  this;
+    reqSubmitter() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqSubmitter",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.submitters = _self.sortData(eval(res.data), "submitter", "children");
-      })
+          method: "post",
+          url: "/sqa/reqSubmitter",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.submitters = _self.sortData(eval(res.data), "submitter", "children");
+        })
     },
 
-    reqDevOffset(){
-      let _self =  this;
+    reqDevOffset() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/sqa/reqOffset",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.relId,
-          qTimeBegin: _self.anaPeriod[0],
-          qTimeEnd: _self.anaPeriod[1]
-        }
-      })
-      .then(function(res) {
-        _self.offsets = eval(res.data);
-      })
+          method: "post",
+          url: "/sqa/reqOffset",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.relId,
+            qTimeBegin: _self.anaPeriod[0],
+            qTimeEnd: _self.anaPeriod[1]
+          }
+        })
+        .then(function (res) {
+          _self.offsets = eval(res.data);
+        })
     },
 
     releaseQuery(callback) {
-      let _self =  this;
+      let _self = this;
       _self.releases.splice(0, _self.releases.length);
       commonQuery.releaseQuery((result) => {
         if (result.releasesWithBranch.length === 0) {
@@ -367,7 +370,7 @@ export default {
         }
         _self.releases = result.releasesWithBranch;
         _self.relId = result.releasesWithBranch[0].value;
-        if(typeof callback === "function"){
+        if (typeof callback === "function") {
           callback();
         }
       })
@@ -391,7 +394,7 @@ export default {
   font-size: 13px;
 }
 
-.req-container{
+.req-container {
   width: 49%;
   height: 300px;
   display: inline-block;
@@ -401,7 +404,7 @@ export default {
   background-color: #3b434e;
 }
 
-.req-container+.req-container{
+.req-container+.req-container {
   margin-left: 1%;
 }
 

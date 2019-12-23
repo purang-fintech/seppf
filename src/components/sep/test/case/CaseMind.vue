@@ -7,6 +7,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import "codemirror/lib/codemirror.js";
 import "codemirror/mode/xml/xml.js";
@@ -40,33 +41,33 @@ export default {
   },
 
   methods: {
-    queryCaseMind(){
-      let _self =  this;
+    queryCaseMind() {
+      let _self = this;
       _self.$axios.post("/case/mind_query/" + _self.caseId)
-      .then(function(res) {
-        _self.mindText = JSON.stringify(res.data);
-        _self.showMind = false;
-        setTimeout(() => {
-          _self.showMind = true;
-        }, 200);
-      })
+        .then(function (res) {
+          _self.mindText = JSON.stringify(res.data);
+          _self.showMind = false;
+          setTimeout(() => {
+            _self.showMind = true;
+          }, 200);
+        })
     },
 
     saveCaseMind(mindText) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/case/mind_save", {
-        caseId: _self.caseId,
-        mindText: mindText
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.queryCaseMind();
-          _self.$message.success("保存成功！");
-        }
-      })
+          caseId: _self.caseId,
+          mindText: mindText
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.queryCaseMind();
+            _self.$message.success("保存成功！");
+          }
+        })
     }
   },
-  
+
   components: {
     headerMenu,
     mainEditor,

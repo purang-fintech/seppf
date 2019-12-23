@@ -1,65 +1,67 @@
 <script>
-  import axios from "axios";
-  import Vue from 'vue';
-  import { dateFormat } from "@/util/date.js";
+import axios from "axios";
+import Vue from 'vue';
+import {
+  dateFormat
+} from "@/util/date.js";
 
-  export default {
-    isNull(obj) {
-      return null === obj || undefined === obj || 'undefined' === obj || obj === '';
-    },
+export default {
+  isNull(obj) {
+    return null === obj || undefined === obj || 'undefined' === obj || obj === '';
+  },
 
-    pickListFilter(val, input) {
-      if (this.isNull(val)) {
-        return input;
-      }
+  pickListFilter(val, input) {
+    if (this.isNull(val)) {
+      return input;
+    }
 
-      let output = [];
-      let existsGroups = [];
-      // 优先匹配前N个字母
-      input.forEach(group => {
-        let subFilterFirst = group.options.filter(item => {
-          return item.account.toUpperCase().indexOf(val.toUpperCase()) == 0 || item.name.toUpperCase().indexOf(val.toUpperCase()) == 0;
+    let output = [];
+    let existsGroups = [];
+    // 优先匹配前N个字母
+    input.forEach(group => {
+      let subFilterFirst = group.options.filter(item => {
+        return item.account.toUpperCase().indexOf(val.toUpperCase()) == 0 || item.name.toUpperCase().indexOf(val.toUpperCase()) == 0;
+      });
+      if (subFilterFirst.length > 0) {
+        output.push({
+          label: group.label,
+          options: subFilterFirst
         });
-        if (subFilterFirst.length > 0) {
+        existsGroups.push(group.label);
+      }
+    });
+
+    // 其次匹配字符串中间的字母
+    input.forEach(group => {
+      let subFilterOther = group.options.filter(item => {
+        return item.account.toUpperCase().indexOf(val.toUpperCase()) > 0 || item.name.toUpperCase().indexOf(val.toUpperCase()) > 0;
+      });
+      if (subFilterOther.length > 0) {
+        let tempArr = subFilterOther.filter(d => {
+          return existsGroups.indexOf(group.label) != -1
+        })
+        if (tempArr && tempArr.length > 0) { // 已有的group，直接追加到options里面去
+          output.find(d => {
+            return d.label == group.label
+          }).options.push(tempArr);
+        } else { // 不存在的group，追加分组的key(label)和options
           output.push({
             label: group.label,
-            options: subFilterFirst
+            options: subFilterOther
           });
-          existsGroups.push(group.label);
         }
-      });
+      }
+    });
 
-      // 其次匹配字符串中间的字母
-      input.forEach(group => {
-        let subFilterOther = group.options.filter(item => {
-          return item.account.toUpperCase().indexOf(val.toUpperCase()) > 0 || item.name.toUpperCase().indexOf(val.toUpperCase()) > 0;
-        });
-        if (subFilterOther.length > 0) {
-          let tempArr = subFilterOther.filter(d => {
-            return existsGroups.indexOf(group.label) != -1
-          })
-          if (tempArr && tempArr.length > 0) { // 已有的group，直接追加到options里面去
-            output.find(d => {
-              return d.label == group.label
-            }).options.push(tempArr);
-          } else { // 不存在的group，追加分组的key(label)和options
-            output.push({
-              label: group.label,
-              options: subFilterOther
-            });
-          }
-        }
-      });
+    return output;
+  },
 
-      return output;
-    },
-
-    memberQueryAll(callback) {
-      let result = {
-        users: [],
-        usersFull: []
-      };
-      axios({
+  memberQueryAll(callback) {
+    let result = {
+      users: [],
+      usersFull: []
+    };
+    axios({
         method: "post",
         url: "/user/query",
         headers: {
@@ -113,14 +115,14 @@
           }
         });
       })
-    },
+  },
 
-    memberQuery(callback) {
-      let result = {
-        users: [],
-        usersFull: []
-      };
-      axios({
+  memberQuery(callback) {
+    let result = {
+      users: [],
+      usersFull: []
+    };
+    axios({
         method: "post",
         url: "/user/query_p",
         headers: {
@@ -174,14 +176,14 @@
           }
         });
       })
-    },
+  },
 
-    roleMemberQuery(productId, roleId, callback) {
-      let result = {
-        users: [],
-        usersFull: []
-      };
-      axios.post("/user/query_p_r/" + productId + "/" + roleId)
+  roleMemberQuery(productId, roleId, callback) {
+    let result = {
+      users: [],
+      usersFull: []
+    };
+    axios.post("/user/query_p_r/" + productId + "/" + roleId)
       .then(function (res) {
         let json = eval(res.data);
         let accounted = [];
@@ -229,14 +231,14 @@
           }
         });
       })
-    },
+  },
 
-    memberQueryProduct(productId) {
-      let result = {
-        users: [],
-        usersFull: []
-      };
-      axios.post("/user/query_product/" + productId)
+  memberQueryProduct(productId) {
+    let result = {
+      users: [],
+      usersFull: []
+    };
+    axios.post("/user/query_product/" + productId)
       .then(function (res) {
         let json = res.data;
         for (let i = 0; i < json.length; i++) {
@@ -250,24 +252,24 @@
           });
         }
       })
-      return result;
-    },
+    return result;
+  },
 
-    releaseQuery(callback) {
-      let _self =  this;
-      let result = {
-        releases: [],
-        releasesWithBranch: [],
-        original: []
-      };
-      axios({
+  releaseQuery(callback) {
+    let _self = this;
+    let result = {
+      releases: [],
+      releasesWithBranch: [],
+      original: []
+    };
+    axios({
         method: "post",
         url: "/release/query",
         headers: {
           "Content-type": "application/x-www-form-urlencoded"
         }
       })
-      .then(function(res) {
+      .then(function (res) {
         result.original = eval(res.data.list);
         result.original.forEach(item => {
           result.releases.push({
@@ -279,7 +281,7 @@
           result.releasesWithBranch.push({
             value: item.id,
             label: item.relCode,
-            key:item.branchName,
+            key: item.branchName,
             rdate: item.relDate,
             disabled: item.status === 0
           });
@@ -290,16 +292,16 @@
           }
         });
       })
-    },
+  },
 
-    openRelQuery(callback) {
-      let _self =  this;
-      let result = {
-        releases: [],
-        releasesWithBranch: [],
-        original: []
-      };
-      axios({
+  openRelQuery(callback) {
+    let _self = this;
+    let result = {
+      releases: [],
+      releasesWithBranch: [],
+      original: []
+    };
+    axios({
         method: "post",
         url: "/release/opening",
         headers: {
@@ -328,15 +330,15 @@
           }
         });
       })
-    },
+  },
 
-    attachmentQuery(fileIds) {
-      let _self =  this;
-      let attachs = [];
-      if (_self.isNull(fileIds)) {
-        return [];
-      }
-      axios.post("/file/query/" + fileIds)
+  attachmentQuery(fileIds) {
+    let _self = this;
+    let attachs = [];
+    if (_self.isNull(fileIds)) {
+      return [];
+    }
+    axios.post("/file/query/" + fileIds)
       .then(function (res) {
         let json = eval(res.data);
         if (json.length == 0) {
@@ -353,19 +355,19 @@
           });
         })
       })
-      return attachs;
-    },
+    return attachs;
+  },
 
-    attachmentDelete(file, fileList, callback){
-      let _self =  this;
-      let id = null;
-      if (!file || (!file.id && !file.response)) {
-        return;
-      } else {
-        id = file.id ? file.id : file.response[0].id
-      }
-      axios.post("/file/delete/" + id)
-      .then(function(res) {
+  attachmentDelete(file, fileList, callback) {
+    let _self = this;
+    let id = null;
+    if (!file || (!file.id && !file.response)) {
+      return;
+    } else {
+      id = file.id ? file.id : file.response[0].id
+    }
+    axios.post("/file/delete/" + id)
+      .then(function (res) {
         if (res.data > 0) {
           Vue.prototype.$message.success("文件删除成功！");
           if (typeof callback == "function") {
@@ -376,30 +378,30 @@
           console.log(res);
         }
       })
-    },
+  },
 
-    attachmentUpload(file, fileList, callback){
-      let _self =  this;
-      let temp = file.name.split("#");
-      let len = temp.length;
-      let tempName = "";
-      for (let i = 0; i < len; i ++) {
-        tempName += temp[i] + (i == len - 1 ? "" : " ");
+  attachmentUpload(file, fileList, callback) {
+    let _self = this;
+    let temp = file.name.split("#");
+    let len = temp.length;
+    let tempName = "";
+    for (let i = 0; i < len; i++) {
+      tempName += temp[i] + (i == len - 1 ? "" : " ");
+    }
+    let pureName = tempName.substring(0, tempName.lastIndexOf("."));
+    let verNo = 1;
+    for (let i = 0; i < fileList.length; i++) {
+      if (pureName == fileList[i].name.split("_V")[0]) {
+        verNo++;
       }
-      let pureName = tempName.substring(0, tempName.lastIndexOf("."));
-      let verNo = 1;
-      for (let i = 0; i < fileList.length; i ++ ){
-        if (pureName == fileList[i].name.split("_V")[0]) {
-          verNo ++;
-        }
-      }
-      let fileName = pureName + "_V" + verNo + " @ " + dateFormat(new Date(), "yyyyMMddHhmmss") + " @ " 
-        + sessionStorage.userAccount + file.name.substring(file.name.lastIndexOf("."));
+    }
+    let fileName = pureName + "_V" + verNo + " @ " + dateFormat(new Date(), "yyyyMMddHhmmss") + " @ " +
+      sessionStorage.userAccount + file.name.substring(file.name.lastIndexOf("."));
 
-      let formData = new FormData();
-      formData.append("file", file);
+    let formData = new FormData();
+    formData.append("file", file);
 
-      axios({
+    axios({
         method: "post",
         url: "/file/upload",
         headers: {
@@ -410,7 +412,7 @@
         },
         data: formData
       })
-      .then(function(res) {
+      .then(function (res) {
         if (!res.data || res.data.length == 0) {
           Vue.prototype.$message.info("文件上传失败！");
           console.log(res);
@@ -422,10 +424,10 @@
           callback && callback(fileList);
         }
       })
-    },
+  },
 
-    attachmentDownload(fileData) {
-      axios({
+  attachmentDownload(fileData) {
+    axios({
         method: "post",
         url: "/file/download",
         headers: {
@@ -455,61 +457,61 @@
         Vue.prototype.$message.warning("文件链接已失效，无法下载！");
         console.log(response);
       });
-    },
+  },
 
-    roleAllow(target) {
-      if (!sessionStorage.roles) {
-        return false;
-      }
-      let roles = sessionStorage.roles.split(",");
-      for (let i = 0; i < roles.length; i ++) {
-        if (target.indexOf(parseInt(roles[i])) > -1) {
-          return true;
-        }
-      }
+  roleAllow(target) {
+    if (!sessionStorage.roles) {
       return false;
-    },
-
-    roleAllowStrict(target) {
-      if (!sessionStorage.roles) {
-        return false;
-      }
-      
-      let allRoles = [];
-      let restRoles = [];
-      const userRoles = localStorage.getItem("userRoles");
-      eval(userRoles).forEach(item => {
-        allRoles.push(parseInt(item.roleId));
-      });
-      allRoles.forEach(d => {
-        if (target.indexOf(d) == -1) {
-          restRoles.push(d);
-        }
-      });
-      let targetContains = false;
-      let restExcluded = false;
-      let roles = sessionStorage.roles.split(",");
-      for (let i = 0; i < roles.length; i ++) {
-        if (target.indexOf(parseInt(roles[i])) > -1) {
-          targetContains = true;
-        }
-        if (restRoles.indexOf(parseInt(roles[i])) == -1) {
-          restExcluded = true;
-        } else {
-          return false;
-        }
-      }
-      return targetContains && restExcluded;
-    },
-
-    checkUrl(url) {
-      const strRegex = '^((https|http|ftp)?://)';
-      let re = new RegExp(strRegex);
-      if (re.test(url)) {
+    }
+    let roles = sessionStorage.roles.split(",");
+    for (let i = 0; i < roles.length; i++) {
+      if (target.indexOf(parseInt(roles[i])) > -1) {
         return true;
+      }
+    }
+    return false;
+  },
+
+  roleAllowStrict(target) {
+    if (!sessionStorage.roles) {
+      return false;
+    }
+
+    let allRoles = [];
+    let restRoles = [];
+    const userRoles = localStorage.getItem("userRoles");
+    eval(userRoles).forEach(item => {
+      allRoles.push(parseInt(item.roleId));
+    });
+    allRoles.forEach(d => {
+      if (target.indexOf(d) == -1) {
+        restRoles.push(d);
+      }
+    });
+    let targetContains = false;
+    let restExcluded = false;
+    let roles = sessionStorage.roles.split(",");
+    for (let i = 0; i < roles.length; i++) {
+      if (target.indexOf(parseInt(roles[i])) > -1) {
+        targetContains = true;
+      }
+      if (restRoles.indexOf(parseInt(roles[i])) == -1) {
+        restExcluded = true;
       } else {
         return false;
       }
     }
-  };
+    return targetContains && restExcluded;
+  },
+
+  checkUrl(url) {
+    const strRegex = '^((https|http|ftp)?://)';
+    let re = new RegExp(strRegex);
+    if (re.test(url)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
 </script>

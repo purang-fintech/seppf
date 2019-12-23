@@ -7,10 +7,7 @@
             <span>用例ID-标题</span>
           </el-tooltip>
         </template>
-        <el-popover
-          placement="bottom-start"
-          width="380"
-          trigger="click">
+        <el-popover placement="bottom-start" width="380" trigger="click">
           <el-form label-position="right" size="mini" :inline="false" label-width="150px">
             <el-form-item label="被执行次数：">
               <el-input v-model="form.executedTimes" disabled></el-input>
@@ -38,7 +35,13 @@
       </el-form-item>
       <el-form-item class="button-item">
         <el-tooltip content="您没有本产品权限，无法操作！" placement="left" effect="dark" :disabled="!editForbidden">
-          <el-button v-no-more-click size="mini" type="primary" icon="el-icon-circle-check" @click="checkSaveCaseInfo('baseInfoForm')" :disabled="editForbidden">保存</el-button>
+          <el-button
+            v-no-more-click
+            size="mini"
+            type="primary"
+            icon="el-icon-circle-check"
+            @click="checkSaveCaseInfo('baseInfoForm')"
+            :disabled="editForbidden">保存</el-button>
         </el-tooltip>
       </el-form-item>
       <br>
@@ -98,7 +101,16 @@
       </el-form-item>
       <br>
       <el-form-item label="前置条件" class="case-desc" prop="preCondition">
-        <el-input v-model="form.preCondition" type="textarea" :rows="4" placeholder="请输入前置条件" resize="none" :maxlength="2000" show-word-limit clearable :disabled="readOnly || editForbidden">前置条件</el-input>
+        <el-input
+          v-model="form.preCondition"
+          type="textarea"
+          :rows="4"
+          placeholder="请输入前置条件"
+          resize="none"
+          :maxlength="2000"
+          show-word-limit
+          clearable
+          :disabled="readOnly || editForbidden">前置条件</el-input>
       </el-form-item>
       <el-form-item label="用例描述" class="case-desc" prop="summary">
         <simple-mde v-model="form.summary" :configs="configs" ref="caseDetail" v-if="loadMde"></simple-mde>
@@ -108,7 +120,9 @@
 </template>
 
 <script>
-import { dateFormat } from "@/util/date.js";
+import {
+  dateFormat
+} from "@/util/date.js";
 import commonQuery from "@/components/util/CommonQuery.vue";
 import simpleMde from "vue-simplemde/src/markdown-editor";
 let id = 0;
@@ -117,7 +131,7 @@ const rootId = 1;
 const testPatern = /^(class:|test:).*(\.java|\.py|\.sql)$/;
 const suitePatern = /^(suite:|testng:).*\.xml$/;
 export default {
-  data: function() {
+  data: function () {
     return {
       testResults: [],
       testTypes: [],
@@ -129,12 +143,10 @@ export default {
         editForbidden: false,
         product: {
           selected: sessionStorage.productId,
-          opts: [
-            {
-              value: sessionStorage.productId,
-              label: sessionStorage.productName
-            }
-          ]
+          opts: [{
+            value: sessionStorage.productId,
+            label: sessionStorage.productName
+          }]
         },
         caseId: "",
         caseStatus: 1,
@@ -145,8 +157,7 @@ export default {
         testPeriod: 4,
         regressMark: {
           selected: "N",
-          opts: [
-            {
+          opts: [{
               value: "Y",
               label: "是"
             },
@@ -169,7 +180,11 @@ export default {
       modules: [],
       members: [],
       baseInfoRules: {
-        'prodModule': [{ required: true, message: '请选择产品模块', trigger: 'change' }]
+        'prodModule': [{
+          required: true,
+          message: '请选择产品模块',
+          trigger: 'change'
+        }]
       },
       loadMde: true,
       caseTitle: "",
@@ -198,14 +213,14 @@ export default {
   },
 
   watch: {
-    caseId: function() {
+    caseId: function () {
       this.caseTitle = this.caseId + " - " + this.title;
       this.editForbidden = parseInt(this.currentProd) != parseInt(sessionStorage.productId);
     }
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.testResults.splice(0, _self.testResults.length);
     let testResultStatus = localStorage.getItem("testResultStatus");
     eval(testResultStatus).forEach(item => {
@@ -257,7 +272,7 @@ export default {
     _self.moduleQuery();
     if (_self.readOnly) {
       if (!_self.configs.toolbar) {
-        _self.$set(_self.configs,"toolbar", false);
+        _self.$set(_self.configs, "toolbar", false);
       } else {
         _self.configs.toolbar = false;
       }
@@ -270,7 +285,7 @@ export default {
 
   methods: {
     checkSaveCaseInfo(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -294,33 +309,33 @@ export default {
     },
 
     saveCaseInfo() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/case/info_save", {
-        caseId: _self.caseId,
-        status: _self.form.caseStatus,
-        productId: _self.form.product.selected,
-        designer: _self.form.designer,
-        priority: _self.form.priority,
-        testPeriod: _self.form.testPeriod,
-        testType: _self.form.testType,
-        prodModule: _self.form.prodModule,
-        regressMark: _self.form.regressMark.selected ? _self.form.regressMark.selected : "N",
-        autoPath: _self.form.autoPath,
-        summary: commonQuery.isNull(_self.form.summary) ? "" : _self.form.summary,
-        preCondition: commonQuery.isNull(_self.form.preCondition) ? "" : _self.form.preCondition
-      })
-      .then(function(res) {
-        if (res.data >= 1) {
-          _self.queryCaseInfo(_self.caseId);
-          _self.$message.success("保存成功");
-        } else {
-          _self.$notify.error("保存失败，没有记录更新");
-        }
-      })
+          caseId: _self.caseId,
+          status: _self.form.caseStatus,
+          productId: _self.form.product.selected,
+          designer: _self.form.designer,
+          priority: _self.form.priority,
+          testPeriod: _self.form.testPeriod,
+          testType: _self.form.testType,
+          prodModule: _self.form.prodModule,
+          regressMark: _self.form.regressMark.selected ? _self.form.regressMark.selected : "N",
+          autoPath: _self.form.autoPath,
+          summary: commonQuery.isNull(_self.form.summary) ? "" : _self.form.summary,
+          preCondition: commonQuery.isNull(_self.form.preCondition) ? "" : _self.form.preCondition
+        })
+        .then(function (res) {
+          if (res.data >= 1) {
+            _self.queryCaseInfo(_self.caseId);
+            _self.$message.success("保存成功");
+          } else {
+            _self.$notify.error("保存失败，没有记录更新");
+          }
+        })
     },
 
     queryCaseInfo(caseId) {
-      let _self =  this;
+      let _self = this;
       _self.loadMde = false;
       this.$nextTick(_ => {
         if (_self.$refs.baseInfoForm) {
@@ -329,86 +344,90 @@ export default {
       });
 
       _self.$axios.post("/case/info_query/" + caseId)
-      .then(function(res) {
-        let info = eval(res.data);
-        if (res.data && eval(res.data).length > 0) {
-          _self.caseReadQuery(caseId);
-          _self.form.designer = info[0].designer;
-          _self.form.designerName = info[0].designerName;
-          _self.form.caseStatus = info[0].status;
-          _self.form.statusName = info[0].statusName;
-          _self.form.priority = info[0].priority;
-          _self.form.priorityName = info[0].priorityName;
-          _self.form.testType = info[0].testType;
-          _self.form.testTypeName = info[0].testTypeName;
-          if (info[0].prodModule == 0) {
-            _self.form.prodModule = "";
-          } else {
-            _self.form.prodModule = info[0].prodModule;
+        .then(function (res) {
+          let info = eval(res.data);
+          if (res.data && eval(res.data).length > 0) {
+            _self.caseReadQuery(caseId);
+            _self.form.designer = info[0].designer;
+            _self.form.designerName = info[0].designerName;
+            _self.form.caseStatus = info[0].status;
+            _self.form.statusName = info[0].statusName;
+            _self.form.priority = info[0].priority;
+            _self.form.priorityName = info[0].priorityName;
+            _self.form.testType = info[0].testType;
+            _self.form.testTypeName = info[0].testTypeName;
+            if (info[0].prodModule == 0) {
+              _self.form.prodModule = "";
+            } else {
+              _self.form.prodModule = info[0].prodModule;
+            }
+            _self.form.prodModuleName = info[0].prodModuleName;
+            _self.form.testPeriod = info[0].testPeriod;
+            _self.form.testPeriodName = info[0].testPeriodName;
+            _self.form.regressMark.selected = info[0].regressMark ? info[0].regressMark : "N";
+            _self.form.regressMarkName = _self.form.regressMark.opts.find(item => {
+              return item.value == _self.form.regressMark.selected
+            }).label;
+            _self.form.autoPath = info[0].autoPath;
+            _self.form.summary = info[0].summary;
+            _self.form.preCondition = info[0].preCondition;
+            _self.form.lastExecuted = info[0].lastExecuted;
+            _self.form.executedTimes = info[0].executedTimes;
+            _self.form.designDate = info[0].designDate;
+            _self.form.relatedReq = info[0].relatedReq;
+            _self.form.relatedBug = info[0].relatedBug;
+
+            let textHeight = (_self.readOnly == true) ? bodyAviHeightTab - 420 : bodyAviHeightTab - 380;
+            _self.loadMde = true;
+            _self.mdeIMGHandler();
+
+            _self.$nextTick(function () {
+              _self.$el.querySelector(".CodeMirror").style.height = textHeight + "px";
+            });
           }
-          _self.form.prodModuleName = info[0].prodModuleName;
-          _self.form.testPeriod = info[0].testPeriod;
-          _self.form.testPeriodName = info[0].testPeriodName;
-          _self.form.regressMark.selected = info[0].regressMark ? info[0].regressMark : "N";
-          _self.form.regressMarkName = _self.form.regressMark.opts.find(item => {return item.value == _self.form.regressMark.selected}).label;
-          _self.form.autoPath = info[0].autoPath;
-          _self.form.summary = info[0].summary;
-          _self.form.preCondition = info[0].preCondition;
-          _self.form.lastExecuted = info[0].lastExecuted;
-          _self.form.executedTimes = info[0].executedTimes;
-          _self.form.designDate = info[0].designDate;
-          _self.form.relatedReq = info[0].relatedReq;
-          _self.form.relatedBug = info[0].relatedBug;
-
-          let textHeight = (_self.readOnly == true) ? bodyAviHeightTab - 420 : bodyAviHeightTab - 380;
-          _self.loadMde = true;
-          _self.mdeIMGHandler();
-
-          _self.$nextTick(function(){
-            _self.$el.querySelector(".CodeMirror").style.height = textHeight + "px";
-          });
-        }
-      })
+        })
     },
 
     caseReadQuery(caseId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/case/read_query/" + caseId)
-      .then(function(res) {
-        let result = res.data;
-        _self.form.designDate = result.designDate;
-        _self.form.executedTimes = result.executedTimes;
-        _self.form.lastExecuted = commonQuery.isNull(result.lastExecuted) ? "尚未执行" : result.lastExecuted;
-        _self.form.testResult = commonQuery.isNull(result.testResult) ? 5 : result.testResult;
-        _self.form.relatedReq = commonQuery.isNull(result.relatedReq) ? 0 : result.relatedReq;
-        _self.form.relatedBug = commonQuery.isNull(result.relatedBug) ? 0 : result.relatedBug;
-      })
-      .catch(function(response) {
-        _self.$notify.error("发生错误");
-        console.log(response);
-      });
+        .then(function (res) {
+          let result = res.data;
+          _self.form.designDate = result.designDate;
+          _self.form.executedTimes = result.executedTimes;
+          _self.form.lastExecuted = commonQuery.isNull(result.lastExecuted) ? "尚未执行" : result.lastExecuted;
+          _self.form.testResult = commonQuery.isNull(result.testResult) ? 5 : result.testResult;
+          _self.form.relatedReq = commonQuery.isNull(result.relatedReq) ? 0 : result.relatedReq;
+          _self.form.relatedBug = commonQuery.isNull(result.relatedBug) ? 0 : result.relatedBug;
+        })
+        .catch(function (response) {
+          _self.$notify.error("发生错误");
+          console.log(response);
+        });
     },
 
     moduleQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/module/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          isValid: 'Y'
-        }
-      })
-      .then(function(res) {
-        _self.modules = eval(res.data.list);
-      })
+          method: "post",
+          url: "/module/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            isValid: 'Y'
+          }
+        })
+        .then(function (res) {
+          _self.modules = eval(res.data.list);
+        })
     },
 
     mdeIMGHandler() {
       this.$nextTick(() => {
-        [this.$refs.caseDetail].map(({ simplemde }) => {
+        [this.$refs.caseDetail].map(({
+          simplemde
+        }) => {
           if (this.readOnly || this.editForbidden) {
             simplemde.togglePreview();
             return;
@@ -493,6 +512,7 @@ export default {
 
 <style>
 @import "~simplemde/dist/simplemde.min.css";
+
 .case-info .el-form {
   width: 100%;
 }
@@ -561,19 +581,18 @@ export default {
   min-height: 65%;
 }
 
-.button-item, 
+.button-item,
 .button-item .el-form-item__content,
 .button-item .el-button {
   float: right;
 }
 
-.autocase .read-content-tips input{
-  color:#3AB4D7 !important;
+.autocase .read-content-tips input {
+  color: #3AB4D7 !important;
   cursor: pointer !important;
 }
 
-.autocase .read-content-tips input:hover{
+.autocase .read-content-tips input:hover {
   color: #61c3df !important;
 }
 </style>
-

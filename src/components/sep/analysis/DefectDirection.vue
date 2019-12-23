@@ -1,6 +1,7 @@
 <template>
   <div id="directionCharts" style="width: 99%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -13,7 +14,7 @@ require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -21,7 +22,7 @@ export default {
   props: ["ddirection"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let dates = [];
     let dailyFound = [];
     let totalFound = [];
@@ -120,10 +121,20 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line", "bar"] },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          magicType: {
+            show: true,
+            type: ["line", "bar"]
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -135,8 +146,7 @@ export default {
         },
         data: dates
       },
-      yAxis: [
-        {
+      yAxis: [{
           type: "value",
           name: "累计数",
           min: 0,
@@ -161,8 +171,7 @@ export default {
           }
         }
       ],
-      series: [
-        {
+      series: [{
           name: "当日发现",
           type: "bar",
           barMaxWidth: '50',
@@ -215,7 +224,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("directionCharts");
 
     let dataCharts = echarts.init(charts, sepp);

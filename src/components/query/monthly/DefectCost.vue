@@ -1,6 +1,7 @@
 <template>
   <div id="monthDefectCost" style="width: 100%" :style="{height: chartsHeight + 'px'}"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -13,7 +14,7 @@ require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsHeight: 200,
       chartsOptions: ""
@@ -22,7 +23,7 @@ export default {
   props: ["datas", "height"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.chartsHeight = _self.height - 1;
     let productData = [];
     let defectCount = [];
@@ -64,10 +65,20 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line", "bar"] },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          magicType: {
+            show: true,
+            type: ["line", "bar"]
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -82,8 +93,7 @@ export default {
         },
         data: productData
       },
-      yAxis: [
-        {
+      yAxis: [{
           type: "value",
           name: "总需求数",
           axisLabel: {
@@ -106,8 +116,7 @@ export default {
           }
         }
       ],
-      series: [
-        {
+      series: [{
           name: "总需求数",
           type: "bar",
           barMaxWidth: "50",
@@ -135,7 +144,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("monthDefectCost");
 
     let dataCharts = echarts.init(charts, sepp);

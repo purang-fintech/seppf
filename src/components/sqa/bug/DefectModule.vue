@@ -1,6 +1,7 @@
 <template>
   <div id="moduleAna" style="width: 100%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,7 +19,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let usersData = [];
     let legendData = [];
     let seriesData = [];
@@ -57,16 +58,25 @@ export default {
       },
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "shadow" }
+        axisPointer: {
+          type: "shadow"
+        }
       },
       toolbox: {
         right: 0,
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -95,7 +105,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("moduleAna");
 
     let dataCharts = echarts.init(charts, sepp);

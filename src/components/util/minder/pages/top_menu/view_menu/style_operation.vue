@@ -1,25 +1,27 @@
 <template lang="">
-<div class="style-group">
-  <div class="clear-style-btn menu-btn" @click="clearstyle" :disabled="disabled1">
-    <span class="tab-icons"></span>
-    <span class="label">清除样式</span>
-  </div>
-  <div class="copy-paste-panel" @click="copystyle">
-    <div class="copy-style menu-btn" :disabled="disabled2">
+  <div class="style-group">
+    <div class="clear-style-btn menu-btn" @click="clearstyle" :disabled="disabled1">
       <span class="tab-icons"></span>
-      <span class="label">复制样式</span>
+      <span class="label">清除样式</span>
     </div>
-    <div class="paste-style menu-btn" @click="pastestyle" :disabled="disabled3">
-      <span class="tab-icons"></span>
-      <span class="label">粘贴样式</span>
+    <div class="copy-paste-panel" @click="copystyle">
+      <div class="copy-style menu-btn" :disabled="disabled2">
+        <span class="tab-icons"></span>
+        <span class="label">复制样式</span>
+      </div>
+      <div class="paste-style menu-btn" @click="pastestyle" :disabled="disabled3">
+        <span class="tab-icons"></span>
+        <span class="label">粘贴样式</span>
+      </div>
     </div>
   </div>
-</div>
 
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {
+  mapGetters
+} from 'vuex'
 export default {
   'name': 'style_opreation',
   computed: {
@@ -48,5 +50,4 @@ export default {
     }
   }
 }
-
 </script>

@@ -1,28 +1,50 @@
 <template lang="">
-<div class="sequence-group">
-  <ul :disabled="commandDisabled">
-    <li v-for="(item, index) in items" class="menu-btn" :class="classArray(index)" @click="execCommand(index)" :title="title(index)" ></li>
-  </ul>
-</div>
+  <div class="sequence-group">
+    <ul :disabled="commandDisabled">
+      <li v-for="(item, index) in items" class="menu-btn" :class="classArray(index)" @click="execCommand(index)" :title="title(index)"></li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import {
+  mapGetters,
+  mapActions
+} from 'vuex'
 export default {
   name: 'sequence_box',
   data() {
     return {
-      items: [
-        { id: '0' },
-        { id: '1' },
-        { id: '2' },
-        { id: '3' },
-        { id: '4' },
-        { id: '5' },
-        { id: '6' },
-        { id: '7' },
-        { id: '8' },
-        { id: '9' }
+      items: [{
+          id: '0'
+        },
+        {
+          id: '1'
+        },
+        {
+          id: '2'
+        },
+        {
+          id: '3'
+        },
+        {
+          id: '4'
+        },
+        {
+          id: '5'
+        },
+        {
+          id: '6'
+        },
+        {
+          id: '7'
+        },
+        {
+          id: '8'
+        },
+        {
+          id: '9'
+        }
       ],
     }
   },
@@ -47,9 +69,9 @@ export default {
       var sequence = 'sequence-' + index;
 
       // 用数组返回多个class
-      var arr = [
-        {'active': isActive}, sequence
-      ]
+      var arr = [{
+        'active': isActive
+      }, sequence]
       return arr
     },
     title(index) {
@@ -63,5 +85,4 @@ export default {
   },
 
 }
-
 </script>

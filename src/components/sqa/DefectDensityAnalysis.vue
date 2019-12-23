@@ -16,15 +16,15 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="版本计划发布日期" v-if="anaMode == '1'" label-width="140px">
-        <el-date-picker 
-          v-model="anaPeriod" 
-          type="daterange" 
+        <el-date-picker
+          v-model="anaPeriod"
+          type="daterange"
           size="small"
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="checkPeriod()"
           :clearable="false"
@@ -32,15 +32,15 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="统计对象创建时间" v-if="anaMode == '2'" label-width="140px">
-        <el-date-picker 
-          v-model="anaPeriod" 
-          type="daterange" 
+        <el-date-picker
+          v-model="anaPeriod"
+          type="daterange"
           size="small"
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="checkPeriod()"
           :clearable="false"
@@ -97,7 +97,10 @@
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import reqDensity from "./density/DefectDensityReq.vue";
 import manDensity from "./density/DefectDensityMan.vue";
 import caseDensity from "./density/DefectDensityCase.vue";
@@ -109,7 +112,7 @@ import cmsDensityMonth from "./density/DefectDensityCmsMonth.vue";
 import tmsDensityMonth from "./density/DefectDensityTmsMonth.vue";
 let versions = [];
 export default {
-  data: function() {
+  data: function () {
     return {
       anaMode: "1",
       anaPeriod: [],
@@ -145,15 +148,15 @@ export default {
   },
 
   methods: {
-    setQueryMode(){
+    setQueryMode() {
       if (this.anaMode == "1") {
         this.refreshDataRelease();
-      } else if(this.anaMode == "2") {
+      } else if (this.anaMode == "2") {
         this.refreshDataMonth();
       }
     },
 
-    refreshDataRelease(){
+    refreshDataRelease() {
       this.reqDensities.splice(0, this.reqDensities.length);
       this.defectReqDensity();
       this.cmsDensities.splice(0, this.cmsDensities.length);
@@ -166,7 +169,7 @@ export default {
       this.defectCaseDensity();
     },
 
-    refreshDataMonth(){
+    refreshDataMonth() {
       this.reqDensitiesM.splice(0, this.reqDensitiesM.length);
       this.defectReqDensityM();
       this.cmsDensitiesM.splice(0, this.cmsDensitiesM.length);
@@ -177,7 +180,7 @@ export default {
       this.defectManDensityM();
     },
 
-    setDefaultPeriod(){
+    setDefaultPeriod() {
       let date = new Date();
       let oldDay = new Date();
       let qTimeEnd = dateFormat(date, this.datefmt);
@@ -188,10 +191,10 @@ export default {
       this.anaPeriod.push(qTimeEnd);
     },
 
-    checkPeriod(){
+    checkPeriod() {
       let start = this.anaPeriod[0];
       let end = this.anaPeriod[1];
-      let period = (Date.parse(end.replace('/-/g','/')) - Date.parse(start.replace('/-/g','/'))) / (3600 * 1000 * 24);
+      let period = (Date.parse(end.replace('/-/g', '/')) - Date.parse(start.replace('/-/g', '/'))) / (3600 * 1000 * 24);
       if (period > 365) {
         this.$message.info("请查询12个月以内的数据！");
         this.setDefaultPeriod();
@@ -206,12 +209,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -222,8 +225,8 @@ export default {
       return result;
     },
 
-    defectReqDensity(){
-      let _self =  this;
+    defectReqDensity() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugReqDensity",
@@ -235,17 +238,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.reqDensities = _self.sortData(eval(res.data), "relCode", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectManDensity(){
-      let _self =  this;
+    defectManDensity() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugManDensity",
@@ -257,17 +260,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.manDensities = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectCaseDensity(){
-      let _self =  this;
+    defectCaseDensity() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugCaseDensity",
@@ -279,17 +282,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.caseDensities = _self.sortData(eval(res.data), "relCode", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectCmsDensity(){
-      let _self =  this;
+    defectCmsDensity() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugCmsDensity",
@@ -301,17 +304,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.cmsDensities = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectTmsDensity(){
-      let _self =  this;
+    defectTmsDensity() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugTmsDensity",
@@ -323,17 +326,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tmsDensities = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectReqDensityM(){
-      let _self =  this;
+    defectReqDensityM() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugReqDensityM",
@@ -345,17 +348,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.reqDensitiesM = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectManDensityM(){
-      let _self =  this;
+    defectManDensityM() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugManDensityM",
@@ -367,17 +370,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.manDensitiesM = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectCmsDensityM(){
-      let _self =  this;
+    defectCmsDensityM() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugCmsDensityM",
@@ -389,17 +392,17 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.cmsDensitiesM = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectTmsDensityM(){
-      let _self =  this;
+    defectTmsDensityM() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugTmsDensityM",
@@ -411,10 +414,10 @@ export default {
             qTimeEnd: _self.anaPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tmsDensitiesM = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -433,7 +436,7 @@ export default {
   font-size: 13px;
 }
 
-.wid-container{
+.wid-container {
   width: 99.2%;
   height: 300px;
   margin-bottom: 1%;

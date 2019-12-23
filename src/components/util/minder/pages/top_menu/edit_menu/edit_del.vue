@@ -1,19 +1,21 @@
 <template lang="">
-<div class="edit-del-group">
-  <div class="edit menu-btn" :disabled="disabled1" @click="edit" title="编辑">
-    <i class="tab-icons"></i>
-    <span>编辑</span>
+  <div class="edit-del-group">
+    <div class="edit menu-btn" :disabled="disabled1" @click="edit" title="编辑">
+      <i class="tab-icons"></i>
+      <span>编辑</span>
+    </div>
+    <div class="del menu-btn" :disabled="disabled2" @click="del" title="删除">
+      <i class="tab-icons"></i>
+      <span>删除</span>
+    </div>
   </div>
-  <div class="del menu-btn" :disabled="disabled2" @click="del" title="删除">
-    <i class="tab-icons"></i>
-    <span>删除</span>
-  </div>
-</div>
 
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {
+  mapGetters
+} from 'vuex';
 export default {
   name: 'edit_del',
   computed: {
@@ -47,5 +49,4 @@ export default {
     }
   }
 }
-
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div id='directionPreview' style='width: 100%; height: 400px'></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/line");
@@ -12,7 +13,7 @@ require("echarts/lib/component/dataZoom");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -20,7 +21,7 @@ export default {
   props: ["datas"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let summaryDates = [];
     let expectFounds = [];
 
@@ -51,10 +52,20 @@ export default {
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line"] },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          magicType: {
+            show: true,
+            type: ["line"]
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -72,18 +83,16 @@ export default {
         },
         data: summaryDates
       },
-      yAxis: [
-        {
-          type: "value",
-          name: "缺陷数(虚拟数)",
-          axisLabel: {
-            formatter: "{value}"
-          },
-          splitLine: {
-            show: false
-          }
+      yAxis: [{
+        type: "value",
+        name: "缺陷数(虚拟数)",
+        axisLabel: {
+          formatter: "{value}"
+        },
+        splitLine: {
+          show: false
         }
-      ],
+      }],
       series: {
         name: "理论发现",
         type: "line",
@@ -94,7 +103,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("directionPreview");
 
     let dataCharts = echarts.init(charts, sepp);

@@ -71,11 +71,14 @@
                 </el-tooltip>
               </template>
               <template slot-scope="scope">
-                <el-popover
-                  placement="left-start"
-                  width="600"
-                  trigger="click">
-                  <el-input type="textarea" v-model="currentCms.detail" :rows="10" disabled resize="none" placeholder="未录入开发任务详情"></el-input>
+                <el-popover placement="left-start" width="600" trigger="click">
+                  <el-input
+                    type="textarea"
+                    v-model="currentCms.detail"
+                    :rows="10"
+                    disabled
+                    resize="none"
+                    placeholder="未录入开发任务详情"></el-input>
                   <el-input class="cms-sum-tips" v-model="currentCms.summary" disabled slot="reference">
                   </el-input>
                 </el-popover>
@@ -162,12 +165,14 @@
                 </el-tooltip>
               </template>
               <template slot-scope="scope">
-                <el-popover
-                  placement="left-start"
-                  width="600"
-                  trigger="click">
-                  <el-input type="textarea" v-model="parentReq.detail" :rows="10" disabled resize="none"
-                            placeholder="未录入产品需求详情"></el-input>
+                <el-popover placement="left-start" width="600" trigger="click">
+                  <el-input
+                    type="textarea"
+                    v-model="parentReq.detail"
+                    :rows="10"
+                    disabled
+                    resize="none"
+                    placeholder="未录入产品需求详情"></el-input>
                   <el-input class="cms-sum-tips" v-model="parentReq.summary" disabled slot="reference">
                   </el-input>
                 </el-popover>
@@ -205,7 +210,13 @@
             <span v-if="activeName=='brotherCms'"> 所属产品需求下全部开发任务</span>
             <span v-else> 所属产品需求下全部开发任务({{brotherCms.pageInfo.total}} 条记录，展开可查看)</span>
           </template>
-          <el-table :data="brotherCms.data" size="mini" class="cms-detail-table" :row-class-name="isCurrentRow" empty-text="所属产品需求下无其他开发任务" stripe>
+          <el-table
+            :data="brotherCms.data"
+            size="mini"
+            class="cms-detail-table"
+            :row-class-name="isCurrentRow"
+            empty-text="所属产品需求下无其他开发任务"
+            stripe>
             <el-table-column type="index" label="序号" width="40" align="center">
             </el-table-column>
             <el-table-column prop="id" label="任务编号" width="100" align="center">
@@ -294,7 +305,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="nform" size="mini" :rules="nformRules" ref="ruledFromN" :inline="true" label-width="110px" class="mission-form">
+      <el-form
+        :model="nform"
+        size="mini"
+        :rules="nformRules"
+        ref="ruledFromN"
+        :inline="true"
+        label-width="110px"
+        class="mission-form">
         <el-form-item label="计划开始日期" prop="planBegin" required>
           <el-date-picker type="date" v-model="nform.planBegin" placeholder="请选择" :value-format="datefmt" clearable>
           </el-date-picker>
@@ -307,16 +325,15 @@
           <el-input v-model="nform.manpower" placeholder="请输入（人日）" clearable>所需人日</el-input>
         </el-form-item>
         <el-form-item label="负责人" prop="responser" required>
-          <el-select v-model="nform.responser" placeholder="请选择" clearable filterable :filter-method="filterUsers2" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions2"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="nform.responser"
+            placeholder="请选择"
+            clearable
+            filterable
+            :filter-method="filterUsers2"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions2" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -332,13 +349,22 @@
           <el-input v-model="nform.summary" placeholder="请输入工作任务摘要" class="cm-summary" clearable>任务摘要</el-input>
         </el-form-item>
         <el-form-item label="任务详情" prop="detail">
-          <el-input v-model="nform.detail" type="textarea" :rows="2" placeholder="请输入任务详情" class="cms-attach-upload" :maxlength="2000" show-word-limit clearable>任务详情</el-input>
+          <el-input
+            v-model="nform.detail"
+            type="textarea"
+            :rows="2"
+            placeholder="请输入任务详情"
+            class="cms-attach-upload"
+            :maxlength="2000"
+            show-word-limit
+            clearable>任务详情</el-input>
         </el-form-item>
         <el-form-item label="附件上传">
           <el-upload
             class="cms-attach-upload"
             ref="upload"
-            multiple drag
+            multiple
+            drag
             :limit="5"
             :on-exceed="fileExceeded"
             :before-upload="beforeUpload"
@@ -375,23 +401,29 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="nform" size="mini" :rules="nformRules" ref="ruledFromC" :inline="true" label-width="110px" class="mission-form">
+      <el-form
+        :model="nform"
+        size="mini"
+        :rules="nformRules"
+        ref="ruledFromC"
+        :inline="true"
+        label-width="110px"
+        class="mission-form">
         <el-form-item label="任务状态" prop="status" required>
           <el-select v-model="nform.status" placeholder="请选择" clearable>
             <el-option v-for="opt in permitStatus" :value="opt.value" :key="opt.value" :label="opt.label" :disabled="opt.disabled"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="负责人" prop="responser" required>
-          <el-select v-model="nform.responser" placeholder="请选择" clearable filterable :filter-method="filterUsers3" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions3"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="nform.responser"
+            placeholder="请选择"
+            clearable
+            filterable
+            :filter-method="filterUsers3"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions3" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -418,13 +450,22 @@
           <el-input v-model="nform.summary" placeholder="请输入任务摘要" class="cm-summary" clearable>任务摘要</el-input>
         </el-form-item>
         <el-form-item label="任务详情" prop="detail">
-          <el-input v-model="nform.detail" type="textarea" :rows="2" placeholder="请输入任务详情" class="cms-attach-upload" :maxlength="2000" show-word-limit clearable>任务详情</el-input>
+          <el-input
+            v-model="nform.detail"
+            type="textarea"
+            :rows="2"
+            placeholder="请输入任务详情"
+            class="cms-attach-upload"
+            :maxlength="2000"
+            show-word-limit
+            clearable>任务详情</el-input>
         </el-form-item>
         <el-form-item label="附件上传">
           <el-upload
             class="cms-attach-upload"
             ref="upload"
-            multiple drag
+            multiple
+            drag
             :limit="5"
             :on-exceed="fileExceeded"
             :before-upload="beforeUpload"
@@ -452,15 +493,8 @@
       <el-form ref="form" :inline="true" size="mini" label-width="110px" @keydown.native.enter="missionQuery()">
         <el-form-item label="任务拆分人">
           <el-select v-model="mform.spliter" clearable filterable :filter-method="filterUsers" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+            <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -469,15 +503,8 @@
         </el-form-item>
         <el-form-item label="任务负责人">
           <el-select v-model="mform.responser" clearable filterable :filter-method="filterUsers1" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions1"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+            <el-option-group v-for="group in userOptions1" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -501,12 +528,27 @@
           <el-input v-model="mform.id" placeholder="请输入" clearable>任务号</el-input>
         </el-form-item>
         <el-form-item label="任务状态">
-          <el-select v-model="mform.status" clearable filterable multiple collapse-tags class="muti-select">
+          <el-select
+            v-model="mform.status"
+            clearable
+            filterable
+            multiple
+            collapse-tags
+            class="muti-select">
             <el-option v-for="opt in cmsStatus" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="计划完成日期">
-          <el-date-picker v-model="mform.planTo" type="daterange" align="right" unlink-panels :value-format="datefmt" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickOptions">
+          <el-date-picker
+            v-model="mform.planTo"
+            type="daterange"
+            align="right"
+            unlink-panels
+            :value-format="datefmt"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickOptions">
           </el-date-picker>
         </el-form-item>
         <el-form-item style="float:right">
@@ -515,11 +557,17 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="dataRevert" :max-height="tableHeight" size="mini" stripe :border="showBorder" ref="cmsTable"
-          v-loading="queryLoading"
-          element-loading-text="查询中..."
-          element-loading-spinner="el-icon-loading"
-          element-loading-background="rgba(0, 0, 0, 0.8)">
+      <el-table
+        :data="dataRevert"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        ref="cmsTable"
+        v-loading="queryLoading"
+        element-loading-text="查询中..."
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column label="产品需求号" width="100" align="center" prop="id" sortable>
           <template slot-scope="scope">
             <el-tooltip content="点此，产品需求拆分开发任务" placement="right-end" effect="dark">
@@ -577,7 +625,8 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
-        <el-button type="primary"
+        <el-button
+          type="primary"
           class="el-icon-download export-btn"
           size="mini"
           :disabled="tableData.length == 0"
@@ -593,7 +642,10 @@
 
 <script>
 import commonQuery from "@/components/util/CommonQuery.vue";
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import TableExport from '@/util/TableExport.js'
 
 const validateManpower = (rule, value, callback) => {
@@ -642,7 +694,7 @@ export default {
       currentCmsAttachs: [],
       parentReqAttachs: [],
       parentReq: {},
-      parentReqBug:{
+      parentReqBug: {
         data: [],
         pageInfo: {},
         currentPage: 1,
@@ -668,7 +720,7 @@ export default {
         relId: "",
         spliter: "",
         responser: "",
-        status: [1,2,3,4,5]
+        status: [1, 2, 3, 4, 5]
       },
       currentPage: 1,
       pageSize: parseInt(sessionStorage.tablePageSize) || 10,
@@ -682,22 +734,50 @@ export default {
         planTo: "",
         manpower: "",
         summary: "",
-        detail:"",
+        detail: "",
         fileList: []
       },
-      currentCms : {},
+      currentCms: {},
       nformRules: {
-        responser: [{ required: true, message: '请选择负责人', trigger: 'change' }],
-        planBegin: [{ type: 'string', required: true, message: '请选择计划开始日期', trigger: 'blur' }],
-        planTo: [{ type: 'string', required: true, message: '请选择计划完成日期', trigger: 'blur' }],
-        manpower: [{ validator: validateManpower, trigger: 'blur'}],
-        summary: [
-          { required: true, message: '请输入工作任务摘要', trigger: 'blur' },
-          { min: 5, max: 50, message: '长度在 5 到 50 个字', trigger: 'blur' }
+        responser: [{
+          required: true,
+          message: '请选择负责人',
+          trigger: 'change'
+        }],
+        planBegin: [{
+          type: 'string',
+          required: true,
+          message: '请选择计划开始日期',
+          trigger: 'blur'
+        }],
+        planTo: [{
+          type: 'string',
+          required: true,
+          message: '请选择计划完成日期',
+          trigger: 'blur'
+        }],
+        manpower: [{
+          validator: validateManpower,
+          trigger: 'blur'
+        }],
+        summary: [{
+            required: true,
+            message: '请输入工作任务摘要',
+            trigger: 'blur'
+          },
+          {
+            min: 5,
+            max: 50,
+            message: '长度在 5 到 50 个字',
+            trigger: 'blur'
+          }
         ],
-        detail: [
-          { min: 0, max: 2000, message: '长度不可超过 2000 字，内容过多请上传附件', trigger: 'blur' }
-        ]
+        detail: [{
+          min: 0,
+          max: 2000,
+          message: '长度不可超过 2000 字，内容过多请上传附件',
+          trigger: 'blur'
+        }]
       }
     };
   },
@@ -707,10 +787,10 @@ export default {
       for (let i = 0, datas = this.tableData; i < datas.length; i++) {
         let now = new Date(dateFormat(new Date(), this.datefmt) + " 00:00:00").getTime();
         let planTo = new Date(datas[i].planTo + " 00:00:00").getTime();
-        if ((planTo - now) < 0  && datas[i].status < 4  && datas[i].status > 0) {
-          this.$set(datas[i], "planToHtml", "<span style='color:orange;font-weight:500'>"+ datas[i].planTo + "</span>");
+        if ((planTo - now) < 0 && datas[i].status < 4 && datas[i].status > 0) {
+          this.$set(datas[i], "planToHtml", "<span style='color:orange;font-weight:500'>" + datas[i].planTo + "</span>");
         } else {
-          this.$set(datas[i], "planToHtml", "<span style='color:#606266'>"+ datas[i].planTo + "</span>");
+          this.$set(datas[i], "planToHtml", "<span style='color:#606266'>" + datas[i].planTo + "</span>");
         }
         this.tableData.splice(i, 1, datas[i]);
       }
@@ -719,7 +799,7 @@ export default {
   },
 
   watch: {
-    hideCmsTips: function(val, old) {
+    hideCmsTips: function (val, old) {
       if (val != old) {
         localStorage.setItem("hideCmsTips", val);
       }
@@ -743,7 +823,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.tableHeight = bodyAviHeightTab - 65 - 45;
     let dateE = new Date();
     let dateS = new Date();
@@ -792,7 +872,7 @@ export default {
 
     if (_self.$route.params.relId) {
       _self.releaseQuery();
-      _self.$nextTick(function(){
+      _self.$nextTick(function () {
         _self.mform.relId = _self.$route.params.relId;
         _self.mform.reqId = "";
         _self.mform.id = "";
@@ -829,7 +909,7 @@ export default {
       if (commonQuery.roleAllow([3])) {
         _self.mform.spliter = parseInt(sessionStorage.userId);
         _self.mform.responser = "";
-      } else if(commonQuery.roleAllow([5])) {
+      } else if (commonQuery.roleAllow([5])) {
         _self.mform.spliter = "";
         _self.mform.responser = parseInt(sessionStorage.userId);
       } else {
@@ -844,8 +924,8 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
       _self.userOptions1 = _self.memberFull;
       _self.userOptions2 = _self.memberFull;
@@ -853,22 +933,22 @@ export default {
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers1(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions1 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers2(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions2 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers3(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions3 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
@@ -876,7 +956,10 @@ export default {
       return commonQuery.checkUrl(url);
     },
 
-    isCurrentRow({ row, rowIndex }) {
+    isCurrentRow({
+      row,
+      rowIndex
+    }) {
       console.log(row.id);
       console.log(this.currentCms.id);
       if (row.id == this.currentCms.id) {
@@ -921,7 +1004,7 @@ export default {
       this.parentReqBugQuery(this.parentReq.reqId);
     },
 
-    isManage(){
+    isManage() {
       return commonQuery.roleAllow([2, 3, 10]);
     },
 
@@ -934,8 +1017,8 @@ export default {
       this.$refs[formName].resetFields();
     },
 
-    showCmsDetail(row){
-      let _self =  this;
+    showCmsDetail(row) {
+      let _self = this;
       _self.activeName = "cmsDetail";
       _self.showDetail = true;
       _self.currentCms = row;
@@ -951,8 +1034,8 @@ export default {
       _self.brotherCmsQuery(_self.currentCms);
     },
 
-    checkSaveCmsCreate(formName){
-      let _self =  this;
+    checkSaveCmsCreate(formName) {
+      let _self = this;
       _self.$refs[formName].validate((valid) => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -963,8 +1046,8 @@ export default {
       });
     },
 
-    checkSaveCmsMod(formName){
-      let _self =  this;
+    checkSaveCmsMod(formName) {
+      let _self = this;
       _self.$refs[formName].validate((valid) => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -976,7 +1059,7 @@ export default {
     },
 
     missionDeal(row) {
-      let _self =  this;
+      let _self = this;
       if (!_self.parentReq || _self.parentReq.reqId != row.reqId) {
         _self.parentReqQuery(row.reqId, () => {
           if (commonQuery.isNull(_self.parentReq.relId)) {
@@ -995,27 +1078,31 @@ export default {
       }
     },
 
-    beginSplit(reqId){
-      let _self =  this;
+    beginSplit(reqId) {
+      let _self = this;
       _self.parentReqQuery(reqId);
       _self.changeOnWayReq(reqId, (changeCount) => {
         if (changeCount > 0) {
           _self.$confirm("是否前往变更页面查看？", "需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {reqId: reqId}});
-          })
-          .catch(() => {
-          });
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  reqId: reqId
+                }
+              });
+            })
+            .catch(() => {});
         } else {
           _self.nform.reqId = reqId;
           _self.nform.spliter = "";
           _self.nform.responser = "";
           _self.nform.status = 1,
-          _self.nform.planBegin = "";
+            _self.nform.planBegin = "";
           _self.nform.planTo = "";
           _self.nform.manpower = "";
           _self.nform.summary = "";
@@ -1026,8 +1113,8 @@ export default {
       });
     },
 
-    changeOnWayReq(reqId, callback){
-      let _self =  this;
+    changeOnWayReq(reqId, callback) {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/change/on_way",
@@ -1038,7 +1125,7 @@ export default {
             reqId: reqId,
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let changes = res.data;
           _self.$nextTick(() => {
             if (typeof callback == "function") {
@@ -1046,14 +1133,14 @@ export default {
             }
           })
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.$notify.error("查询需求变更记录时发生程序错误！");
         });
     },
 
-    changeOnWayCms(id, callback){
-      let _self =  this;
+    changeOnWayCms(id, callback) {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/change/on_way",
@@ -1064,7 +1151,7 @@ export default {
             cmId: id,
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           let changes = res.data;
           _self.$nextTick(() => {
             if (typeof callback == "function") {
@@ -1072,26 +1159,30 @@ export default {
             }
           })
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.$notify.error("查询需求变更记录时发生程序错误！");
         });
     },
 
-    beginEdit(data){
-      let _self =  this;
+    beginEdit(data) {
+      let _self = this;
       _self.changeOnWayCms(data.id, (changeCount) => {
         if (changeCount > 0) {
           _self.$confirm("是否前往变更页面查看？", "需求变更未完成，请暂勿操作", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-          .then(() => {
-            _self.$router.push({name: "change", params: {reqId: data.reqId}});
-          })
-          .catch(() => {
-          });
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+            .then(() => {
+              _self.$router.push({
+                name: "change",
+                params: {
+                  reqId: data.reqId
+                }
+              });
+            })
+            .catch(() => {});
         } else {
           _self.currentCms = data;
           _self.nform.reqId = data.reqId;
@@ -1099,7 +1190,7 @@ export default {
           _self.nform.spliter = data.spliter;
           _self.nform.responser = data.responser;
           _self.nform.status = data.status,
-          _self.nform.planBegin = data.planBegin;
+            _self.nform.planBegin = data.planBegin;
           _self.nform.planTo = data.planTo;
           _self.nform.moduleId = data.moduleId;
           _self.nform.manpower = data.manpower;
@@ -1113,26 +1204,26 @@ export default {
     },
 
     saveCmsCreate() {
-      let _self =  this;
+      let _self = this;
       let files = [];
       _self.nform.fileList.forEach(item => {
         files.push(item.id);
       });
       _self.$axios.post("/cms/create", {
-        reqId: _self.nform.reqId,
-        status: 1,
-        spliter: sessionStorage.userId,
-        splitDate: _self.nform.splitDate,
-        responser: _self.nform.responser,
-        manpower: _self.nform.manpower,
-        moduleId: _self.nform.moduleId,
-        planBegin: _self.nform.planBegin,
-        planTo: _self.nform.planTo,
-        summary: _self.nform.summary,
-        detail: commonQuery.isNull(_self.nform.detail) ? "" : _self.nform.detail,
-        attachment: files.toString()
+          reqId: _self.nform.reqId,
+          status: 1,
+          spliter: sessionStorage.userId,
+          splitDate: _self.nform.splitDate,
+          responser: _self.nform.responser,
+          manpower: _self.nform.manpower,
+          moduleId: _self.nform.moduleId,
+          planBegin: _self.nform.planBegin,
+          planTo: _self.nform.planTo,
+          summary: _self.nform.summary,
+          detail: commonQuery.isNull(_self.nform.detail) ? "" : _self.nform.detail,
+          attachment: files.toString()
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.showDialog = false;
             _self.$message.success("拆分开发任务保存成功！");
@@ -1142,16 +1233,16 @@ export default {
             console.log(res);
           }
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("拆分开发任务时发生程序错误");
           console.log(response);
         });
     },
 
     cmsUpdate(callback) {
-      let _self =  this;
+      let _self = this;
       let files = [];
-      _self.nform.fileList.forEach(function(fs, i) {
+      _self.nform.fileList.forEach(function (fs, i) {
         if (fs.response) {
           files.push(fs.response[0].id);
         } else {
@@ -1160,47 +1251,47 @@ export default {
       });
 
       _self.$axios.post("/cms/update", {
-        id: _self.nform.id,
-        manpower: _self.nform.manpower,
-        planBegin: _self.nform.planBegin,
-        planTo: _self.nform.planTo,
-        summary: _self.nform.summary,
-        attachment: files.toString(),
-        moduleId: _self.nform.moduleId,
-        status: _self.nform.status,
-        detail: commonQuery.isNull(_self.nform.detail) ? "" : _self.nform.detail,
-        responser: _self.nform.responser
-      })
-      .then(function(sres) {
-        if (sres.data == 1) {
-          _self.showDialogMod = false;
-          _self.$message.success("开发任务信息修改成功！");
-          _self.missionQuery();
-          if (typeof callback == "function") {
-            callback();
+          id: _self.nform.id,
+          manpower: _self.nform.manpower,
+          planBegin: _self.nform.planBegin,
+          planTo: _self.nform.planTo,
+          summary: _self.nform.summary,
+          attachment: files.toString(),
+          moduleId: _self.nform.moduleId,
+          status: _self.nform.status,
+          detail: commonQuery.isNull(_self.nform.detail) ? "" : _self.nform.detail,
+          responser: _self.nform.responser
+        })
+        .then(function (sres) {
+          if (sres.data == 1) {
+            _self.showDialogMod = false;
+            _self.$message.success("开发任务信息修改成功！");
+            _self.missionQuery();
+            if (typeof callback == "function") {
+              callback();
+            }
+          } else {
+            _self.$message.info("开发任务信息修改保存失败");
           }
-        } else {
-          _self.$message.info("开发任务信息修改保存失败");
-        }
-      })
-      .catch(error => {
-        _self.$notify.error("开发任务信息修改时发生程序错误");
-        console.log(error);
-      });
+        })
+        .catch(error => {
+          _self.$notify.error("开发任务信息修改时发生程序错误");
+          console.log(error);
+        });
     },
 
-    countAttach(attach){
+    countAttach(attach) {
       return null == attach || attach == "" ? 0 : attach.split(",").length;
     },
 
-    showAttachs(row){
-      let _self =  this;
+    showAttachs(row) {
+      let _self = this;
       _self.showAttachDialog = true;
       _self.currentCmsAttachs = _self.getAttach(row.attachment);
     },
 
-    memberQuery(callback){
-      let _self =  this;
+    memberQuery(callback) {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.members = result.users;
         _self.memberFull = result.usersFull;
@@ -1215,7 +1306,7 @@ export default {
     },
 
     releaseQuery() {
-      let _self =  this;
+      let _self = this;
       _self.releases.splice(0, _self.releases.length);
       commonQuery.openRelQuery((result) => {
         _self.releases = result.releasesWithBranch;
@@ -1223,29 +1314,29 @@ export default {
     },
 
     moduleQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/module/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(function(res) {
-        var json = eval(res.data.list);
-        let modules = [];
-        for (var i = 0; i < json.length; i++) {
-          modules.push({
-            label: json[i].moduleName,
-            value: json[i].moduleId
-          });
-        }
-        _self.modules = modules;
-      })
+          method: "post",
+          url: "/module/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(function (res) {
+          var json = eval(res.data.list);
+          let modules = [];
+          for (var i = 0; i < json.length; i++) {
+            modules.push({
+              label: json[i].moduleName,
+              value: json[i].moduleId
+            });
+          }
+          _self.modules = modules;
+        })
     },
 
     missionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       let planToBegin = "",
         planToEnd = "";
@@ -1254,41 +1345,41 @@ export default {
         planToEnd = _self.mform.planTo[1];
       }
       _self.$axios({
-        method: "post",
-        url: "/cms/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          id: _self.mform.id,
-          reqId: _self.mform.reqId,
-          relId: _self.mform.relId,
-          moduleId: _self.mform.moduleId,
-          spliter: _self.mform.spliter,
-          responser: _self.mform.responser,
-          status: _self.mform.status.toString(),
-          planToBegin: planToBegin,
-          planToEnd: planToEnd,
-          pageNum: _self.currentPage,
-          pageSize: _self.pageSize
-        }
-      })
-      .then(function(res) {
-        _self.tableData = eval(res.data.list);
-        _self.pageInfo = res.data;
-        setTimeout(() => {
+          method: "post",
+          url: "/cms/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            id: _self.mform.id,
+            reqId: _self.mform.reqId,
+            relId: _self.mform.relId,
+            moduleId: _self.mform.moduleId,
+            spliter: _self.mform.spliter,
+            responser: _self.mform.responser,
+            status: _self.mform.status.toString(),
+            planToBegin: planToBegin,
+            planToEnd: planToEnd,
+            pageNum: _self.currentPage,
+            pageSize: _self.pageSize
+          }
+        })
+        .then(function (res) {
+          _self.tableData = eval(res.data.list);
+          _self.pageInfo = res.data;
+          setTimeout(() => {
+            _self.queryLoading = false;
+            _self.queryChanged = false;
+          }, 200);
+        })
+        .catch(function (response) {
+          console.log(response);
           _self.queryLoading = false;
-          _self.queryChanged = false;
-        }, 200);
-      })
-      .catch(function(response) {
-        console.log(response);
-        _self.queryLoading = false;
-      });
+        });
     },
 
     parentReqQuery(reqId, callback) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/req/query",
@@ -1299,7 +1390,7 @@ export default {
             reqId: reqId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.parentReq = eval(res.data.list)[0];
           _self.nform.moduleId = _self.parentReq.moduleId;
           _self.parentReqAttachs = _self.getAttach(_self.parentReq.attachment)
@@ -1310,7 +1401,7 @@ export default {
     },
 
     parentReqBugQuery(reqId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/defect/query",
@@ -1323,18 +1414,18 @@ export default {
             pageSize: _self.parentReqBug.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.parentReqBug.data = eval(res.data.list);
           _self.parentReqBug.pageInfo = res.data;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("缺陷信息查询时发生程序错误！");
           console.log(response);
         });
     },
 
-    brotherCmsQuery(currentCms){
-      let _self =  this;
+    brotherCmsQuery(currentCms) {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/cms/query",
@@ -1347,7 +1438,7 @@ export default {
             pageSize: _self.brotherCms.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.brotherCms.pageInfo = res.data;
           _self.brotherCms.data = eval(res.data.list);
         })
@@ -1357,7 +1448,7 @@ export default {
       commonQuery.attachmentDownload(fileObject);
     },
 
-    beforeUpload(file){
+    beforeUpload(file) {
       if (file.size / 1024 / 1024 > 50) {
         this.$message.info("单个文件不能超过 50MB！");
         return false;
@@ -1367,7 +1458,7 @@ export default {
         return false;
       }
       const fileType = file.name.split(".");
-      const forbidden = ['exe', 'msi', 'sh','bat','avi','bmp','jar','war','ear'];
+      const forbidden = ['exe', 'msi', 'sh', 'bat', 'avi', 'bmp', 'jar', 'war', 'ear'];
       if (forbidden.indexOf(fileType[fileType.length - 1]) > -1) {
         this.$message.info("不支持exe等危险文件类型！");
         return false;
@@ -1380,18 +1471,18 @@ export default {
     },
 
     uploadComplete(res, file, fileList) {
-      let _self =  this;
+      let _self = this;
       _self.nform.fileList = fileList;
     },
 
     handleRemoveMod(file, fileList) {
-      let _self =  this;
+      let _self = this;
       _self.$message.success("文件删除成功！");
       _self.nform.fileList = fileList;
     },
 
     handleRemove(file, fileList) {
-      let _self =  this;
+      let _self = this;
       commonQuery.attachmentDelete(file, fileList, (res) => {
         _self.nform.fileList = res;
       })
@@ -1405,15 +1496,17 @@ export default {
       return commonQuery.attachmentQuery(attachId);
     },
 
-    uploadAction(params){
-      let _self =  this;
+    uploadAction(params) {
+      let _self = this;
       let file = params.file;
       let fileList = _self.nform.fileList || [];
       let refedUpload = _self.showDialog ? _self.$refs.upload : _self.$refs.uploadMod;
-      
+
       if (file.name.indexOf("_V") > -1) {
         _self.$message.warning("请去除文件名中包含的字符串： _V");
-        refedUpload.uploadFiles = fileList.filter(item => {return item.status == 'success'}) || []; 
+        refedUpload.uploadFiles = fileList.filter(item => {
+          return item.status == 'success'
+        }) || [];
         return;
       }
       commonQuery.attachmentUpload(file, fileList, (res) => {
@@ -1425,7 +1518,8 @@ export default {
 </script>
 
 <style>
-.cms-detail-collapse .el-input, .cms-detail-collapse .el-select {
+.cms-detail-collapse .el-input,
+.cms-detail-collapse .el-select {
   width: 170px;
 }
 
@@ -1433,13 +1527,14 @@ export default {
   font-size: 15px;
 }
 
-.cms-detail-table, 
-.cms-detail-table + .page-set{
+.cms-detail-table,
+.cms-detail-table+.page-set {
   margin-left: 3% !important;
   width: 96.5% !important;
 }
 
-.cms-detail-collapse .el-input input, .cms-detail-collapse .el-select input{
+.cms-detail-collapse .el-input input,
+.cms-detail-collapse .el-select input {
   cursor: initial;
 }
 
@@ -1473,12 +1568,12 @@ export default {
   width: 758px !important;
 }
 
-.cms-sum-tips input{
-  color:#3AB4D7 !important;
-  cursor:pointer !important;
+.cms-sum-tips input {
+  color: #3AB4D7 !important;
+  cursor: pointer !important;
 }
 
-.cms-sum-tips input:hover{
+.cms-sum-tips input:hover {
   color: #61c3df !important;
 }
 
@@ -1519,7 +1614,7 @@ export default {
   padding-right: 0px;
 }
 
-.cmform-box .el-table i{
+.cmform-box .el-table i {
   font-size: 14px;
   cursor: pointer;
   color: #3AB4D7;

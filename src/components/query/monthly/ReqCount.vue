@@ -1,6 +1,7 @@
 <template>
   <div id="monthReqCount" style="width: 100%" :style="{height: chartsHeight + 'px'}"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -10,7 +11,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsHeight: 200,
       chartsOptions: ""
@@ -19,7 +20,7 @@ export default {
   props: ["datas", "height"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.chartsHeight = _self.height - 1;
     let productData = [];
     let legendData = [];
@@ -54,16 +55,25 @@ export default {
     _self.chartsOptions = {
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "shadow" }
+        axisPointer: {
+          type: "shadow"
+        }
       },
       toolbox: {
         right: 0,
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -92,7 +102,7 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("monthReqCount");
 
     let dataCharts = echarts.init(charts, sepp);

@@ -15,14 +15,15 @@
       </el-select>
       <el-tooltip content="仅支持编号、摘要 / 描述、用户账号、用户姓名的关键字搜索" placement="top" effect="dark">
         <el-autocomplete
-          v-model="searchText" 
-          style="width:280px;margin-right:10px" 
-          size="small" 
+          v-model="searchText"
+          style="width:280px;margin-right:10px"
+          size="small"
           ref="searchInput"
           :fetch-suggestions="searchHistory"
           @select="handleSelect"
           @keydown.native.enter="execSearch()"
-          placeholder="输入关键字不得少于2个字" clearable>
+          placeholder="输入关键字不得少于2个字"
+          clearable>
           <template slot-scope="{ item }">
             <span class="auto-input">{{ item }}</span>
             <i class="el-icon-close" style="float:right;line-height:34px" @click="removeHistory(item)"></i>
@@ -32,11 +33,17 @@
       <el-button v-no-more-click size="mini" type="primary" @click="execSearch()" class="el-icon-search"> 搜索</el-button>
 
       <div v-if="showRel">
-        <el-table :data="tableData" :max-height="tableHeight" size="mini" stripe :border="showBorder" class="fuzz-table"
+        <el-table
+          :data="tableData"
+          :max-height="tableHeight"
+          size="mini"
+          stripe
+          :border="showBorder"
+          class="fuzz-table"
           row-key="id"
-          v-loading="queryLoading" 
-          element-loading-text="查询中..." 
-          element-loading-spinner="el-icon-loading" 
+          v-loading="queryLoading"
+          element-loading-text="查询中..."
+          element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)">
           <el-table-column prop="id" label="版本ID" width="110" align="center" sortable>
           </el-table-column>
@@ -81,11 +88,17 @@
       </div>
 
       <div v-if="showReq">
-        <el-table :data="tableData" :max-height="tableHeight" size="mini" stripe :border="showBorder" class="fuzz-table"
+        <el-table
+          :data="tableData"
+          :max-height="tableHeight"
+          size="mini"
+          stripe
+          :border="showBorder"
+          class="fuzz-table"
           row-key="id"
-          v-loading="queryLoading" 
-          element-loading-text="查询中..." 
-          element-loading-spinner="el-icon-loading" 
+          v-loading="queryLoading"
+          element-loading-text="查询中..."
+          element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)">
           <el-table-column prop="id" label="产品需求号" width="110" align="center" sortable>
           </el-table-column>
@@ -116,11 +129,17 @@
       </div>
 
       <div v-if="showCms">
-        <el-table :data="tableData" :max-height="tableHeight" size="mini" stripe :border="showBorder" class="fuzz-table"
+        <el-table
+          :data="tableData"
+          :max-height="tableHeight"
+          size="mini"
+          stripe
+          :border="showBorder"
+          class="fuzz-table"
           row-key="id"
-          v-loading="queryLoading" 
-          element-loading-text="查询中..." 
-          element-loading-spinner="el-icon-loading" 
+          v-loading="queryLoading"
+          element-loading-text="查询中..."
+          element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)">
           <el-table-column prop="id" label="任务编号" width="110" align="center" sortable>
           </el-table-column>
@@ -149,11 +168,17 @@
       </div>
 
       <div v-if="showBug">
-        <el-table :data="tableData" :max-height="tableHeight" size="mini" stripe :border="showBorder" class="fuzz-table"
+        <el-table
+          :data="tableData"
+          :max-height="tableHeight"
+          size="mini"
+          stripe
+          :border="showBorder"
+          class="fuzz-table"
           row-key="id"
-          v-loading="queryLoading" 
-          element-loading-text="查询中..." 
-          element-loading-spinner="el-icon-loading" 
+          v-loading="queryLoading"
+          element-loading-text="查询中..."
+          element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)">
           <el-table-column prop="id" label="缺陷编号" width="110" align="center" sortable>
           </el-table-column>
@@ -209,22 +234,28 @@
               </el-form>
             </template>
           </el-table-column>
-        </el-table> 
+        </el-table>
       </div>
 
       <div v-if="showPro">
-        <el-table :data="tableData" :max-height="tableHeight" size="mini" stripe :border="showBorder" class="fuzz-table"
+        <el-table
+          :data="tableData"
+          :max-height="tableHeight"
+          size="mini"
+          stripe
+          :border="showBorder"
+          class="fuzz-table"
           row-key="id"
-          v-loading="queryLoading" 
-          element-loading-text="查询中..." 
-          element-loading-spinner="el-icon-loading" 
+          v-loading="queryLoading"
+          element-loading-text="查询中..."
+          element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)">
-          <el-table-column prop="id" label="线上问题号"align="center" width="110" sortable>
+          <el-table-column prop="id" label="线上问题号" align="center" width="110" sortable>
           </el-table-column>
           <el-table-column prop="summary" label="问题摘要" header-align="center" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <span class="router-link" @click="$router.push({ name: 'problem', params: { 'id': scope.row.id } })">{{ scope.row.summary }}</span>
-              </template>
+            <template slot-scope="scope">
+              <span class="router-link" @click="$router.push({ name: 'problem', params: { 'id': scope.row.id } })">{{ scope.row.summary }}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="submitterName" label="上报人" width="90" align="center" sortable>
           </el-table-column>
@@ -275,10 +306,7 @@
                   <el-input v-model="scope.row.improvePlanTo" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="改进措施详情">
-                  <el-popover
-                    placement="right-end"
-                    width="600"
-                    trigger="click">
+                  <el-popover placement="right-end" width="600" trigger="click">
                     <el-input type="textarea" v-model="scope.row.improveDetail" :rows="10" disabled resize="none"></el-input>
                     <el-input v-model="scope.row.improveDetail" disabled class="content-tips" slot="reference">{{scope.row.improveDetail}}</el-input>
                   </el-popover>
@@ -291,13 +319,13 @@
       </div>
 
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
       </div>
@@ -308,7 +336,7 @@
 <script>
 import commonQuery from "@/components/util/CommonQuery.vue";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       tableData: [],
@@ -322,12 +350,26 @@ export default {
       tableHeight: bodyAviHeightNTab - 30 - 45,
       searchType: {
         selected: 2,
-        opts: [
-          {label: "版本计划", value: 1},
-          {label: "产品需求", value: 2},
-          {label: "开发任务", value: 3},
-          {label: "测试缺陷", value: 4},
-          {label: "线上问题", value: 5}
+        opts: [{
+            label: "版本计划",
+            value: 1
+          },
+          {
+            label: "产品需求",
+            value: 2
+          },
+          {
+            label: "开发任务",
+            value: 3
+          },
+          {
+            label: "测试缺陷",
+            value: 4
+          },
+          {
+            label: "线上问题",
+            value: 5
+          }
         ]
       },
       searchText: "",
@@ -338,7 +380,7 @@ export default {
 
   methods: {
     handleCurrentChange(current) {
-      let _self =  this;
+      let _self = this;
       _self.currentPage = current;
       if (_self.searchType.selected == 1) {
         _self.relFuzzQuery();
@@ -354,7 +396,7 @@ export default {
     },
 
     handleSizeChange(size) {
-      let _self =  this;
+      let _self = this;
       _self.pageSize = size;
       if (_self.searchType.selected == 1) {
         _self.relFuzzQuery();
@@ -369,8 +411,8 @@ export default {
       }
     },
 
-    clearData(){
-      let _self =  this;
+    clearData() {
+      let _self = this;
       _self.showRel = false;
       _self.showReq = false;
       _self.showCms = false;
@@ -380,7 +422,7 @@ export default {
       _self.pageInfo.total = 0;
     },
 
-    searchHistory(sText, callback){
+    searchHistory(sText, callback) {
       let searchHistory = localStorage.getItem("searchHistory");
       if (searchHistory && searchHistory != null && searchHistory != '') {
         callback(searchHistory.split(","));
@@ -389,12 +431,12 @@ export default {
       }
     },
 
-    handleSelect(item){
+    handleSelect(item) {
       this.searchText = item;
       this.execSearch();
     },
 
-    removeHistory(historyText){
+    removeHistory(historyText) {
       let hisText = localStorage.getItem("searchHistory");
       let searchHistory = [];
       let current = [];
@@ -406,8 +448,8 @@ export default {
       }
     },
 
-    execSearch(){
-      let _self =  this;
+    execSearch() {
+      let _self = this;
 
       const qType = _self.searchType.selected;
       const qText = _self.searchText;
@@ -419,7 +461,7 @@ export default {
         _self.$message.warning("请输入不少于2个字的文本！");
         return;
       }
-      
+
       _self.searchHistorySet(qText);
 
       if (_self.searchType.selected == 1) {
@@ -435,8 +477,8 @@ export default {
       }
     },
 
-    searchHistorySet(qText){
-      let _self =  this;
+    searchHistorySet(qText) {
+      let _self = this;
       let historyText = localStorage.getItem("searchHistory");
       let searchHistory = [];
       let current = [];
@@ -458,7 +500,7 @@ export default {
     },
 
     relFuzzQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -472,15 +514,15 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
-          _self.tableData =  eval(res.data.list);
+        .then(function (res) {
+          _self.tableData = eval(res.data.list);
           _self.showRel = true;
           _self.pageInfo = res.data;
           setTimeout(() => {
             _self.queryLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.queryLoading = false;
           _self.$notify.error("发生错误");
           console.log(response);
@@ -502,14 +544,14 @@ export default {
         }
       });
       if (result.length > 1) {
-        return result.toString().replace(/,/g ,"，");
+        return result.toString().replace(/,/g, "，");
       } else {
         return result.toString();
       }
     },
 
     reqFuzzQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -523,7 +565,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tableData = eval(res.data.list);
           _self.showReq = true;
           _self.pageInfo = res.data;
@@ -531,15 +573,15 @@ export default {
             _self.queryLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("产品需求信息查询时发生程序错误！");
           console.log(response);
           _self.queryLoading = false;
         });
     },
 
-    cmssFuzzQuery(){
-      let _self =  this;
+    cmssFuzzQuery() {
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -553,7 +595,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tableData = eval(res.data.list);
           _self.showCms = true;
           _self.pageInfo = res.data;
@@ -561,7 +603,7 @@ export default {
             _self.queryLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("开发任务信息查询时发生程序错误！");
           console.log(response);
           _self.queryLoading = false;
@@ -569,7 +611,7 @@ export default {
     },
 
     defectFuzzQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -583,7 +625,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.pageInfo = res.data;
           _self.tableData = eval(res.data.list);
           _self.showBug = true;
@@ -591,7 +633,7 @@ export default {
             _self.queryLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           _self.queryLoading = false;
           console.log(response);
@@ -608,7 +650,7 @@ export default {
     },
 
     problemFuzzQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -622,7 +664,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.pageInfo = res.data;
           _self.tableData = eval(res.data.list);
           _self.showPro = true;
@@ -630,7 +672,7 @@ export default {
             _self.queryLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("线上问题信息查询时发生程序错误！");
           console.log(response);
           _self.queryLoading = false;
@@ -653,12 +695,12 @@ export default {
 }
 
 .auto-input {
-  text-overflow:ellipsis;
-  overflow:hidden;
-  color:#b4b4b4;
-  max-width:200px;
-  display:inline-block;
-  height:25px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #b4b4b4;
+  max-width: 200px;
+  display: inline-block;
+  height: 25px;
 }
 
 .fuzz-table {

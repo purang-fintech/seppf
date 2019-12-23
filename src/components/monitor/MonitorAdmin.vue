@@ -1,16 +1,12 @@
 <template>
-  <iframe
-    class="monitor-frame"
-    src="http://10.10.96.140:8009/octopus"
-    :style="{height:bodyHeight + 'px'}"
-  >
+  <iframe class="monitor-frame" src="http://10.10.96.140:8009/octopus" :style="{height:bodyHeight + 'px'}">
   </iframe>
 </template>
 
 <script>
 export default {
   name: "MonitorAdmin",
-  data: function() {
+  data: function () {
     return {
       bodyHeight: document.body.clientHeight - 55
     };
@@ -20,7 +16,7 @@ export default {
 
 <style>
 .monitor-frame {
-  width:99.8%;
+  width: 99.8%;
   border: 1px solid #e4edf3;
   position: absolute;
   top: 0;
@@ -28,6 +24,6 @@ export default {
   left: 0;
   right: 0;
   overflow-x: hidden;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 </style>

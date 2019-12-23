@@ -7,8 +7,28 @@
       </el-breadcrumb>
     </div>
     <div class="block" :style="{height: baseHeight + 'px'}">
-      <el-tree class="tree-view" ref="treeNodes" :data="menus" node-key="id" highlight-current :auto-expand-parent="true" :default-expanded-keys="expanded" @node-expand="expandNode" @node-collapse="collapseNode" @node-click="nodeClick" :highlight-current="true"
-      :expand-on-click-node="false"><span class="custom-tree-node" slot-scope="{ node, data }"><span>{{ node.label }}</span><span><el-button v-no-more-click size="small" type="text" @click="() => append(data)" v-if="data.id && node.level<4"><i class="iconfont icon-addition"></i></el-button><el-button v-no-more-click size="small" type="text" @click="() => remove(node, data)" style="color:#EE6F6F" v-if="node.level>1"><i class="el-icon-delete"></i></el-button></span></span>
+      <el-tree
+        class="tree-view"
+        ref="treeNodes"
+        :data="menus"
+        node-key="id"
+        highlight-current
+        :auto-expand-parent="true"
+        :default-expanded-keys="expanded"
+        @node-expand="expandNode"
+        @node-collapse="collapseNode"
+        @node-click="nodeClick"
+        :highlight-current="true"
+        :expand-on-click-node="false"><span class="custom-tree-node" slot-scope="{ node, data }"><span>{{ node.label }}</span><span>
+            <el-button v-no-more-click size="small" type="text" @click="() => append(data)" v-if="data.id && node.level<4"><i class="iconfont icon-addition"></i></el-button>
+            <el-button
+              v-no-more-click
+              size="small"
+              type="text"
+              @click="() => remove(node, data)"
+              style="color:#EE6F6F"
+              v-if="node.level>1"><i class="el-icon-delete"></i></el-button>
+          </span></span>
       </el-tree>
     </div>
     <div :style="{height: baseHeight + 'px'}" class="detail">
@@ -23,7 +43,13 @@
           <el-input v-model="menu.index" style="width:95%" placeholder="例如: /request"></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleIds" :required="menu.level==3">
-          <el-select v-model="menu.roleIds" multiple clearable placeholder="请选择" style="width:95%" :disabled="menu.level==2||menu.level==4">
+          <el-select
+            v-model="menu.roleIds"
+            multiple
+            clearable
+            placeholder="请选择"
+            style="width:95%"
+            :disabled="menu.level==2||menu.level==4">
             <el-option v-for="role in roleIds" :key="role.roleId" :label="role.roleName" :value="role.roleId"></el-option>
           </el-select>
         </el-form-item>
@@ -182,10 +208,10 @@ export default {
     remove(node, data) {
       if (data.id) {
         this.$confirm("此操作将永久删除该实例, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "error"
-        })
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "error"
+          })
           .then(() => {
             this.deleteMenu(node, data);
           })
@@ -243,12 +269,10 @@ export default {
   height: 30px;
 }
 
-.tree-view .el-tree-node.is-current > .el-tree-node__content {
+.tree-view .el-tree-node.is-current>.el-tree-node__content {
   background-color: #e4e7ed;
 }
-</style>
-
-<style scoped>
+</style><style scoped>
 .custom-tree-node {
   flex: 1;
   display: flex;
@@ -258,7 +282,7 @@ export default {
   padding-right: 15px;
 }
 
-.custom-tree-node > span {
+.custom-tree-node>span {
   font-size: 15px;
 }
 
@@ -291,7 +315,7 @@ export default {
   background-color: #f0f8ff40;
 }
 
-.tree-view .el-button + .el-button {
+.tree-view .el-button+.el-button {
   margin-left: 5px !important;
 }
 

@@ -23,10 +23,22 @@
     <el-card shadow="hover">
       <div slot="header">
         <span>用户基本信息</span>
-        <el-button v-no-more-click class="save-btn" size="small" type="text" @click="checkSaveUserBase('ruledForm')" :disabled="!infoUpdated">保存信息</el-button>
+        <el-button
+          v-no-more-click
+          class="save-btn"
+          size="small"
+          type="text"
+          @click="checkSaveUserBase('ruledForm')"
+          :disabled="!infoUpdated">保存信息</el-button>
       </div>
-      
-      <el-form ref="ruledForm" :model="userInfo" :inline="true" :rules="userRules" size="mini" label-width="100px">
+
+      <el-form
+        ref="ruledForm"
+        :model="userInfo"
+        :inline="true"
+        :rules="userRules"
+        size="mini"
+        label-width="100px">
         <el-form-item label="用户账号" prop="userAccount">
           <el-input v-model="userInfo.userAccount" disabled></el-input>
         </el-form-item>
@@ -61,23 +73,23 @@
 
       <div class="preview">
         <vue-cropper
-            ref="cropper"
-            :guides="true"
-            :view-mode="2"
-            drag-mode="crop"
-            :auto-crop-area="0.5"
-            :min-container-width="150"
-            :min-container-height="150"
-            :background="true"
-            :rotatable="true"
-            :src="iconSrc"
-            :img-style="{ 'max-width': '300px', 'max-height': '200px' }">
+          ref="cropper"
+          :guides="true"
+          :view-mode="2"
+          drag-mode="crop"
+          :auto-crop-area="0.5"
+          :min-container-width="150"
+          :min-container-height="150"
+          :background="true"
+          :rotatable="true"
+          :src="iconSrc"
+          :img-style="{ 'max-width': '300px', 'max-height': '200px' }">
         </vue-cropper>
 
-        <el-upload 
-          class="favicon-upload" 
-          ref="upload" 
-          :accept="favicon.permitType" 
+        <el-upload
+          class="favicon-upload"
+          ref="upload"
+          :accept="favicon.permitType"
           :limit=2
           :show-file-list="false"
           :auto-upload="false"
@@ -85,34 +97,54 @@
           :before-upload="beforeUpload"
           :action="favicon.uploadAction"
           :file-list="favicon.fileList">
-          <el-button v-no-more-click slot="trigger" size="mini" class="cut-btn" type="success" icon="el-icon-upload">选取文件</el-button>
+          <el-button
+            v-no-more-click
+            slot="trigger"
+            size="mini"
+            class="cut-btn"
+            type="success"
+            icon="el-icon-upload">选取文件</el-button>
         </el-upload>
-        <el-button v-no-more-click class="cut-btn" size="mini" @click="cropImage()" v-if="iconSrc != ''" icon="iconfont icon-tailor" type="primary"> 裁剪</el-button>
-        <el-button v-no-more-click class="rotate-btn" size="mini" @click="rotate()" v-if="iconSrc != ''" icon="el-icon-refresh" type="primary"> 旋转</el-button>
+        <el-button
+          v-no-more-click
+          class="cut-btn"
+          size="mini"
+          @click="cropImage()"
+          v-if="iconSrc != ''"
+          icon="iconfont icon-tailor"
+          type="primary"> 裁剪</el-button>
+        <el-button
+          v-no-more-click
+          class="rotate-btn"
+          size="mini"
+          @click="rotate()"
+          v-if="iconSrc != ''"
+          icon="el-icon-refresh"
+          type="primary"> 旋转</el-button>
       </div>
       <div class="preview">
-        <img :src="cutImg" class="user-icon"/>
-      </div> 
+        <img :src="cutImg" class="user-icon" />
+      </div>
     </el-card>
-    
+
     <el-card shadow="hover">
       <div slot="header">
         <span>用户消息设置</span>
       </div>
       <el-checkbox v-model="userSetting.messageOn" @change="saveMessageOnOff()" size="small" border>打开通知</el-checkbox>
-      <el-button 
-        v-if="userSetting.messageOn" 
-        size="small" 
-        type="text" 
-        icon="el-icon-s-comment" 
+      <el-button
+        v-if="userSetting.messageOn"
+        size="small"
+        type="text"
+        icon="el-icon-s-comment"
         style="margin-left:20px;font-size:14px;padding:0"
         @click="setMessageSubscribe()">消息订阅设置
       </el-button>
-      <el-button 
-        v-if="userSetting.messageOn" 
-        size="small" 
-        type="text" 
-        icon="iconfont icon-mail_fill" 
+      <el-button
+        v-if="userSetting.messageOn"
+        size="small"
+        type="text"
+        icon="iconfont icon-mail_fill"
         style="font-size:14px;padding:0"
         @click="setEmailSubscribe()">邮件订阅设置
       </el-button>
@@ -121,12 +153,12 @@
     <el-card shadow="hover" style="margin-bottom:5px">
       <div slot="header">
         <span>用户其他设置</span>
-        <el-button v-no-more-click class="save-btn" size="small"  type="text" @click="saveExtraSetting()">保存设置</el-button>
+        <el-button v-no-more-click class="save-btn" size="small" type="text" @click="saveExtraSetting()">保存设置</el-button>
       </div>
       <el-checkbox v-model="userSetting.autoRefresh" size="small" border>侧边栏折叠/展开刷新图表布局</el-checkbox>
       <el-checkbox v-model="userSetting.autoLogin" size="small" border style="margin-left:10px">自动登录上次产品/项目</el-checkbox>
       <el-checkbox v-model="userSetting.dialogAutoClose" size="small" border style="margin-left:10px">点击页面空白处自动关闭对话框</el-checkbox>
-      <el-checkbox v-model="userSetting.tableShowBorder" size="small" border  style="margin-left:10px">展示表格边框</el-checkbox>
+      <el-checkbox v-model="userSetting.tableShowBorder" size="small" border style="margin-left:10px">展示表格边框</el-checkbox>
       <span style="margin:0 0 0 10px">每页展示记录数：</span>
       <el-select v-model="userSetting.tablePageSize" size="small" @change="setPageSize()" style="width:120px">
         <el-option v-for="opt in tableRecords" :value="opt" :key="opt" :label="opt+' 条'"></el-option>
@@ -144,7 +176,7 @@ export default {
     VueCropper,
   },
 
-  data: function() {
+  data: function () {
     return {
       userInfo: {
         userId: "",
@@ -167,7 +199,7 @@ export default {
         autoRefresh: sessionStorage.autoRefresh == 1,
         autoLogin: sessionStorage.autoLogin == 1,
         dialogAutoClose: sessionStorage.dialogAutoClose == 1,
-        messageOn:sessionStorage.messageOn == 1,
+        messageOn: sessionStorage.messageOn == 1,
         messageSubscribe: [],
         emailSubscribe: []
       },
@@ -176,13 +208,36 @@ export default {
       abnromalTips: '游客及LDAP认证不可修改密码',
       isGuest: false,
       userRules: {
-        userEmail: [{ type: 'email', required: true, message: "请输入邮箱地址", trigger: "blur" }],
-        userName: [
-          { required: true, message: "请输入用户姓名", trigger: "blur" },
-          { min: 2, max: 20, message: "长度在 2 到 20 个字", trigger: "blur" }
+        userEmail: [{
+          type: 'email',
+          required: true,
+          message: "请输入邮箱地址",
+          trigger: "blur"
+        }],
+        userName: [{
+            required: true,
+            message: "请输入用户姓名",
+            trigger: "blur"
+          },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字",
+            trigger: "blur"
+          }
         ],
-        newPwd: { min: 5, max: 20, message: "长度在 5 到 20 个字", trigger: "blur" },
-        secNewPwd: { min: 5, max: 20, message: "长度在 5 到 20 个字", trigger: "blur" }
+        newPwd: {
+          min: 5,
+          max: 20,
+          message: "长度在 5 到 20 个字",
+          trigger: "blur"
+        },
+        secNewPwd: {
+          min: 5,
+          max: 20,
+          message: "长度在 5 到 20 个字",
+          trigger: "blur"
+        }
       },
       vendorOpts: ["Y", "N"],
       favicon: {
@@ -199,14 +254,14 @@ export default {
   },
 
   watch: {
-    cutImg(current, old){
+    cutImg(current, old) {
       if (old != staticImg && current != old) {
         this.faviconUpdated = true;
       }
     },
 
     userInfo: {
-      handler: function(obj) {
+      handler: function (obj) {
         this.infoUpdated = true;
       },
       deep: true
@@ -214,11 +269,11 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.favicon.uploadAction = "file";
     _self.userQuery();
     if (sessionStorage.userFavicon) {
-      _self.cutImg =  sessionStorage.userFavicon;
+      _self.cutImg = sessionStorage.userFavicon;
     }
     if (sessionStorage.userAccount.toUpperCase().indexOf('GUEST') != -1) {
       _self.isGuest = true;
@@ -245,7 +300,7 @@ export default {
 
   methods: {
     checkSaveUserBase(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -271,46 +326,46 @@ export default {
     },
 
     SHA256(password) {
-       let sha256 = require("js-sha256").sha256;
-       return password ? sha256(password) : "";
+      let sha256 = require("js-sha256").sha256;
+      return password ? sha256(password) : "";
     },
 
-    saveUserBase(){
-      let _self =  this;      
+    saveUserBase() {
+      let _self = this;
       _self.$axios({
-        method: "post",
-        url: "/user/update",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          referUser: _self.userInfo.userId,
-          faviconId: _self.userInfo.faviconId,
-          userName: _self.userInfo.userName,
-          oldPwd: _self.SHA256(_self.userInfo.oldPwd),
-          newPwd: _self.SHA256(_self.userInfo.newPwd),
-          userEmail: _self.userInfo.userEmail.toUpperCase(),
-          isVendor: _self.userInfo.isVendor,
-          isValid: _self.userInfo.isValid,
-          messageOn: _self.userInfo.messageOn
-        }
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.$message.success("用户信息更新成功！");
-          sessionStorage.setItem("userName", _self.userInfo.userName);
-          _self.$nextTick(() =>{
-            setTimeout(() => {
-              window.location.reload();
-            }, 500);
-          });
-        } else {
-          _self.$message.info("用户信息更新失败！");
-        }
-      })
+          method: "post",
+          url: "/user/update",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            referUser: _self.userInfo.userId,
+            faviconId: _self.userInfo.faviconId,
+            userName: _self.userInfo.userName,
+            oldPwd: _self.SHA256(_self.userInfo.oldPwd),
+            newPwd: _self.SHA256(_self.userInfo.newPwd),
+            userEmail: _self.userInfo.userEmail.toUpperCase(),
+            isVendor: _self.userInfo.isVendor,
+            isValid: _self.userInfo.isValid,
+            messageOn: _self.userInfo.messageOn
+          }
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.$message.success("用户信息更新成功！");
+            sessionStorage.setItem("userName", _self.userInfo.userName);
+            _self.$nextTick(() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
+            });
+          } else {
+            _self.$message.info("用户信息更新失败！");
+          }
+        })
     },
 
-    beforeUpload(file){
+    beforeUpload(file) {
       this.$refs.upload.clearFiles();
     },
 
@@ -331,13 +386,13 @@ export default {
         return;
       }
 
-      if (window.FileReader) {    
-        let reader = new FileReader();    
-        reader.readAsDataURL(file.raw);    
-        reader.onloadend = function (e) {
+      if (window.FileReader) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file.raw);
+        reader.onloadend = function (e) {
           fileUrl = e.target.result;
-        }; 
-        this.$nextTick(function() {
+        };
+        this.$nextTick(function () {
           setTimeout(() => {
             this.iconSrc = fileUrl;
             this.$refs.cropper.replace(fileUrl);
@@ -355,9 +410,9 @@ export default {
     rotate() {
       this.$refs.cropper.rotate(90);
     },
-    
+
     userQuery() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/user/query",
@@ -368,12 +423,12 @@ export default {
             userId: sessionStorage.userId
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           var json = res.data;
           _self.userInfo = json[0];
           _self.orgMessageOn = _self.userInfo.messageOn;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -389,32 +444,32 @@ export default {
       this.showEmailSubscribe = true;
     },
 
-    saveMessageOnOff(){
-      let _self =  this;
+    saveMessageOnOff() {
+      let _self = this;
       let setting = {};
       const opened = _self.userSetting.messageOn;
       setting.messageOn = opened ? 1 : 0;
       _self.userSettingUpdate(setting, (opened ? "打开" : "关闭") + "用户消息通知");
     },
 
-    saveMessageSubscribe(){
-      let _self =  this;
+    saveMessageSubscribe() {
+      let _self = this;
       let setting = {};
       setting.messageSubscribe = _self.userSetting.messageSubscribe.toString();
       _self.userSettingUpdate(setting, "用户消息订阅设置更新");
       _self.showMessageSubscribe = false;
     },
 
-    saveEmailSubscribe(){
-      let _self =  this;
+    saveEmailSubscribe() {
+      let _self = this;
       let setting = {};
       setting.emailSubscribe = _self.userSetting.emailSubscribe.toString();
       _self.userSettingUpdate(setting, "用户邮件订阅设置更新");
       _self.showEmailSubscribe = false;
     },
 
-    saveExtraSetting(){
-      let _self =  this;
+    saveExtraSetting() {
+      let _self = this;
       let setting = {};
       setting.dialogAutoClose = _self.userSetting.dialogAutoClose ? 1 : 0;
       setting.autoLogin = _self.userSetting.autoLogin ? 1 : 0;
@@ -424,53 +479,53 @@ export default {
       _self.userSettingUpdate(setting, "用户设置信息更新");
     },
 
-    userSettingQuery(){
-      let _self =  this;
+    userSettingQuery() {
+      let _self = this;
       _self.$axios.post("/user/setting/query/" + _self.userInfo.userId)
-      .then(function(res) {
-        let settings = res.data;
-        for (let p in settings) {
-          sessionStorage.setItem(p, settings[p]);
-        }
-      })
+        .then(function (res) {
+          let settings = res.data;
+          for (let p in settings) {
+            sessionStorage.setItem(p, settings[p]);
+          }
+        })
     },
 
-    userSettingUpdate(setting, message){
-      let _self =  this;
+    userSettingUpdate(setting, message) {
+      let _self = this;
       _self.$axios.post("/user/setting/update", {
-        userId: _self.userInfo.userId,
-        messageOn: setting.messageOn,
-        dialogAutoClose: setting.dialogAutoClose,
-        autoLogin: setting.autoLogin,
-        autoRefresh: setting.autoRefresh,
-        tableShowBorder: setting.tableShowBorder,
-        tablePageSize: setting.tablePageSize,
-        messageSubscribe: setting.messageSubscribe,
-        emailSubscribe: setting.emailSubscribe
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          for (let p in setting) {
-            if (setting[p]) {
-              sessionStorage.setItem(p, setting[p]);
-            } else {
-              sessionStorage.removeItem(p);
+          userId: _self.userInfo.userId,
+          messageOn: setting.messageOn,
+          dialogAutoClose: setting.dialogAutoClose,
+          autoLogin: setting.autoLogin,
+          autoRefresh: setting.autoRefresh,
+          tableShowBorder: setting.tableShowBorder,
+          tablePageSize: setting.tablePageSize,
+          messageSubscribe: setting.messageSubscribe,
+          emailSubscribe: setting.emailSubscribe
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            for (let p in setting) {
+              if (setting[p]) {
+                sessionStorage.setItem(p, setting[p]);
+              } else {
+                sessionStorage.removeItem(p);
+              }
             }
+            _self.$message.success(message + "成功！");
+            _self.$nextTick(() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
+            });
+          } else {
+            _self.$message.warning(message + "失败！");
           }
-          _self.$message.success(message + "成功！");
-          _self.$nextTick(() =>{
-            setTimeout(() => {
-              window.location.reload();
-            }, 500);
-          });
-        } else {
-          _self.$message.warning(message + "失败！");
-        }
-      })
+        })
     },
 
     uploadFavicon() {
-      let _self =  this;
+      let _self = this;
       if (!_self.faviconUpdated) {
         _self.$message.info("头像未发生修改，无需保存！");
         return;
@@ -480,7 +535,9 @@ export default {
       for (var i = 0; i < imgData.length; i++) {
         ia[i] = imgData.charCodeAt(i);
       }
-      let blob = new Blob([ia], { type: "image/png" });
+      let blob = new Blob([ia], {
+        type: "image/png"
+      });
 
       let datas = new FormData();
       datas.append("file", blob, blob.name || "");
@@ -495,7 +552,7 @@ export default {
             useage: "favicon"
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.id > 0) {
             sessionStorage.setItem("userFavicon", res.data.url);
             _self.userInfo.faviconId = res.data.id;
@@ -505,7 +562,7 @@ export default {
             _self.$message.info("用户头像上传失败！");
           }
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
@@ -532,7 +589,7 @@ export default {
   padding: 8px 20px;
 }
 
-.user-main .el-card .el-card__header>div>span{
+.user-main .el-card .el-card__header>div>span {
   font-size: 15px;
   /* font-weight: 600; */
   /* color: #FFF; */
@@ -554,7 +611,7 @@ export default {
   display: inline-block;
 }
 
-.favicon-upload .el-upload--text{
+.favicon-upload .el-upload--text {
   width: 100%;
 }
 
@@ -569,27 +626,27 @@ export default {
   margin-left: 50px;
 }
 
-.preview .cropper-container{
+.preview .cropper-container {
   max-width: 300px;
   max-height: 200px;
 }
 
 .preview .cut-btn {
-  float:right;
+  float: right;
   height: 30px;
-  margin-top:5px;
+  margin-top: 5px;
   padding: 6px 10px;
 }
 
 .preview .rotate-btn {
-  float:right;
+  float: right;
   height: 30px;
-  margin-right:10px;
-  margin-top:5px;
+  margin-right: 10px;
+  margin-top: 5px;
   padding: 6px 10px;
 }
 
- .preview .user-icon{
+.preview .user-icon {
   border-radius: 50%;
   width: 200px;
   height: 200px;
@@ -599,12 +656,12 @@ export default {
 }
 
 .user-main .save-btn {
-  float: right; 
+  float: right;
   font-size: 14px;
   padding: 2px;
 }
 
-.subscribe-drawer .el-drawer__body{
+.subscribe-drawer .el-drawer__body {
   padding: 20px 60px;
 }
 
@@ -612,7 +669,7 @@ export default {
   margin: 5px;
 }
 
-.subscribe-drawer .el-checkbox{
+.subscribe-drawer .el-checkbox {
   margin: 5px;
 }
 

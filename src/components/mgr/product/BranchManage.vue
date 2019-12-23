@@ -21,7 +21,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="modform" size="small" :inline="true" :rules="modformRules" ref="ruledForm" label-width="110px" class="branch-form">
+      <el-form
+        :model="modform"
+        size="small"
+        :inline="true"
+        :rules="modformRules"
+        ref="ruledForm"
+        label-width="110px"
+        class="branch-form">
         <el-form-item label="分支名称" required prop="branchName">
           <el-input v-model="modform.branchName" placeholder="分支名称" clearable></el-input>
         </el-form-item>
@@ -50,7 +57,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="modform" size="small" :inline="true" :rules="modformRules" ref="ruledFormMod" label-width="110px" class="branch-form">
+      <el-form
+        :model="modform"
+        size="small"
+        :inline="true"
+        :rules="modformRules"
+        ref="ruledFormMod"
+        label-width="110px"
+        class="branch-form">
         <el-form-item label="分支名称" required prop="branchName">
           <el-input v-model="modform.branchName" placeholder="分支名称" clearable></el-input>
         </el-form-item>
@@ -67,7 +81,13 @@
     </el-dialog>
 
     <div class="branch-main">
-      <el-form ref="form" :model="form" :inline="true" size="mini" label-width="110px" @keydown.native.enter="branchQuery()">
+      <el-form
+        ref="form"
+        :model="form"
+        :inline="true"
+        size="mini"
+        label-width="110px"
+        @keydown.native.enter="branchQuery()">
         <el-form-item label="是否有效">
           <el-select v-model="form.isValid" placeholder="请选择" filterable clearable>
             <el-option v-for="opt in valids" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -79,10 +99,17 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="tableData" class="branch-table" :max-height="tableHeight" size="mini" stripe :border="showBorder" ref="branchTable"
-        v-loading="queryLoading" 
-        element-loading-text="查询中..." 
-        element-loading-spinner="el-icon-loading" 
+      <el-table
+        :data="tableData"
+        class="branch-table"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        ref="branchTable"
+        v-loading="queryLoading"
+        element-loading-text="查询中..."
+        element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column prop="branchId" label="分支ID" align="center" sortable>
         </el-table-column>
@@ -103,17 +130,18 @@
         </el-table-column>
       </el-table>
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
-        <el-button type="primary" 
-          class="el-icon-download export-btn" 
+        <el-button
+          type="primary"
+          class="el-icon-download export-btn"
           size="mini"
           :disabled="tableData.length == 0"
           plain
@@ -127,10 +155,12 @@
 </template>
 
 <script>
-import { dateFormat } from "@/util/date.js";
+import {
+  dateFormat
+} from "@/util/date.js";
 import TableExport from '@/util/TableExport.js'
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       modalClose: sessionStorage.dialogAutoClose == 1,
@@ -140,9 +170,14 @@ export default {
       maximize1: false,
       queryLoading: false,
       tableHeight: bodyAviHeightNTab - 30 - 45,
-      valids: [
-        { value: 0, label: "否"},
-        { value: 1, label: "是"}
+      valids: [{
+          value: 0,
+          label: "否"
+        },
+        {
+          value: 1,
+          label: "是"
+        }
       ],
       form: {
         isValid: 1
@@ -158,21 +193,29 @@ export default {
         isValid: 1
       },
       modformRules: {
-        branchName: [
-          { required: true, message: "请输入分支名称", trigger: "blur" },
-          { min: 2, max: 20, message: "长度在 2 到 20 个字", trigger: "blur" }
+        branchName: [{
+            required: true,
+            message: "请输入分支名称",
+            trigger: "blur"
+          },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字",
+            trigger: "blur"
+          }
         ]
       }
     };
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.branchQuery();
   },
 
   watch: {
-    showDialog: function() {
+    showDialog: function () {
       if (this.showDialog) {
         this.modform.product = parseInt(sessionStorage.productId);
         this.$nextTick(_ => {
@@ -182,7 +225,7 @@ export default {
         });
       }
     },
-    
+
     form: {
       handler() {
         this.currentPage = 1;
@@ -226,7 +269,7 @@ export default {
     },
 
     checkBranchCreate(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -238,7 +281,7 @@ export default {
     },
 
     checkSaveBranchEdit(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -250,46 +293,46 @@ export default {
     },
 
     branchCreate() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/branch/create", {
-        branchName: _self.modform.branchName,
-        isValid: _self.modform.isValid
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.showDialog = false;
-          _self.$message.success("创建产品分支保存成功！");
-          _self.branchQuery();
-        } else {
-          _self.$notify.error("创建产品分支保存失败");
-          console.log(response);
-        }
-      })
+          branchName: _self.modform.branchName,
+          isValid: _self.modform.isValid
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.showDialog = false;
+            _self.$message.success("创建产品分支保存成功！");
+            _self.branchQuery();
+          } else {
+            _self.$notify.error("创建产品分支保存失败");
+            console.log(response);
+          }
+        })
     },
 
     branchQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
-        method: "post",
-        url: "/branch/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          isValid: _self.form.isValid,
-          pageNum: _self.currentPage,
-          pageSize: _self.pageSize
-        }
-      })
-      .then(function(res) {
-        _self.tableData = eval(res.data.list);
-        _self.pageInfo = res.data;
-        setTimeout(() => {
-          _self.queryChanged = false;
-          _self.queryLoading = false;
-        }, 200);
-      })
+          method: "post",
+          url: "/branch/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            isValid: _self.form.isValid,
+            pageNum: _self.currentPage,
+            pageSize: _self.pageSize
+          }
+        })
+        .then(function (res) {
+          _self.tableData = eval(res.data.list);
+          _self.pageInfo = res.data;
+          setTimeout(() => {
+            _self.queryChanged = false;
+            _self.queryLoading = false;
+          }, 200);
+        })
     },
 
     editBranch(data) {
@@ -305,48 +348,48 @@ export default {
     },
 
     saveBranchEdit() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/branch/update", {
-        branchId: _self.currentBranchId,
-        branchName: _self.modform.branchName,
-        isValid: _self.modform.isValid
-      })
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.showDialogMod = false;
-          _self.$message.success("修改产品分支成功！");
-          _self.branchQuery();
-        } else {
-          _self.$notify.error("修改产品分支失败");
-          console.log(response);
-        }
-      })
+          branchId: _self.currentBranchId,
+          branchName: _self.modform.branchName,
+          isValid: _self.modform.isValid
+        })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.showDialogMod = false;
+            _self.$message.success("修改产品分支成功！");
+            _self.branchQuery();
+          } else {
+            _self.$notify.error("修改产品分支失败");
+            console.log(response);
+          }
+        })
     },
 
     deleteBranch(data) {
       this.$confirm("确定要禁用当前记录吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "error"
-      })
-      .then(() => {
-        this.saveBranchDelete(data.branchId);
-      })
-      .catch(() => {});
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        })
+        .then(() => {
+          this.saveBranchDelete(data.branchId);
+        })
+        .catch(() => {});
     },
 
     saveBranchDelete(branchId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/branch/delete/" + branchId)
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.$message.success("禁用成功！");
-          _self.branchQuery();
-        } else {
-          _self.$notify.error("禁用失败");
-          console.log(response);
-        }
-      })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.$message.success("禁用成功！");
+            _self.branchQuery();
+          } else {
+            _self.$notify.error("禁用失败");
+            console.log(response);
+          }
+        })
     }
   }
 };

@@ -73,7 +73,13 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="eform" ref="ruledeviceFormEdit" size="mini" :inline="true" label-width="120px" class="edit-form">
+      <el-form
+        :model="eform"
+        ref="ruledeviceFormEdit"
+        size="mini"
+        :inline="true"
+        label-width="120px"
+        class="edit-form">
         <el-form-item label="资产编码" prop="assetId" required>
           <el-input v-model="eform.assetId" placeholder="请输入" disabled></el-input>
         </el-form-item>
@@ -138,7 +144,12 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="tableDatas" :max-height="tableHeight" size="mini" stripe :border="showBorder"
+      <el-table
+        :data="tableDatas"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
         v-loading="queryLoading"
         element-loading-text="查询中..."
         element-loading-spinner="el-icon-loading"
@@ -170,8 +181,8 @@
             </el-form>
           </template>
         </el-table-column>
-       <el-table-column prop="controllerName" label="管理员" width="80" align="center" sortable>
-         </el-table-column> 
+        <el-table-column prop="controllerName" label="管理员" width="80" align="center" sortable>
+        </el-table-column>
         <el-table-column label="操作" width="190" align="center" sortable>
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="rentDevice(scope.row)" :disabled="checkRentDenied(scope.row)">借用</el-button>
@@ -189,17 +200,19 @@
           :page-sizes="[10, 20, 50, 100, 200]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="pageInfo.total"
-        ></el-pagination>
+          :total="pageInfo.total"></el-pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 export default {
-  data: function() {
+  data: function () {
     return {
       tableHeight: bodyAviHeightNTab - 70 - 45,
       style: "",
@@ -219,13 +232,23 @@ export default {
       queryChanged: false,
       datefmt: defaultDateFormat,
       pickOptions: pickOptions,
-      oprSys: [
-        { value: "IOS", label: "IOS" },
-        { value: "Android", label: "Android" }
+      oprSys: [{
+          value: "IOS",
+          label: "IOS"
+        },
+        {
+          value: "Android",
+          label: "Android"
+        }
       ],
-      statuses: [
-        { value: "已归还", label: "已归还" },
-        { value: "已借出", label: "已借出" }
+      statuses: [{
+          value: "已归还",
+          label: "已归还"
+        },
+        {
+          value: "已借出",
+          label: "已借出"
+        }
       ],
 
       deviceForm: {
@@ -266,7 +289,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     _self.queryDevice();
   },
 
@@ -304,16 +327,16 @@ export default {
       this.queryDevice();
     },
 
-    checkRentDenied(data){
+    checkRentDenied(data) {
       return data.status == "已借出";
     },
 
-    checkReturnDenied(data){
+    checkReturnDenied(data) {
       return data.status == "已归还" || data.controllerName != sessionStorage.userName;
     },
 
     queryDevice() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -332,7 +355,7 @@ export default {
             pageSize: _self.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.tableDatas = eval(res.data.list);
           _self.pageInfo = res.data;
           _self.$nextTick(_ => {
@@ -342,14 +365,14 @@ export default {
             }, 200);
           });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
     saveSubmitDevice(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -361,7 +384,7 @@ export default {
     },
 
     submitDevice() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/device/create",
@@ -381,7 +404,7 @@ export default {
             rom: _self.cform.rom
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.showDialog = false;
           if (res.data > 0) {
             _self.$notify.success("保存设备信息成功！");
@@ -390,7 +413,7 @@ export default {
           }
           _self.queryDevice();
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("保存设备信息时发生程序错误！");
           console.log(response);
         });
@@ -398,10 +421,10 @@ export default {
 
     rentDevice(data) {
       this.$confirm("确定借用当前设备吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "info"
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info"
+        })
         .then(() => {
           this.commitRentDevice(data);
         })
@@ -409,7 +432,7 @@ export default {
     },
 
     commitRentDevice(data) {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/device/rent",
@@ -422,7 +445,7 @@ export default {
             id: data.id
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.$notify.success("设备借用成功！");
           } else {
@@ -430,7 +453,7 @@ export default {
           }
           _self.queryDevice();
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("设备借用时发生程序错误！");
           console.log(response);
         });
@@ -438,10 +461,10 @@ export default {
 
     returnDevice(data) {
       this.$confirm("确定归还当前设备吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "info"
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info"
+        })
         .then(() => {
           this.saveReturnDevice(data);
         })
@@ -449,7 +472,7 @@ export default {
     },
 
     saveReturnDevice(data) {
-      let _self =  this;
+      let _self = this;
       if (sessionStorage.userName != data.controllerName) {
         _self.$notify.error("您不是管理员，请不要随意操作！");
         return;
@@ -465,7 +488,7 @@ export default {
             id: data.id
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data > 0) {
             _self.$notify.success("设备归还成功！");
           } else {
@@ -473,20 +496,20 @@ export default {
           }
           _self.queryDevice();
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("设备归还时发生程序错误！");
           console.log(response);
         });
     },
 
     editDevice(data) {
-      let _self =  this;
+      let _self = this;
       _self.editDialog = true;
       _self.eform = data;
     },
 
     saveEditdevice(formName) {
-      let _self =  this;
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -498,7 +521,7 @@ export default {
     },
 
     updateDevice() {
-      let _self =  this;
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/device/update",
@@ -510,7 +533,7 @@ export default {
             id: _self.eform.id
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.editDialog = false;
           if (res.data > 0) {
             _self.$notify.success("保存成功！");
@@ -519,7 +542,7 @@ export default {
           }
           _self.queryDevice();
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("保存设备信息时发生程序错误！");
           console.log(response);
         });

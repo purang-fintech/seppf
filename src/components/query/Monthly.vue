@@ -28,7 +28,14 @@
       <v-req-count :datas="monthReqCount.chartsData" :height="tableHeight" v-if="monthReqCount.showCharts && hasData(monthReqCount.chartsData)"></v-req-count>
       <h1 v-if="monthReqCount.showCharts && !hasData(monthReqCount.chartsData)" class="no-data">月度需求计量数据图表生成失败</h1>
 
-      <el-table :data="monthReqCount.data" :max-height="tableHeight" size="mini" stripe :border="showBorder" v-if="!monthReqCount.showCharts" show-summary>
+      <el-table
+        :data="monthReqCount.data"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        v-if="!monthReqCount.showCharts"
+        show-summary>
         <el-table-column prop="productName" label="产品名称" min-width="50%" align="center">
         </el-table-column>
         <el-table-column prop="reqStatus" label="需求状态" min-width="25%" align="center">
@@ -47,13 +54,13 @@
       <v-req-cost :datas="monthReqCost.chartsData" :height="tableHeight" v-if="monthReqCost.showCharts && hasData(monthReqCost.chartsData)"></v-req-cost>
       <h1 v-if="monthReqCost.showCharts && !hasData(monthReqCost.chartsData)" class="no-data">月度需求时效数据图表生成失败</h1>
 
-      <el-table 
+      <el-table
         :data="monthReqCost.data"
-        :max-height="tableHeight" 
-        size="mini" 
-        stripe 
-        :border="showBorder" 
-        v-if="!monthReqCost.showCharts" 
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        v-if="!monthReqCost.showCharts"
         show-summary
         :summary-method="getSummariesReq">
         <el-table-column prop="productName" label="产品名称" min-width="30%" align="center">
@@ -76,7 +83,14 @@
       <v-d-count :datas="monthDefectCount.chartsData" :height="tableHeight" v-if="monthDefectCount.showCharts && hasData(monthDefectCount.chartsData)"></v-d-count>
       <h1 v-if="monthDefectCount.showCharts && !hasData(monthDefectCount.chartsData)" class="no-data">月度缺陷计量数据图表生成失败</h1>
 
-      <el-table :data="monthDefectCount.data" :max-height="tableHeight" size="mini" stripe :border="showBorder" v-if="!monthDefectCount.showCharts" show-summary>
+      <el-table
+        :data="monthDefectCount.data"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        v-if="!monthDefectCount.showCharts"
+        show-summary>
         <el-table-column prop="productName" label="产品名称" min-width="50%" align="center">
         </el-table-column>
         <el-table-column prop="defectStatus" label="缺陷状态" min-width="25%" align="center">
@@ -95,13 +109,13 @@
       <v-d-cost :datas="monthDefectCost.chartsData" :height="tableHeight" v-if="monthDefectCost.showCharts && hasData(monthDefectCost.chartsData)"></v-d-cost>
       <h1 v-if="monthDefectCost.showCharts && !hasData(monthDefectCost.chartsData)" class="no-data">月度缺陷时效数据图表生成失败</h1>
 
-      <el-table 
-        :data="monthDefectCost.data" 
-        :max-height="tableHeight" 
-        size="mini" 
-        stripe 
-        :border="showBorder" 
-        v-if="!monthDefectCost.showCharts" 
+      <el-table
+        :data="monthDefectCost.data"
+        :max-height="tableHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        v-if="!monthDefectCost.showCharts"
         show-summary
         :summary-method="getSummariesDefect">
         <el-table-column prop="productName" label="产品名称" min-width="30%" align="center">
@@ -113,7 +127,7 @@
         <el-table-column prop="avgCost" label="平均消耗天数" min-width="25%" align="center">
         </el-table-column>
       </el-table>
-    </div>  
+    </div>
   </div>
 </template>
 
@@ -122,9 +136,11 @@ import defectCount from "./monthly/DefectCount.vue";
 import defectCost from "./monthly/DefectCost.vue";
 import reqCount from "./monthly/ReqCount.vue";
 import reqCost from "./monthly/ReqCost.vue";
-import { dateFormat } from "@/util/date.js";
+import {
+  dateFormat
+} from "@/util/date.js";
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       tableData: [],
@@ -165,7 +181,7 @@ export default {
   },
 
   created() {
-    let _self =  this;
+    let _self = this;
     let current = new Date();
     let lastMonth = new Date(current.getFullYear() + "-" + current.getMonth());
     _self.month = dateFormat(lastMonth, "yyyy-MM");
@@ -175,8 +191,8 @@ export default {
   },
 
   methods: {
-    refreshData(){
-      let _self =  this;
+    refreshData() {
+      let _self = this;
       _self.monthDefectCount.data.splice(0, _self.monthDefectCount.data.length);
       _self.monthDefectCost.data.splice(0, _self.monthDefectCost.data.length);
       _self.monthReqCount.data.splice(0, _self.monthReqCount.data.length);
@@ -194,8 +210,8 @@ export default {
       );
     },
 
-    setQueryPeriod(){
-      let _self =  this;
+    setQueryPeriod() {
+      let _self = this;
       _self.queryPeriod.splice(0, _self.queryPeriod.length);
       let start = new Date(_self.month);
       let end = new Date(start.getFullYear() + "-" + (start.getMonth() + 2));
@@ -205,12 +221,12 @@ export default {
 
     groupBy(array, func) {
       let groups = {};
-      array.forEach(function(o) {
+      array.forEach(function (o) {
         let group = JSON.stringify(func(o));
         groups[group] = groups[group] || [];
         groups[group].push(o);
       });
-      return Object.keys(groups).map(function(group) {
+      return Object.keys(groups).map(function (group) {
         return groups[group];
       });
     },
@@ -229,7 +245,10 @@ export default {
       return secondSorted;
     },
 
-    getSummariesReq({columns, data}){
+    getSummariesReq({
+      columns,
+      data
+    }) {
       let sums = [];
       let counter = 0;
       let sumer = 0;
@@ -255,7 +274,10 @@ export default {
       return sums;
     },
 
-    getSummariesDefect({columns, data}){
+    getSummariesDefect({
+      columns,
+      data
+    }) {
       let sums = [];
       let counter = 0;
       let sumer = 0;
@@ -282,7 +304,7 @@ export default {
     },
 
     monthDefectCountQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -295,11 +317,11 @@ export default {
             qTimeEnd: _self.queryPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.monthDefectCount.data = eval(res.data);
           _self.monthDefectCount.chartsData = _self.chartsDataSort(_self.monthDefectCount.data, "productName");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("线上问题信息查询时发生程序错误！");
           console.log(response);
           _self.queryLoading = false;
@@ -307,7 +329,7 @@ export default {
     },
 
     monthReqCountQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -320,11 +342,11 @@ export default {
             qTimeEnd: _self.queryPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.monthReqCount.data = eval(res.data);
           _self.monthReqCount.chartsData = _self.chartsDataSort(_self.monthReqCount.data, "productName");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("线上问题信息查询时发生程序错误！");
           console.log(response);
           _self.queryLoading = false;
@@ -332,7 +354,7 @@ export default {
     },
 
     monthDefectCostQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -345,14 +367,14 @@ export default {
             qTimeEnd: _self.queryPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.monthDefectCost.data = eval(res.data);
           _self.monthDefectCost.data.forEach(item => {
             _self.$set(item, "avgCost", (item.defectCostSum / item.defectCount).toFixed(2))
           });
           _self.monthDefectCost.chartsData = _self.monthDefectCost.data;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("线上问题信息查询时发生程序错误！");
           console.log(response);
           _self.queryLoading = false;
@@ -360,7 +382,7 @@ export default {
     },
 
     monthReqCostQuery() {
-      let _self =  this;
+      let _self = this;
       _self.queryLoading = true;
       _self.$axios({
           method: "post",
@@ -373,14 +395,14 @@ export default {
             qTimeEnd: _self.queryPeriod[1]
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.monthReqCost.data = eval(res.data);
           _self.monthReqCost.data.forEach(item => {
             _self.$set(item, "avgCost", (item.reqCostSum / item.reqCount).toFixed(2))
           });
           _self.monthReqCost.chartsData = _self.monthReqCost.data;
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("线上问题信息查询时发生程序错误！");
           console.log(response);
           _self.queryLoading = false;
@@ -408,13 +430,13 @@ export default {
   display: block;
 }
 
-.reports-title>span{
+.reports-title>span {
   margin-left: 8px;
   font-size: 18px;
   font-weight: 600;
 }
 
-.reports-title + div{
+.reports-title+div {
   background-color: #485f7d;
 }
 

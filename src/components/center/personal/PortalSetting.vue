@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
       selected: [1, 3, 4, 5, 6, 7],
       cardList: workCards
@@ -43,7 +43,7 @@ export default {
   },
 
   computed: {
-    filteredCards: function() {
+    filteredCards: function () {
       let selectdCards = [];
       this.cardList.forEach(item => {
         if (item.needed && this.selected.indexOf(item.index) == -1) {
@@ -68,23 +68,23 @@ export default {
   },
 
   methods: {
-    updateWorkbenchPortal(){
-      let _self =  this; 
+    updateWorkbenchPortal() {
+      let _self = this;
       _self.$axios.post("/user/setting/update", {
-        userId: sessionStorage.userId,
-        portalConfig: _self.selected.toString()
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.$message.success("更新工作台卡片配置成功！");
-          sessionStorage.setItem("portalConfig", _self.selected.toString());
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
-        } else {
-          _self.$message.warning("没有记录被更新！");
-        }
-      })
+          userId: sessionStorage.userId,
+          portalConfig: _self.selected.toString()
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.$message.success("更新工作台卡片配置成功！");
+            sessionStorage.setItem("portalConfig", _self.selected.toString());
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          } else {
+            _self.$message.warning("没有记录被更新！");
+          }
+        })
     }
   }
 };
@@ -92,9 +92,9 @@ export default {
 
 <style>
 .work-label {
-  font-size:15px;
-  font-weight:600;
-  margin:10px 5px 15px;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 10px 5px 15px;
 }
 
 .work-cards {
@@ -105,7 +105,7 @@ export default {
   display: inline-grid;
 }
 
-.work-cards .el-link+.el-link{
+.work-cards .el-link+.el-link {
   margin-right: 10px;
 }
 
@@ -119,13 +119,13 @@ export default {
 
 .work-cards .work-content {
   margin: 30px 0;
-  display:inline-block;
-} 
+  display: inline-block;
+}
 
 .work-cards .work-content .content-name {
-  text-align:center;
-  font-size:15px;
-  color:#FFF;
+  text-align: center;
+  font-size: 15px;
+  color: #FFF;
 }
 
 .work-cards .work-content .content-number {

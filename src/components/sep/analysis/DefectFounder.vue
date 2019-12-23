@@ -1,6 +1,7 @@
 <template>
   <div id="founderCharts" style="width: 99%; height: 300px;"></div>
 </template>
+
 <script>
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar");
@@ -8,9 +9,9 @@ require("echarts/lib/component/tooltip");
 require("echarts/lib/component/toolbox");
 require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
-import sepp from "@/assets/theme/charts/sepp"; 
+import sepp from "@/assets/theme/charts/sepp";
 export default {
-  data: function() {
+  data: function () {
     return {
       chartsOptions: ""
     };
@@ -18,7 +19,7 @@ export default {
   props: ["dfounders"],
 
   created() {
-    let _self =  this;
+    let _self = this;
     let dfounders = _self.sortData(_self.dfounders, "founder", "children");
     let usersData = [];
     let legendData = [];
@@ -58,16 +59,25 @@ export default {
       },
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "shadow" }
+        axisPointer: {
+          type: "shadow"
+        }
       },
       toolbox: {
         right: 0,
         top: 0,
         show: true,
         feature: {
-          dataView: { show: true, readOnly: false },
-          restore: { show: true },
-          saveAsImage: { show: true }
+          dataView: {
+            show: true,
+            readOnly: false
+          },
+          restore: {
+            show: true
+          },
+          saveAsImage: {
+            show: true
+          }
         },
         padding: 10
       },
@@ -96,26 +106,26 @@ export default {
   },
 
   mounted() {
-    let _self =  this;
+    let _self = this;
     let charts = document.getElementById("founderCharts");
 
     let dataCharts = echarts.init(charts, sepp);
     dataCharts.setOption(_self.chartsOptions);
   },
 
-   methods: {
+  methods: {
     sortData(json, idKey, childKey) {
       let temp = [];
       let result = [];
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -125,6 +135,6 @@ export default {
       }
       return result;
     },
-   }
+  }
 };
 </script>

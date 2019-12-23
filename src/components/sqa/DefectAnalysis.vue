@@ -1,6 +1,6 @@
 ﻿<template>
   <div>
-    <div class="query-condition-bug"> 
+    <div class="query-condition-bug">
       <div class="ana-mode">
         <el-radio-group v-model="anaMode" size="small" @change="transQueryMode()">
           <el-radio-button label="1">按版本分析</el-radio-button>
@@ -9,27 +9,33 @@
       </div>
 
       <div class="main-filter">
-        <el-select v-if="anaMode==='1'" v-model="releases.selected" size="small" @change="relReqQuery();refreshData()" style="width:180px" placeholder="请选择版本号">
+        <el-select
+          v-if="anaMode==='1'"
+          v-model="releases.selected"
+          size="small"
+          @change="relReqQuery();refreshData()"
+          style="width:180px"
+          placeholder="请选择版本号">
           <el-option v-for="opt in releases.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
         </el-select>
-        
-        <el-date-picker 
-          v-if="anaMode==='2'" 
-          v-model="anaPeriod" 
-          type="daterange" 
+
+        <el-date-picker
+          v-if="anaMode==='2'"
+          v-model="anaPeriod"
+          type="daterange"
           size="small"
-          align="right" 
-          unlink-panels 
-          :value-format="datefmt" 
-          range-separator="至" 
-          start-placeholder="开始日期" 
+          align="right"
+          unlink-panels
+          :value-format="datefmt"
+          range-separator="至"
+          start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="checkPeriod()"
           :clearable="false"
           :picker-options="pickOptions">
         </el-date-picker>
       </div>
-      
+
       <div class="ana-mode">
         <el-radio-group v-model="userFilter" size="small" @change="userFilterChange()">
           <el-radio-button label="1">全部数据</el-radio-button>
@@ -39,37 +45,43 @@
         </el-radio-group>
       </div>
 
-      <el-select v-if="userFilter === '2'" v-model="submitter" size="small" @change="refreshData()" :filter-method="filterUsers" @visible-change="resetFilterText" filterable>
-        <el-option-group
-          v-for="group in userOptions"
-          :key="group.label"
-          :label="group.label">
-          <el-option
-            v-for="item in group.options"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
+      <el-select
+        v-if="userFilter === '2'"
+        v-model="submitter"
+        size="small"
+        @change="refreshData()"
+        :filter-method="filterUsers"
+        @visible-change="resetFilterText"
+        filterable>
+        <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+          <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
             <span style="float:left">{{ item.name }}</span>
             <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
           </el-option>
         </el-option-group>
       </el-select>
-      <el-select v-if="userFilter === '3'" v-model="responser" size="small" @change="refreshData()" :filter-method="filterUsers1" @visible-change="resetFilterText" filterable>
-        <el-option-group
-          v-for="group in userOptions1"
-          :key="group.label"
-          :label="group.label">
-          <el-option
-            v-for="item in group.options"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
+      <el-select
+        v-if="userFilter === '3'"
+        v-model="responser"
+        size="small"
+        @change="refreshData()"
+        :filter-method="filterUsers1"
+        @visible-change="resetFilterText"
+        filterable>
+        <el-option-group v-for="group in userOptions1" :key="group.label" :label="group.label">
+          <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
             <span style="float:left">{{ item.name }}</span>
             <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
           </el-option>
         </el-option-group>
       </el-select>
-      <el-select v-if="userFilter === '4'" v-model="req.selected" size="small" placeholder="请选择" @change="refreshData()" style="width:300px">
+      <el-select
+        v-if="userFilter === '4'"
+        v-model="req.selected"
+        size="small"
+        placeholder="请选择"
+        @change="refreshData()"
+        style="width:300px">
         <el-option v-for="opt in req.opts" :label="opt.label" :key="opt.value" :value="opt.value"></el-option>
       </el-select>
     </div>
@@ -110,7 +122,7 @@
         <v-influence :datas="influences" v-if="null != influences && influences.length > 0"></v-influence>
         <h1 v-if="influences == null || influences == ''" class="no-data">缺陷严重程度分布<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
 
     <div>
       <div class="bug-container">
@@ -121,7 +133,7 @@
         <v-period :datas="periods" v-if="null != periods && periods.length > 0"></v-period>
         <h1 v-if="periods == null || periods == ''" class="no-data">缺陷植入阶段分布<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
 
     <div>
       <div class="bug-container">
@@ -132,7 +144,7 @@
         <v-fix-times :datas="fixTimes" v-if="null != fixTimes && fixTimes.length > 0"></v-fix-times>
         <h1 v-if="fixTimes == null || fixTimes == ''" class="no-data">缺陷修复次数分析（已关闭）<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
 
     <div>
       <div class="bug-container">
@@ -143,12 +155,15 @@
         <v-type :datas="types" v-if="null != types && types.length > 0"></v-type>
         <h1 v-if="types == null || types == ''" class="no-data">缺陷类型分布<br><br>暂无数据</h1>
       </div>
-    </div> 
+    </div>
   </div>
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import defectDirection from "./bug/DefectDirection.vue";
 import defectFounder from "./bug/DefectFounder.vue";
 import defectResponser from "./bug/DefectResponser.vue";
@@ -165,7 +180,7 @@ import defectProducePeriod from "./bug/DefectProducePeriod.vue";
 import commonQuery from "@/components/util/CommonQuery.vue";
 let versions = [];
 export default {
-  data: function() {
+  data: function () {
     return {
       activeName: "defect",
       anaMode: "1",
@@ -191,14 +206,14 @@ export default {
       responsers: [],
       modules: [],
       reqs: [],
-      priorities:[],
-      influences:[],
-      types:[],
-      foundPeriods:[],
-      periods:[],
-      fixTimes:[],
-      fixCosts:[],
-      verifyCosts:[]
+      priorities: [],
+      influences: [],
+      types: [],
+      foundPeriods: [],
+      periods: [],
+      fixTimes: [],
+      fixCosts: [],
+      verifyCosts: []
     }
   },
 
@@ -225,23 +240,23 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
       _self.userOptions1 = _self.memberFull;
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers1(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions1 = commonQuery.pickListFilter(val, _self.memberFull);
     },
-    
-    refreshData(){
+
+    refreshData() {
       this.defects.splice(0, this.defects.length);
       this.defectDirection();
       if (this.userFilter === '1' || this.userFilter === '4') {
@@ -272,7 +287,7 @@ export default {
       this.defectVerifyCost();
     },
 
-    setDefaultPeriod(){
+    setDefaultPeriod() {
       let date = new Date();
       let oldDay = new Date();
       let qTimeEnd = dateFormat(date, this.datefmt);
@@ -283,11 +298,11 @@ export default {
       this.anaPeriod.push(qTimeEnd);
     },
 
-    transQueryMode(){
+    transQueryMode() {
       this.userFilter = "1";
       this.submitter = "";
       this.responser = "";
-      if (this.anaMode==='1') {
+      if (this.anaMode === '1') {
         this.releaseQuery(this.refreshData);
       } else {
         this.releases.selected = "";
@@ -297,29 +312,29 @@ export default {
     },
 
     relReqQuery() {
-      let _self =  this;
+      let _self = this;
       _self.req.selected = "";
       _self.$axios.post("/req/rel_query/" + _self.releases.selected + "/1/500")
-      .then(function(res) {
-        let json = eval(res.data.list);
-        if (json.length == 0) {
-          _self.$message.warning("该版本尚未纳入开发任务！");
-          return;
-        }
-        _self.req.opts.splice(0, _self.req.opts.length);
-        for (let i = 0; i < json.length; i++) {
-          _self.req.opts.push({
-            value: json[i].id,
-            label: json[i].id + " - " + json[i].summary
-          });
-        }
-      })
+        .then(function (res) {
+          let json = eval(res.data.list);
+          if (json.length == 0) {
+            _self.$message.warning("该版本尚未纳入开发任务！");
+            return;
+          }
+          _self.req.opts.splice(0, _self.req.opts.length);
+          for (let i = 0; i < json.length; i++) {
+            _self.req.opts.push({
+              value: json[i].id,
+              label: json[i].id + " - " + json[i].summary
+            });
+          }
+        })
     },
 
-    checkPeriod(){
+    checkPeriod() {
       let start = this.anaPeriod[0];
       let end = this.anaPeriod[1];
-      let period = (Date.parse(end.replace('/-/g','/')) - Date.parse(start.replace('/-/g','/'))) / (3600 * 1000 * 24);
+      let period = (Date.parse(end.replace('/-/g', '/')) - Date.parse(start.replace('/-/g', '/'))) / (3600 * 1000 * 24);
       if (period > 183) {
         this.$message.info("请查询六个月以内的数据！");
         this.setDefaultPeriod();
@@ -328,18 +343,18 @@ export default {
       this.refreshData();
     },
 
-    userFilterChange(){
+    userFilterChange() {
       if (this.userFilter == "1") {
         this.submitter = "";
         this.responser = "";
         this.refreshData();
-      } else if(this.userFilter == "2") {
+      } else if (this.userFilter == "2") {
         this.responser = "";
         this.req.selected = "";
-      } else if(this.userFilter == "3") {
+      } else if (this.userFilter == "3") {
         this.submitter = "";
         this.req.selected = "";
-      } else if(this.userFilter == "4") {
+      } else if (this.userFilter == "4") {
         this.submitter = "";
         this.responser = "";
         this.req.selected = "";
@@ -353,12 +368,12 @@ export default {
       for (let i = 0; i < json.length; i++) {
         temp.push(json[i][idKey]);
       }
-      temp = temp.filter(function(element, index, array) {
+      temp = temp.filter(function (element, index, array) {
         return array.indexOf(element) === index;
       });
 
       for (let k = 0; k < temp.length; k++) {
-        let children = json.filter(function(d) {
+        let children = json.filter(function (d) {
           return d[idKey] === temp[k];
         });
         result.push({
@@ -369,8 +384,8 @@ export default {
       return result;
     },
 
-    defectDirection(){
-      let _self =  this;
+    defectDirection() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugDirection",
@@ -386,17 +401,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.defects = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectFounder(){
-      let _self =  this;
+    defectFounder() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugFounder",
@@ -412,17 +427,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.submitters = _self.sortData(eval(res.data), "founder", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectResponser(){
-      let _self =  this;
+    defectResponser() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugResponser",
@@ -438,17 +453,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.responsers = _self.sortData(eval(res.data), "responser", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectModule(){
-      let _self =  this;
+    defectModule() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugModule",
@@ -464,17 +479,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.modules = _self.sortData(eval(res.data), "moduleName", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectReqirements(){
-      let _self =  this;
+    defectReqirements() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugReq",
@@ -490,17 +505,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.reqs = _self.sortData(eval(res.data), "reqSummary", "children");
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectPriority(){
-      let _self =  this;
+    defectPriority() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugPriority",
@@ -516,17 +531,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.priorities = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectInfluence(){
-      let _self =  this;
+    defectInfluence() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugInfluence",
@@ -542,17 +557,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.influences = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectType(){
-      let _self =  this;
+    defectType() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugType",
@@ -568,17 +583,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.types = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectFoundPeriod(){
-      let _self =  this;
+    defectFoundPeriod() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugFoundPeriod",
@@ -594,17 +609,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.foundPeriods = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectProducePeriod(){
-      let _self =  this;
+    defectProducePeriod() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugPeriod",
@@ -620,17 +635,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.periods = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectFixTimes(){
-      let _self =  this;
+    defectFixTimes() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugFixtImes",
@@ -646,17 +661,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.fixTimes = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectFixCost(){
-      let _self =  this;
+    defectFixCost() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugFixCost",
@@ -672,17 +687,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.fixCosts = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    defectVerifyCost(){
-      let _self =  this;
+    defectVerifyCost() {
+      let _self = this;
       _self.$axios({
           method: "post",
           url: "/sqa/bugVerifyCost",
@@ -698,17 +713,17 @@ export default {
             reqId: _self.req.selected
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.verifyCosts = eval(res.data);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           _self.$notify.error("发生错误");
           console.log(response);
         });
     },
 
-    memberQuery(){
-      let _self =  this;
+    memberQuery() {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.memberFull = result.usersFull;
         _self.userOptions = result.usersFull;
@@ -717,7 +732,7 @@ export default {
     },
 
     releaseQuery(callback) {
-      let _self =  this;
+      let _self = this;
       _self.req.selected = "";
       _self.submitter = "";
       _self.responser = "";
@@ -729,7 +744,7 @@ export default {
         }
         _self.releases.opts = result.releasesWithBranch;
         _self.releases.selected = result.releasesWithBranch[0].value;
-        if(typeof callback === "function"){
+        if (typeof callback === "function") {
           callback();
         }
       })
@@ -762,7 +777,7 @@ export default {
   vertical-align: middle;
 }
 
-.wid-container{
+.wid-container {
   width: 99.2%;
   height: 300px;
   display: inline-block;
@@ -771,7 +786,7 @@ export default {
   background-color: #3b434e;
 }
 
-.bug-container{
+.bug-container {
   width: 49%;
   height: 300px;
   display: inline-block;
@@ -781,7 +796,7 @@ export default {
   background-color: #3b434e;
 }
 
-.bug-container+.bug-container{
+.bug-container+.bug-container {
   margin-left: 1%;
 }
 

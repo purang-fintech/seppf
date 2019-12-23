@@ -21,7 +21,13 @@
             :closable="false">
           </el-alert>
         </div>
-        <el-table :data="messages" size="mini" stripe empty-text="暂无未读消息" :max-height="msgTHeight - 35" class="message-table">
+        <el-table
+          :data="messages"
+          size="mini"
+          stripe
+          empty-text="暂无未读消息"
+          :max-height="msgTHeight - 35"
+          class="message-table">
           <el-table-column type="index" label="序号" width="100" align="center">
           </el-table-column>
           <el-table-column property="objectTypeName" label="消息类型" width="140" align="center">
@@ -54,29 +60,24 @@
 
       <el-tab-pane label="已读信息" name="hasRead">
         <el-row :gutter="20">
-            <el-col :span="4">
+          <el-col :span="4">
             <el-form :inline="false" class="message-form" size="small">
               <el-form-item>
                 <el-select clearable v-model="message.objectType" filterable placeholder="消息类型">
-                  <el-option
-                    v-for="item in objectTypes"
-                    :key="item.typeId"
-                    :label="item.typeName"
-                    :value="item.typeId">
+                  <el-option v-for="item in objectTypes" :key="item.typeId" :label="item.typeName" :value="item.typeId">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-select v-model="message.messageFrom" clearable placeholder="消息来源" filterable :filter-method="filterUsers" @visible-change="resetFilterText">
-                  <el-option-group
-                    v-for="group in userOptions"
-                    :key="group.label"
-                    :label="group.label">
-                    <el-option
-                      v-for="item in group.options"
-                      :key="item.value"
-                      :label="item.name"
-                      :value="item.value">
+                <el-select
+                  v-model="message.messageFrom"
+                  clearable
+                  placeholder="消息来源"
+                  filterable
+                  :filter-method="filterUsers"
+                  @visible-change="resetFilterText">
+                  <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+                    <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                       <span style="float:left">{{ item.name }}</span>
                       <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
                     </el-option>
@@ -99,11 +100,15 @@
               </el-form-item>
             </el-form>
           </el-col>
-        
+
           <el-col :span="20">
             <el-table
               :data="readMessages"
-              size="mini" stripe empty-text="暂无已读消息" :max-height="msgTHeight" class="message-table">
+              size="mini"
+              stripe
+              empty-text="暂无已读消息"
+              :max-height="msgTHeight"
+              class="message-table">
               <el-table-column type="index" label="序号" width="80" align="center">
               </el-table-column>
               <el-table-column property="objectTypeName" label="消息类型" width="120" align="center">
@@ -142,9 +147,14 @@
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import commonQuery from "@/components/util/CommonQuery.vue";
-import { Notification } from 'element-ui';
+import {
+  Notification
+} from 'element-ui';
 export default {
   data: function () {
     return {
@@ -174,13 +184,13 @@ export default {
   props: {
     messages: {
       type: Array,
-      default() {
+      default () {
         return {}
       }
     },
-     refreshed: {
-       type: Boolean
-     }
+    refreshed: {
+      type: Boolean
+    }
   },
 
   watch: {
@@ -210,12 +220,12 @@ export default {
     }
   },
 
-  beforeRouteLeave(to, form, next){
+  beforeRouteLeave(to, form, next) {
     this.$destroy();
     next();
   },
 
-  activated(){
+  activated() {
     this.activeName = "notRead";
   },
 
@@ -231,7 +241,7 @@ export default {
 
   methods: {
     memberQuery() {
-      let _self =  this;
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.memberFull = result.usersFull;
         _self.userOptions = result.usersFull;
@@ -239,12 +249,12 @@ export default {
     },
 
     resetFilterText() {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = _self.memberFull;
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
@@ -265,21 +275,21 @@ export default {
 
     allHaveRead() {
       this.$axios.post("/message/have-read/all", {})
-      .then(() => {
-        Notification.closeAll();
-      })
+        .then(() => {
+          Notification.closeAll();
+        })
     },
 
     haveRead(data) {
       let ids = [data.id];
       this.$axios.post("/message/have-read", {
-        ids: ids
-      })
-      .then(() => {
-        if (this.messages.length == 0) {
-          Notification.closeAll();
-        }
-      })
+          ids: ids
+        })
+        .then(() => {
+          if (this.messages.length == 0) {
+            Notification.closeAll();
+          }
+        })
     },
 
     getReadMessages() {
@@ -299,20 +309,20 @@ export default {
         messageDate = null;
       }
       this.$axios.post("/message/have-read::query", {
-        objectType: this.message.objectType,
-        messageFrom: this.message.messageFrom,
-        messageDate: messageDate,
-        messageCode: this.message.messageCode,
-        pageSize: this.readMessagePageSize,
-        pageNum: this.readMessageCurrentPage
-      })
-      .then(resp => {
-        this.readMessages = resp.data.list;
-        this.readMessagesTotal = resp.data.total;
-        setTimeout(() => {
-          this.queryChanged = false;
-        }, 200);
-      })
+          objectType: this.message.objectType,
+          messageFrom: this.message.messageFrom,
+          messageDate: messageDate,
+          messageCode: this.message.messageCode,
+          pageSize: this.readMessagePageSize,
+          pageNum: this.readMessageCurrentPage
+        })
+        .then(resp => {
+          this.readMessages = resp.data.list;
+          this.readMessagesTotal = resp.data.total;
+          setTimeout(() => {
+            this.queryChanged = false;
+          }, 200);
+        })
     }
   }
 }
@@ -324,14 +334,14 @@ export default {
   float: right;
 }
 
-  .message-form .el-input, 
-  .message-form .el-input__inner {
-    width: 180px;
-  }
+.message-form .el-input,
+.message-form .el-input__inner {
+  width: 180px;
+}
 
-  .message-table th{
-    background-color: #fff;
-    font-size: 14px;
-    color: #788288;
-  }
+.message-table th {
+  background-color: #fff;
+  font-size: 14px;
+  color: #788288;
+}
 </style>

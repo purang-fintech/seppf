@@ -6,8 +6,8 @@
         <el-breadcrumb-item>测试计划</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    
-    <el-dialog :close-on-click-modal="modalClose" title="测试任务纳入" :visible.sync="showTestMissionAdd" width="1070px"  :fullscreen="maximize1">
+
+    <el-dialog :close-on-click-modal="modalClose" title="测试任务纳入" :visible.sync="showTestMissionAdd" width="1070px" :fullscreen="maximize1">
       <div slot="title">
         <span style="font-size:18px">测试任务纳入</span>
         <button class="el-dialog__headerbtn" style="right:40px" @click="maximize1=!maximize1">
@@ -20,20 +20,20 @@
         </button>
       </div>
       <el-checkbox size="mini" v-model="notPlanMissions.olnyCurrentRelease" border style="margin-bottom:5px">只展示当前版本相关需求的测试任务</el-checkbox>
-      <div v-loading.lock="notPlanMissions.missionLoading" 
-        element-loading-text="加载中..." 
-        element-loading-spinner="el-icon-loading" 
-        element-loading-background="rgba(0, 0, 0, 0.8)">
-        <el-table :data="notPlanMissions.testMissions" max-height="400" stripe @selection-change="selectionChange" size="mini" :border="showBorder">
+      <div v-loading.lock="notPlanMissions.missionLoading" element-loading-text="加载中..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
+        <el-table
+          :data="notPlanMissions.testMissions"
+          max-height="400"
+          stripe
+          @selection-change="selectionChange"
+          size="mini"
+          :border="showBorder">
           <el-table-column type="selection" width="40" align="center">
           </el-table-column>
           <el-table-column prop="id" label="任务编号" width="80" align="center" sortable>
             <template slot-scope="scope">
               <el-tooltip content="点此产看更多测试任务信息" placement="right-end" effect="dark">
-                <el-popover
-                  placement="right-end"
-                  width="400"
-                  trigger="click">
+                <el-popover placement="right-end" width="400" trigger="click">
                   <el-form size="mini" label-width="100px">
                     <el-form-item label="人力(人日)">
                       <el-input v-model="scope.row.manpower" disabled></el-input>
@@ -45,7 +45,7 @@
                       <span style="color:#3AB4D7;padding-left:15px">{{ getAssistant(scope.row.assistant) }}</span>
                     </el-form-item>
                   </el-form>
-                    <span class="table-content-tips" slot="reference">{{scope.row.id}}</span>
+                  <span class="table-content-tips" slot="reference">{{scope.row.id}}</span>
                 </el-popover>
               </el-tooltip>
             </template>
@@ -68,17 +68,17 @@
         </el-table>
       </div>
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange2" 
-          @current-change="handleCurrentChange2" 
-          :current-page="notPlanMissions.currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="notPlanMissions.pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange2"
+          @current-change="handleCurrentChange2"
+          :current-page="notPlanMissions.currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="notPlanMissions.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="notPlanMissions.pageInfo.total">
         </el-pagination>
       </div>
-      
+
       <div slot="footer">
         <el-button v-no-more-click type="primary" icon="el-icon-circle-close" @click="showTestMissionAdd=false" size="small">取消</el-button>
         <el-button v-no-more-click type="primary" icon="el-icon-circle-check" @click="commitTestMissionAdd()" size="small">纳入计划</el-button>
@@ -105,18 +105,12 @@
           </el-form-item>
         </el-form>
 
-        <div v-loading.lock="missionQuery.missionLoading" 
-          element-loading-text="加载中..." 
-          element-loading-spinner="el-icon-loading" 
-          element-loading-background="rgba(0, 0, 0, 0.8)">
+        <div v-loading.lock="missionQuery.missionLoading" element-loading-text="加载中..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
           <el-table :data="missionQuery.testMissions" max-height="400" stripe size="mini" :border="showBorder">
             <el-table-column prop="id" label="任务编号" width="80" align="center" sortable>
               <template slot-scope="scope">
                 <el-tooltip content="点此产看更多测试任务信息" placement="right-end" effect="dark">
-                  <el-popover
-                    placement="right-end"
-                    width="400"
-                    trigger="click">
+                  <el-popover placement="right-end" width="400" trigger="click">
                     <el-form size="mini" label-width="100px">
                       <el-form-item label="人力(人日)">
                         <el-input v-model="scope.row.manpower" disabled></el-input>
@@ -128,7 +122,7 @@
                         <span style="color:#3AB4D7;padding-left:15px">{{ getAssistant(scope.row.assistant) }}</span>
                       </el-form-item>
                     </el-form>
-                      <span class="table-content-tips" slot="reference">{{scope.row.id}}</span>
+                    <span class="table-content-tips" slot="reference">{{scope.row.id}}</span>
                   </el-popover>
                 </el-tooltip>
               </template>
@@ -156,13 +150,13 @@
           </el-table>
         </div>
         <div class="page-set">
-          <el-pagination 
-            @size-change="handleSizeChange1" 
-            @current-change="handleCurrentChange1" 
-            :current-page="missionQuery.currentPage" 
-            :page-sizes="[10, 20, 50, 100, 200]" 
-            :page-size="missionQuery.pageSize" 
-            layout="total, sizes, prev, pager, next, jumper" 
+          <el-pagination
+            @size-change="handleSizeChange1"
+            @current-change="handleCurrentChange1"
+            :current-page="missionQuery.currentPage"
+            :page-sizes="[10, 20, 50, 100, 200]"
+            :page-size="missionQuery.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="missionQuery.pageInfo.total">
           </el-pagination>
         </div>
@@ -185,7 +179,14 @@
         </button>
       </div>
 
-      <el-form :model="fmain" size="mini" :inline="true" :rules="fmainRules" ref="ruledFMain" class="plan-fform" label-width="110px">
+      <el-form
+        :model="fmain"
+        size="mini"
+        :inline="true"
+        :rules="fmainRules"
+        ref="ruledFMain"
+        class="plan-fform"
+        label-width="110px">
         <el-form-item label="版本号" required class="normal" prop="release.selected">
           <el-select v-model="fmain.release.selected" placeholder="请选择" @change="checkUnique()" clearable>
             <el-option v-for="opt in fmain.release.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -197,16 +198,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="计划负责人" required class="normal" prop="responser">
-          <el-select v-model="fmain.responser" placeholder="请选择" clearable filterable :filter-method="filterUsers1" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions1"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="fmain.responser"
+            placeholder="请选择"
+            clearable
+            filterable
+            :filter-method="filterUsers1"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions1" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -219,15 +219,34 @@
           </el-select>
         </el-form-item>
         <el-form-item label="计划开始日期" required class="normal" prop="planBegin">
-          <el-date-picker type="date" @change="setPeriodDates(fmain)" v-model="fmain.planBegin" :value-format="datefmt" placeholder="请选择" style="width: 100%;"></el-date-picker>
+          <el-date-picker
+            type="date"
+            @change="setPeriodDates(fmain)"
+            v-model="fmain.planBegin"
+            :value-format="datefmt"
+            placeholder="请选择"
+            style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="计划结束日期" required class="normal" prop="planEnd">
-          <el-date-picker type="date" @change="setPeriodDates(fmain)" v-model="fmain.planEnd" :value-format="datefmt" placeholder="请选择" style="width: 100%;"></el-date-picker>
+          <el-date-picker
+            type="date"
+            @change="setPeriodDates(fmain)"
+            v-model="fmain.planEnd"
+            :value-format="datefmt"
+            placeholder="请选择"
+            style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="进度报告点" class="lined" prop="rdates.resultStr">
           <el-input v-model="fmain.rdates.resultStr" placeholder="请先选择计划开始、结束日期" clearable @clear="clearSelect(fmain.rdates.selected)">
-            <el-select v-model="fmain.rdates.selected" @change="setText(fmain)" slot="prepend" placeholder="请选择" clearable multiple collapse-tags>
-              <el-option v-for="opt in fmain.rdates.opts" :value="opt.value" :key="opt.value" :label="opt.label" :disabled="opt.disabled"></el-option>                
+            <el-select
+              v-model="fmain.rdates.selected"
+              @change="setText(fmain)"
+              slot="prepend"
+              placeholder="请选择"
+              clearable
+              multiple
+              collapse-tags>
+              <el-option v-for="opt in fmain.rdates.opts" :value="opt.value" :key="opt.value" :label="opt.label" :disabled="opt.disabled"></el-option>
             </el-select>
             <el-button v-no-more-click slot="append" v-popover:dates>已选择</el-button>
           </el-input>
@@ -242,16 +261,18 @@
         </el-form-item>
         <el-form-item label="邮件主送" required class="lined" prop="to.resultStr">
           <el-input v-model="fmain.to.resultStr" placeholder="多个收件人以英文半角逗号分隔" clearable @clear="clearSelect(fmain.to.selected)">
-            <el-select v-model="fmain.to.selected" slot="prepend" @change="handleEmail(fmain.to);multiOptionsHandler2()" placeholder="请选择" clearable filterable multiple collapse-tags :filter-method="filterUsers2">
-              <el-option-group
-                v-for="group in userOptions2"
-                :key="group.label"
-                :label="group.label">
-                <el-option
-                  v-for="item in group.options"
-                  :key="item.value"
-                  :label="item.name"
-                  :value="item.value">
+            <el-select
+              v-model="fmain.to.selected"
+              slot="prepend"
+              @change="handleEmail(fmain.to);multiOptionsHandler2()"
+              placeholder="请选择"
+              clearable
+              filterable
+              multiple
+              collapse-tags
+              :filter-method="filterUsers2">
+              <el-option-group v-for="group in userOptions2" :key="group.label" :label="group.label">
+                <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                   <span style="float:left">{{ item.name }}</span>
                   <span style="float:right;margin:0 10px;color:#9ca9c4">{{ item.account }}</span>
                 </el-option>
@@ -270,16 +291,18 @@
         </el-form-item>
         <el-form-item label="邮件抄送" class="lined" prop="cc.resultStr">
           <el-input v-model="fmain.cc.resultStr" placeholder="多个收件人以英文半角逗号分隔" clearable @clear="clearSelect(fmain.cc.selected)">
-            <el-select v-model="fmain.cc.selected" slot="prepend" @change="handleEmail(fmain.cc);multiOptionsHandler3()" placeholder="请选择" clearable filterable multiple collapse-tags :filter-method="filterUsers3">
-              <el-option-group
-                v-for="group in userOptions3"
-                :key="group.label"
-                :label="group.label">
-                <el-option
-                  v-for="item in group.options"
-                  :key="item.value"
-                  :label="item.name"
-                  :value="item.value">
+            <el-select
+              v-model="fmain.cc.selected"
+              slot="prepend"
+              @change="handleEmail(fmain.cc);multiOptionsHandler3()"
+              placeholder="请选择"
+              clearable
+              filterable
+              multiple
+              collapse-tags
+              :filter-method="filterUsers3">
+              <el-option-group v-for="group in userOptions3" :key="group.label" :label="group.label">
+                <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                   <span style="float:left">{{ item.name }}</span>
                   <span style="float:right;margin:0 10px;color:#9ca9c4">{{ item.account }}</span>
                 </el-option>
@@ -301,7 +324,13 @@
       <div slot="footer">
         <el-button v-no-more-click type="primary" icon="el-icon-circle-close" @click="showDialog=false" size="small">取消</el-button>
         <el-button v-no-more-click type="primary" icon="el-icon-refresh" @click="resetForm('ruledFMain')" size="small">重置</el-button>
-        <el-button v-no-more-click type="primary" icon="el-icon-circle-check" @click="checkSaveTestPlan('ruledFMain', fmain)" size="small" :disabled="btnDisabled">保存</el-button>
+        <el-button
+          v-no-more-click
+          type="primary"
+          icon="el-icon-circle-check"
+          @click="checkSaveTestPlan('ruledFMain', fmain)"
+          size="small"
+          :disabled="btnDisabled">保存</el-button>
       </div>
     </el-dialog>
 
@@ -317,7 +346,14 @@
           </el-tooltip>
         </button>
       </div>
-      <el-form :model="cntRow" size="mini" :inline="true" :rules="fmainRules" ref="ruledCurrent" class="plan-fform" label-width="110px">
+      <el-form
+        :model="cntRow"
+        size="mini"
+        :inline="true"
+        :rules="fmainRules"
+        ref="ruledCurrent"
+        class="plan-fform"
+        label-width="110px">
         <el-form-item label="版本号" required class="normal" prop="release.selected">
           <el-select v-model="cntRow.release.selected" placeholder="请选择" @change="checkUniqueMod(cntRow)" disabled>
             <el-option v-for="opt in fmain.release.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -329,16 +365,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="计划负责人" required class="normal" prop="responser">
-          <el-select v-model="cntRow.responser" placeholder="请选择" clearable filterable :filter-method="filterUsers4" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions4"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="cntRow.responser"
+            placeholder="请选择"
+            clearable
+            filterable
+            :filter-method="filterUsers4"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions4" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -351,27 +386,36 @@
           </el-select>
         </el-form-item>
         <el-form-item label="计划开始日期" required class="normal" prop="planBegin">
-          <el-date-picker type="date" 
-            @change="setPeriodDates(cntRow)" 
-            v-model="cntRow.planBegin" 
-            :value-format="datefmt" 
-            placeholder="请选择" 
+          <el-date-picker
+            type="date"
+            @change="setPeriodDates(cntRow)"
+            v-model="cntRow.planBegin"
+            :value-format="datefmt"
+            placeholder="请选择"
             style="width: 100%">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="计划结束日期" required class="normal" prop="planEnd">
-          <el-date-picker type="date" 
-            @change="setPeriodDates(cntRow)" 
-            v-model="cntRow.planEnd" 
-            :value-format="datefmt" 
-            placeholder="请选择" 
+          <el-date-picker
+            type="date"
+            @change="setPeriodDates(cntRow)"
+            v-model="cntRow.planEnd"
+            :value-format="datefmt"
+            placeholder="请选择"
             style="width: 100%">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="进度报告点" class="lined" prop="rdates.resultStr">
           <el-input v-model="cntRow.rdates.resultStr" placeholder="请先选择计划开始、结束日期" clearable @clear="clearSelect(cntRow.rdates.selected)">
-            <el-select v-model="cntRow.rdates.selected" @change="setText(cntRow)" slot="prepend" placeholder="请选择" clearable multiple collapse-tags>
-              <el-option v-for="opt in cntRow.rdates.opts" :value="opt.value" :key="opt.value" :label="opt.label" :disabled="opt.disabled"></el-option>                
+            <el-select
+              v-model="cntRow.rdates.selected"
+              @change="setText(cntRow)"
+              slot="prepend"
+              placeholder="请选择"
+              clearable
+              multiple
+              collapse-tags>
+              <el-option v-for="opt in cntRow.rdates.opts" :value="opt.value" :key="opt.value" :label="opt.label" :disabled="opt.disabled"></el-option>
             </el-select>
             <el-button v-no-more-click slot="append" v-popover:datese>已选择</el-button>
           </el-input>
@@ -386,16 +430,18 @@
         </el-form-item>
         <el-form-item label="邮件主送" required class="lined" prop="to.resultStr">
           <el-input v-model="cntRow.to.resultStr" placeholder="多个收件人以英文半角逗号分隔" clearable @clear="clearSelect(cntRow.to.selected)">
-            <el-select v-model="cntRow.to.selected" slot="prepend" @change="handleEmail(cntRow.to);multiOptionsHandler5()" placeholder="请选择" clearable filterable multiple collapse-tags :filter-method="filterUsers5">
-              <el-option-group
-                v-for="group in userOptions5"
-                :key="group.label"
-                :label="group.label">
-                <el-option
-                  v-for="item in group.options"
-                  :key="item.value"
-                  :label="item.name"
-                  :value="item.value">
+            <el-select
+              v-model="cntRow.to.selected"
+              slot="prepend"
+              @change="handleEmail(cntRow.to);multiOptionsHandler5()"
+              placeholder="请选择"
+              clearable
+              filterable
+              multiple
+              collapse-tags
+              :filter-method="filterUsers5">
+              <el-option-group v-for="group in userOptions5" :key="group.label" :label="group.label">
+                <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                   <span style="float:left">{{ item.name }}</span>
                   <span style="float:right;margin:0 10px;color:#9ca9c4">{{ item.account }}</span>
                 </el-option>
@@ -414,20 +460,22 @@
         </el-form-item>
         <el-form-item label="邮件抄送" class="lined" prop="cc.resultStr">
           <el-input v-model="cntRow.cc.resultStr" placeholder="多个收件人以英文半角逗号分隔" clearable @clear="clearSelect(cntRow.cc.selected)">
-            <el-select v-model="cntRow.cc.selected" slot="prepend" @change="handleEmail(cntRow.cc);multiOptionsHandler6()" placeholder="请选择" clearable filterable multiple collapse-tags :filter-method="filterUsers6">
-              <el-option-group
-                v-for="group in userOptions6"
-                :key="group.label"
-                :label="group.label">
-                <el-option
-                  v-for="item in group.options"
-                  :key="item.value"
-                  :label="item.name"
-                  :value="item.value">
+            <el-select
+              v-model="cntRow.cc.selected"
+              slot="prepend"
+              @change="handleEmail(cntRow.cc);multiOptionsHandler6()"
+              placeholder="请选择"
+              clearable
+              filterable
+              multiple
+              collapse-tags
+              :filter-method="filterUsers6">
+              <el-option-group v-for="group in userOptions6" :key="group.label" :label="group.label">
+                <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                   <span style="float:left">{{ item.name }}</span>
                   <span style="float:right;margin:0 10px;color:#9ca9c4">{{ item.account }}</span>
                 </el-option>
-              </el-option-group>     
+              </el-option-group>
             </el-select>
             <el-button v-no-more-click slot="append" v-popover:emailcce>已选择</el-button>
           </el-input>
@@ -444,12 +492,25 @@
       </el-form>
       <div slot="footer">
         <el-button v-no-more-click type="primary" icon="el-icon-circle-close" @click="showDialogMod=false" size="small">取消</el-button>
-        <el-button v-no-more-click type="primary" icon="el-icon-circle-check" @click="checkSaveTestPlanEdit('ruledCurrent', cntRow)" size="small" :disabled="btnDisabledMod">保存</el-button>
+        <el-button
+          v-no-more-click
+          type="primary"
+          icon="el-icon-circle-check"
+          @click="checkSaveTestPlanEdit('ruledCurrent', cntRow)"
+          size="small"
+          :disabled="btnDisabledMod">保存</el-button>
       </div>
     </el-dialog>
 
     <div class="plan-main">
-      <el-form ref="form" :model="pmain" :inline="true" size="mini" class="plan-form" label-width="120px" @keydown.native.enter="testPlanQuery()">
+      <el-form
+        ref="form"
+        :model="pmain"
+        :inline="true"
+        size="mini"
+        class="plan-form"
+        label-width="120px"
+        @keydown.native.enter="testPlanQuery()">
         <el-form-item label="计划版本">
           <el-select v-model="pmain.release.selected" placeholder="请选择" clearable>
             <el-option v-for="opt in pmain.release.opts" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
@@ -460,20 +521,19 @@
         </el-form-item>
         <el-form-item label="计划类型">
           <el-select v-model="pmain.planType" placeholder="请选择" filterable clearable>
-            <el-option v-for="opt in planTypes" :value="opt.value" :key="opt.value" :label="opt.label" ></el-option>
+            <el-option v-for="opt in planTypes" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="计划负责人">
-          <el-select v-model="pmain.responser" placeholder="请选择" filterable clearable :filter-method="filterUsers" @visible-change="resetFilterText">
-            <el-option-group
-              v-for="group in userOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
+          <el-select
+            v-model="pmain.responser"
+            placeholder="请选择"
+            filterable
+            clearable
+            :filter-method="filterUsers"
+            @visible-change="resetFilterText">
+            <el-option-group v-for="group in userOptions" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.name" :value="item.value">
                 <span style="float:left">{{ item.name }}</span>
                 <span style="float:right;margin-left:20px;color:#9ca9c4">{{ item.account }}</span>
               </el-option>
@@ -483,29 +543,35 @@
         <br>
         <el-form-item label="计划状态">
           <el-select v-model="pmain.planStatus" placeholder="请选择" filterable clearable>
-            <el-option v-for="opt in planStatus" :value="opt.value" :key="opt.value" :label="opt.label" ></el-option>
+            <el-option v-for="opt in planStatus" :value="opt.value" :key="opt.value" :label="opt.label"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="计划起止日期">
-          <el-date-picker 
-            v-model="pmain.planedDate" 
-            type="daterange" 
-            align="right" 
-            unlink-panels 
-            :value-format="datefmt" 
-            range-separator="至" 
-            start-placeholder="开始日期" 
-            end-placeholder="结束日期" 
+          <el-date-picker
+            v-model="pmain.planedDate"
+            type="daterange"
+            align="right"
+            unlink-panels
+            :value-format="datefmt"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
             :picker-options="pickOptions">
           </el-date-picker>
         </el-form-item>
         <el-form-item style="float:right;">
-          <el-button v-no-more-click type="primary"  icon="el-icon-circle-plus-outline" @click="showDialog=true">新建测试计划</el-button>
+          <el-button v-no-more-click type="primary" icon="el-icon-circle-plus-outline" @click="showDialog=true">新建测试计划</el-button>
           <el-button v-no-more-click type="primary" icon="el-icon-search" @click="testPlanQuery()">计划查询</el-button>
         </el-form-item>
       </el-form>
 
-      <el-table :data="dataRevert" :max-height="baseHeight" size="mini" stripe :border="showBorder" ref="tplanTable">
+      <el-table
+        :data="dataRevert"
+        :max-height="baseHeight"
+        size="mini"
+        stripe
+        :border="showBorder"
+        ref="tplanTable">
         <el-table-column prop="relCode" label="版本号" min-width="140" align="center" sortable>
         </el-table-column>
         <el-table-column prop="typeName" label="计划类型" min-width="100" align="center" sortable>
@@ -526,33 +592,26 @@
         </el-table-column>
         <el-table-column label="报告日期点" min-width="90" align="center">
           <template slot-scope="scope">
-            <el-popover trigger="click" 
-              placement="top-start" 
-              title="测试进度报告发送日期点" 
-              :content="(null === scope.row.reportDates) ? '' : scope.row.reportDates.replace(/,/g, '/')" 
-              width="200">
+            <el-popover trigger="click" placement="top-start" title="测试进度报告发送日期点" :content="(null === scope.row.reportDates) ? '' : scope.row.reportDates.replace(/,/g, '/')" width="200">
               <el-button v-no-more-click type="text" size="mini" slot="reference">点击查看</el-button>
             </el-popover>
           </template>
         </el-table-column>
         <el-table-column label="报告主送" min-width="90" align="center">
           <template slot-scope="scope">
-            <el-popover trigger="click" 
-              placement="top-start" 
-              title="测试报告邮件主送清单" 
-              :content="(null === scope.row.emailTo) ? '' : scope.row.emailTo.replace(/,/g, '\n')" 
-              width="200">
+            <el-popover trigger="click" placement="top-start" title="测试报告邮件主送清单" :content="(null === scope.row.emailTo) ? '' : scope.row.emailTo.replace(/,/g, '\n')" width="200">
               <el-button v-no-more-click type="text" size="mini" slot="reference">点击查看</el-button>
             </el-popover>
           </template>
         </el-table-column>
         <el-table-column label="报告抄送" min-width="90" align="center">
           <template slot-scope="scope">
-            <el-popover trigger="click" 
-              placement="top-start" 
-              title="测试报告邮件抄送清单" 
-              :content="(null === scope.row.emailCc) ? '' : scope.row.emailCc.replace(/,/g, '\n')" 
-              ref="cc" 
+            <el-popover
+              trigger="click"
+              placement="top-start"
+              title="测试报告邮件抄送清单"
+              :content="(null === scope.row.emailCc) ? '' : scope.row.emailCc.replace(/,/g, '\n')"
+              ref="cc"
               width="200">
               <el-button v-no-more-click type="text" size="mini" slot="reference">点击查看</el-button>
             </el-popover>
@@ -573,23 +632,24 @@
         <el-table-column width="200" align="center" label="操作">
           <template slot-scope="scope">
             <el-button v-no-more-click type="primary" size="mini" @click="showMissions(scope.row)">测试任务</el-button>
-            <el-button v-no-more-click type="warning" size="mini" @click="editDetail(scope.row)" >编辑</el-button>
+            <el-button v-no-more-click type="warning" size="mini" @click="editDetail(scope.row)">编辑</el-button>
             <el-button v-no-more-click type="danger" size="mini" @click="deteleConfirm(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
-      </el-table> 
+      </el-table>
       <div class="page-set">
-        <el-pagination 
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10, 20, 50, 100, 200]" 
-          :page-size="pageSize" 
-          layout="total, sizes, prev, pager, next, jumper" 
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
           :total="pageInfo.total">
         </el-pagination>
-        <el-button type="primary" 
-          class="el-icon-download export-btn" 
+        <el-button
+          type="primary"
+          class="el-icon-download export-btn"
           size="mini"
           :disabled="tableData.length == 0"
           plain
@@ -603,12 +663,15 @@
 </template>
 
 <script>
-import { dateFormat, pickOptions } from "@/util/date.js";
+import {
+  dateFormat,
+  pickOptions
+} from "@/util/date.js";
 import commonQuery from "@/components/util/CommonQuery.vue";
 import TableExport from '@/util/TableExport.js'
 const emailPartern = /^((([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6}\,))*(([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})))$/;
 export default {
-  data: function() {
+  data: function () {
     return {
       showBorder: sessionStorage.tableShowBorder == 1,
       modalClose: sessionStorage.dialogAutoClose == 1,
@@ -658,13 +721,18 @@ export default {
         responser: "",
         planStatus: 1
       },
-      planStatus:  [
-        { value: 0, label: "关闭" },
-        { value: 1, label: "打开" }
+      planStatus: [{
+          value: 0,
+          label: "关闭"
+        },
+        {
+          value: 1,
+          label: "打开"
+        }
       ],
       currentPage: 1,
       pageSize: parseInt(sessionStorage.tablePageSize) || 10,
-      queryChanged: false, 
+      queryChanged: false,
       showDialog: false,
       showDialogMod: false,
       memberFull: [],
@@ -705,13 +773,40 @@ export default {
           opts: []
         }
       },
-      fmainRules:{
-        'release.selected': [{ required: true, message: '请选择版本号', trigger: 'change' }],
-        'planType': [{ required: true, message: '请选择测试计划类型', trigger: 'change' }],
-        responser: [{ required: true, message: '请选择测试计划负责人', trigger: 'change'}],
-        planBegin: [{ type: 'string', required: true, message: '请选择计划开始日期', trigger: 'blur' }],
-        planEnd: [{ type: 'string', required: true, message: '请选择计划结束日期', trigger: 'blur' }],
-        'to.resultStr': [{ type: 'string', required: true, message: '请输入正确的邮件地址，以英文半角逗号分隔', trigger: 'blur' }]
+      fmainRules: {
+        'release.selected': [{
+          required: true,
+          message: '请选择版本号',
+          trigger: 'change'
+        }],
+        'planType': [{
+          required: true,
+          message: '请选择测试计划类型',
+          trigger: 'change'
+        }],
+        responser: [{
+          required: true,
+          message: '请选择测试计划负责人',
+          trigger: 'change'
+        }],
+        planBegin: [{
+          type: 'string',
+          required: true,
+          message: '请选择计划开始日期',
+          trigger: 'blur'
+        }],
+        planEnd: [{
+          type: 'string',
+          required: true,
+          message: '请选择计划结束日期',
+          trigger: 'blur'
+        }],
+        'to.resultStr': [{
+          type: 'string',
+          required: true,
+          message: '请输入正确的邮件地址，以英文半角逗号分隔',
+          trigger: 'blur'
+        }]
       },
       cntRow: {
         planType: "",
@@ -745,7 +840,7 @@ export default {
   },
 
   watch: {
-    showDialog: function() {
+    showDialog: function () {
       if (this.showDialog) {
         this.fmain.rdates.opts.splice(0, this.fmain.rdates.opts.length);
         this.fmain.to.selected.splice(0, this.fmain.to.selected.length);
@@ -763,14 +858,14 @@ export default {
       }
     },
 
-    'notPlanMissions.olnyCurrentRelease': function() {
+    'notPlanMissions.olnyCurrentRelease': function () {
       if (this.notPlanMissions.olnyCurrentRelease == true) {
         this.relReqQuery();
       } else {
         this.notPlanMissionsQuery();
       }
     },
-    
+
     pmain: {
       handler() {
         this.currentPage = 1;
@@ -791,7 +886,7 @@ export default {
   created() {
     let dayS = new Date();
     dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 90);
-    this.pmain.planedDate.push(dateFormat(new Date(dayS),this.datefmt));
+    this.pmain.planedDate.push(dateFormat(new Date(dayS), this.datefmt));
     let dayE = new Date();
     dayE.setTime(dayE.getTime() + 3600 * 1000 * 24 * 90);
     this.pmain.planedDate.push(dateFormat(new Date(dayE), this.datefmt));
@@ -816,10 +911,10 @@ export default {
       for (let i = 0, datas = this.tableData; i < datas.length; i++) {
         let now = new Date(dateFormat(new Date(), this.datefmt) + " 00:00:00").getTime();
         let planEnd = new Date(datas[i].planEnd + " 00:00:00").getTime();
-        if ((planEnd - now) < 0  && datas[i].planStatus > 0) {
-          this.$set(datas[i], "planEndHtml", "<span style='color:orange;font-weight:500'>"+ datas[i].planEnd + "</span>");
+        if ((planEnd - now) < 0 && datas[i].planStatus > 0) {
+          this.$set(datas[i], "planEndHtml", "<span style='color:orange;font-weight:500'>" + datas[i].planEnd + "</span>");
         } else {
-          this.$set(datas[i], "planEndHtml", "<span style='color:#606266'>"+ datas[i].planEnd + "</span>");
+          this.$set(datas[i], "planEndHtml", "<span style='color:#606266'>" + datas[i].planEnd + "</span>");
         }
         this.tableData.splice(i, 1, datas[i]);
       }
@@ -828,15 +923,15 @@ export default {
   },
 
   methods: {
-    resetFilterText(){
-      let _self =  this;
+    resetFilterText() {
+      let _self = this;
       _self.userOptions = _self.memberFull;
       _self.userOptions1 = _self.memberFull;
       _self.userOptions4 = _self.memberFull;
     },
 
-    multiOptionsHandler6(){
-      let _self =  this;
+    multiOptionsHandler6() {
+      let _self = this;
       const selected = _self.cntRow.cc.selected.concat([]);
       _self.cntRow.cc.selected.splice(0, _self.cntRow.cc.selected.length);
       _self.$nextTick(_ => {
@@ -847,8 +942,8 @@ export default {
       });
     },
 
-    multiOptionsHandler5(){
-      let _self =  this;
+    multiOptionsHandler5() {
+      let _self = this;
       const selected = _self.cntRow.to.selected.concat([]);
       _self.cntRow.to.selected.splice(0, _self.cntRow.to.selected.length);
       _self.$nextTick(_ => {
@@ -859,8 +954,8 @@ export default {
       });
     },
 
-    multiOptionsHandler3(){
-      let _self =  this;
+    multiOptionsHandler3() {
+      let _self = this;
       const selected = _self.fmain.cc.selected.concat([]);
       _self.fmain.cc.selected.splice(0, _self.fmain.cc.selected.length);
       _self.$nextTick(_ => {
@@ -871,8 +966,8 @@ export default {
       });
     },
 
-    multiOptionsHandler2(){
-      let _self =  this;
+    multiOptionsHandler2() {
+      let _self = this;
       const selected = _self.fmain.to.selected.concat([]);
       _self.fmain.to.selected.splice(0, _self.fmain.to.selected.length);
       _self.$nextTick(_ => {
@@ -884,40 +979,40 @@ export default {
     },
 
     filterUsers(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers1(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions1 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers2(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions2 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers3(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions3 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers4(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions4 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers5(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions5 = commonQuery.pickListFilter(val, _self.memberFull);
     },
 
     filterUsers6(val) {
-      let _self =  this;
+      let _self = this;
       _self.userOptions6 = commonQuery.pickListFilter(val, _self.memberFull);
     },
-    
+
     handleCurrentChange(current) {
       if (this.queryChanged == true) {
         this.currentPage = 1;
@@ -962,8 +1057,8 @@ export default {
       TableExport(this.tableData, columns, fileName)
     },
 
-    showMissions(data){
-      let _self =  this;
+    showMissions(data) {
+      let _self = this;
       _self.showMission = true;
       _self.missionQuery.relId = data.relId;
       _self.missionQuery.planId = data.id;
@@ -971,26 +1066,26 @@ export default {
       _self.testMissionQuery();
     },
 
-    testMissionAdd(){
-      let _self =  this;
+    testMissionAdd() {
+      let _self = this;
       _self.showTestMissionAdd = true;
       _self.notPlanMissions.olnyCurrentRelease = true;
       _self.relReqQuery();
     },
 
-    toRequest(id){
+    toRequest(id) {
       this.showTestMissionAdd = false;
       this.showMission = false;
       this.$router.push({
-        name: "request",        
+        name: "request",
         params: {
           id: id
         }
       });
     },
 
-    commitTestMissionAdd(){
-      let _self =  this;
+    commitTestMissionAdd() {
+      let _self = this;
       if (!_self.notPlanMissions.tms || _self.notPlanMissions.tms.length == 0) {
         _self.$message.warning("没有选中任何记录！");
         return;
@@ -1004,7 +1099,7 @@ export default {
     },
 
     testMissionQuery() {
-      let _self =  this;
+      let _self = this;
       _self.missionQuery.missionLoading = true;
       _self.$axios({
           method: "post",
@@ -1019,21 +1114,21 @@ export default {
             pageSize: _self.missionQuery.pageSize
           }
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.missionQuery.testMissions = eval(res.data.list);
           _self.missionQuery.pageInfo = res.data;
           setTimeout(() => {
             _self.missionQuery.missionLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.missionQuery.missionLoading = false;
         });
     },
 
     notPlanMissionsQuery() {
-      let _self =  this;
+      let _self = this;
       let qryParams = {
         type: _self.missionQuery.type,
         pageNum: _self.notPlanMissions.currentPage,
@@ -1056,63 +1151,63 @@ export default {
           },
           params: qryParams
         })
-        .then(function(res) {
+        .then(function (res) {
           _self.notPlanMissions.testMissions = eval(res.data.list);
           _self.notPlanMissions.pageInfo = res.data;
           setTimeout(() => {
             _self.notPlanMissions.missionLoading = false;
           }, 200);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           console.log(response);
           _self.notPlanMissions.missionLoading = false;
         });
     },
 
-    testMissionPlanUpdate(ids, planId, type){
-      let _self =  this;
+    testMissionPlanUpdate(ids, planId, type) {
+      let _self = this;
       _self.$axios.post("/tms/plan_update", {
-        ids: ids.toString(),
-        planId: planId,
-        type: type
-      })
-      .then(function(res) {
-        let operMark = -1 == planId ? "移除" : "纳入";
-        if (res.data > 0) {
-          _self.$message.success(operMark + "测试任务成功！");
-          _self.testMissionQuery();
-        } else {
-          _self.$message.warning(operMark + "测试任务失败！");
-        }
-      })
+          ids: ids.toString(),
+          planId: planId,
+          type: type
+        })
+        .then(function (res) {
+          let operMark = -1 == planId ? "移除" : "纳入";
+          if (res.data > 0) {
+            _self.$message.success(operMark + "测试任务成功！");
+            _self.testMissionQuery();
+          } else {
+            _self.$message.warning(operMark + "测试任务失败！");
+          }
+        })
     },
 
-    removePlanMission(id){
-      let _self =  this;
+    removePlanMission(id) {
+      let _self = this;
       _self.$confirm("移除该测试任务吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-      .then(() => {
-        _self.testMissionPlanUpdate(id, -1, -1);
-      })
-      .catch(() => {});
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+        .then(() => {
+          _self.testMissionPlanUpdate(id, -1, -1);
+        })
+        .catch(() => {});
     },
 
-    relReqQuery(){
-      let _self =  this;
+    relReqQuery() {
+      let _self = this;
       _self.$axios.post("/req/rel_query/" + _self.missionQuery.relId + "/1/500")
-      .then(function(res) {
-        _self.notPlanMissions.currentRelReqs  = eval(res.data.list);
-        _self.$nextTick(() => {
-          _self.notPlanMissionsQuery();
-        });
-      })
+        .then(function (res) {
+          _self.notPlanMissions.currentRelReqs = eval(res.data.list);
+          _self.$nextTick(() => {
+            _self.notPlanMissionsQuery();
+          });
+        })
     },
 
     getAssistant(tmAssistant) {
-      let _self =  this;
+      let _self = this;
       let result = [];
       if (null == tmAssistant || tmAssistant == "") {
         return "无";
@@ -1127,14 +1222,14 @@ export default {
         }
       });
       if (result.length > 1) {
-        return result.toString().replace(/,/g ,"，");
+        return result.toString().replace(/,/g, "，");
       } else {
         return result.toString();
       }
     },
 
     editDetail(data) {
-      let _self =  this;
+      let _self = this;
       _self.showDialogMod = true;
       _self.cntRow.id = data.id;
 
@@ -1150,7 +1245,7 @@ export default {
 
       _self.cntRow.rdates.opts.splice(0, _self.cntRow.rdates.opts.length);
       _self.setPeriodDates(_self.cntRow);
-      
+
       _self.cntRow.rdates.selected.splice(0, _self.cntRow.rdates.selected.length);
       if (null != data.reportDates && data.reportDates != "") {
         let reportDatesArr = data.reportDates.split(",");
@@ -1189,16 +1284,16 @@ export default {
       }
     },
 
-     clearSelect(selected){
-       selected.splice(0, selected.length);
-     },
+    clearSelect(selected) {
+      selected.splice(0, selected.length);
+    },
 
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
 
-    checkSaveTestPlan(formName, objName){
-      let _self =  this;
+    checkSaveTestPlan(formName, objName) {
+      let _self = this;
       _self.$refs[formName].validate(valid => {
         if (!valid) {
           _self.$notify.error("表单校验不通过，无法提交");
@@ -1217,8 +1312,8 @@ export default {
       });
     },
 
-    checkSaveTestPlanEdit(formName, objName){
-      let _self =  this;
+    checkSaveTestPlanEdit(formName, objName) {
+      let _self = this;
       if (!emailPartern.test(objName.to.resultStr) || (objName.cc.resultStr && !emailPartern.test(objName.cc.resultStr))) {
         _self.$message.warning("邮件地址格式校验不通过！");
         return;
@@ -1253,7 +1348,7 @@ export default {
       for (let i = 0; i < this.tableData.length; i++) {
         if (
           this.tableData[i].relId === d.release.selected &&
-          this.tableData[i].planType === d.planType && 
+          this.tableData[i].planType === d.planType &&
           this.tableData[i].id != d.id
         ) {
           this.$message.info("已存在该版本和计划数据");
@@ -1274,7 +1369,7 @@ export default {
     },
 
     setPeriodDates(objName) {
-      let _self =  this;
+      let _self = this;
       let strDateBegin = [];
       let strDateEnd = [];
 
@@ -1322,7 +1417,7 @@ export default {
     },
 
     handleEmail(data) {
-      let _self =  this;
+      let _self = this;
       let all = _self.memberFull;
       let selected = data.selected || [];
       let result = [];
@@ -1340,87 +1435,87 @@ export default {
     },
 
     saveTestPlan() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/plan/create", {
-        relId: _self.fmain.release.selected,
-        planType: _self.fmain.planType,
-        submitter: sessionStorage.userId,
-        planStatus: _self.fmain.planStatus,
-        responser: _self.fmain.responser,
-        planBegin: _self.fmain.planBegin,
-        planEnd: _self.fmain.planEnd,
-        reportDates: _self.fmain.rdates.selected.toString(),
-        emailTo: _self.fmain.to.resultStr,
-        emailCc: _self.fmain.cc.resultStr
-      })
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.showDialog = false;
-          _self.$message.success("保存成功！");
-          _self.testPlanQuery();
-        } else {
-          _self.$notify.error("保存失败！");
-          console.log(res);
-        }
-      })
+          relId: _self.fmain.release.selected,
+          planType: _self.fmain.planType,
+          submitter: sessionStorage.userId,
+          planStatus: _self.fmain.planStatus,
+          responser: _self.fmain.responser,
+          planBegin: _self.fmain.planBegin,
+          planEnd: _self.fmain.planEnd,
+          reportDates: _self.fmain.rdates.selected.toString(),
+          emailTo: _self.fmain.to.resultStr,
+          emailCc: _self.fmain.cc.resultStr
+        })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.showDialog = false;
+            _self.$message.success("保存成功！");
+            _self.testPlanQuery();
+          } else {
+            _self.$notify.error("保存失败！");
+            console.log(res);
+          }
+        })
     },
 
     saveTestPlanEdit() {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/plan/update", {
-        id: _self.cntRow.id,
-        relId: _self.cntRow.release.selected,
-        planType: _self.cntRow.planType,
-        submitter: sessionStorage.userId,
-        planStatus: _self.cntRow.planStatus,
-        responser: _self.cntRow.responser,
-        planBegin: _self.cntRow.planBegin,
-        planEnd: _self.cntRow.planEnd,
-        reportDates: _self.cntRow.rdates.resultStr,
-        emailTo: _self.cntRow.to.resultStr,
-        emailCc: _self.cntRow.cc.resultStr
-      })
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.showDialogMod = false;
-          _self.$message.success("修改成功！");
-          _self.testPlanQuery();
-          
-          if (_self.cntRow.planStatus == 0 && commonQuery.roleAllow([0, 4, 6])) {
-            _self.$confirm("是否同步关闭所有下属测试任务？", "请谨慎操作！", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "warning"
-            })
-            .then(() => {
-              _self.closePlanMission(_self.cntRow.id);
-            })
+          id: _self.cntRow.id,
+          relId: _self.cntRow.release.selected,
+          planType: _self.cntRow.planType,
+          submitter: sessionStorage.userId,
+          planStatus: _self.cntRow.planStatus,
+          responser: _self.cntRow.responser,
+          planBegin: _self.cntRow.planBegin,
+          planEnd: _self.cntRow.planEnd,
+          reportDates: _self.cntRow.rdates.resultStr,
+          emailTo: _self.cntRow.to.resultStr,
+          emailCc: _self.cntRow.cc.resultStr
+        })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.showDialogMod = false;
+            _self.$message.success("修改成功！");
+            _self.testPlanQuery();
+
+            if (_self.cntRow.planStatus == 0 && commonQuery.roleAllow([0, 4, 6])) {
+              _self.$confirm("是否同步关闭所有下属测试任务？", "请谨慎操作！", {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "warning"
+                })
+                .then(() => {
+                  _self.closePlanMission(_self.cntRow.id);
+                })
+            }
+          } else {
+            _self.$notify.error("修改失败");
+            console.log(res);
           }
-        } else {
-          _self.$notify.error("修改失败");
-          console.log(res);
-        }
-      })
+        })
     },
 
     closePlanMission(planId) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/plan/tms_close/" + planId)
-      .then(function(res) {
-        if (res.data > 0) {
-          _self.$message.success("同步关闭计划下测试任务成功！");
-        } else {
-          _self.$message.info("未纳入任务或任务已被提前关闭！");
-        }
-      })
+        .then(function (res) {
+          if (res.data > 0) {
+            _self.$message.success("同步关闭计划下测试任务成功！");
+          } else {
+            _self.$message.info("未纳入任务或任务已被提前关闭！");
+          }
+        })
     },
 
     deteleConfirm(id) {
       this.$confirm("确定要删除当前记录吗?", "操作确认", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "error"
-      })
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        })
         .then(() => {
           this.deleteTestPlan(id);
         })
@@ -1428,21 +1523,21 @@ export default {
     },
 
     deleteTestPlan(id) {
-      let _self =  this;
+      let _self = this;
       _self.$axios.post("/plan/delete/" + id)
-      .then(function(res) {
-        if ((res.data = 1)) {
-          _self.$message.success("删除成功！");
-          _self.testPlanQuery();
-        } else {
-          _self.$notify.error("删除失败");
-          console.log(res);
-        }
-      })
+        .then(function (res) {
+          if ((res.data = 1)) {
+            _self.$message.success("删除成功！");
+            _self.testPlanQuery();
+          } else {
+            _self.$notify.error("删除失败");
+            console.log(res);
+          }
+        })
     },
 
     releaseQuery() {
-      let _self =  this;
+      let _self = this;
       _self.pmain.release.opts.splice(0, _self.pmain.release.opts.length);
       _self.fmain.release.opts.splice(0, _self.fmain.release.opts.length);
       if (_self.pmain.hideClosed == true) {
@@ -1472,8 +1567,8 @@ export default {
       }
     },
 
-    memberQuery(callback){
-      let _self =  this;
+    memberQuery(callback) {
+      let _self = this;
       commonQuery.memberQuery((result) => {
         _self.members = result.users;
         _self.memberFull = result.usersFull;
@@ -1491,7 +1586,7 @@ export default {
     },
 
     testPlanQuery() {
-      let _self =  this;
+      let _self = this;
       let planedDateBegin = "",
         planedDateEnd = "";
       if (_self.pmain.planedDate && _self.pmain.planedDate.length > 1) {
@@ -1499,29 +1594,29 @@ export default {
         planedDateEnd = _self.pmain.planedDate[1];
       }
       _self.$axios({
-        method: "post",
-        url: "/plan/query",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          relId: _self.pmain.release.selected,
-          planStatus: _self.pmain.planStatus,
-          planType: _self.pmain.planType,
-          responser: _self.pmain.responser,
-          planedDateBegin: planedDateBegin,
-          planedDateEnd: planedDateEnd,
-          pageNum: _self.currentPage,
-          pageSize: _self.pageSize
-        }
-      })
-      .then(function(res) {
-        _self.tableData = eval(res.data.list);
-        _self.pageInfo = res.data;
-        setTimeout(() => {
-          _self.queryChanged = false;
-        }, 200);
-      })
+          method: "post",
+          url: "/plan/query",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: _self.pmain.release.selected,
+            planStatus: _self.pmain.planStatus,
+            planType: _self.pmain.planType,
+            responser: _self.pmain.responser,
+            planedDateBegin: planedDateBegin,
+            planedDateEnd: planedDateEnd,
+            pageNum: _self.currentPage,
+            pageSize: _self.pageSize
+          }
+        })
+        .then(function (res) {
+          _self.tableData = eval(res.data.list);
+          _self.pageInfo = res.data;
+          setTimeout(() => {
+            _self.queryChanged = false;
+          }, 200);
+        })
     }
   }
 };
@@ -1548,11 +1643,11 @@ export default {
   width: 250px !important;
 }
 
-.plan-fform .lined .el-input-group__prepend .el-select__tags{
+.plan-fform .lined .el-input-group__prepend .el-select__tags {
   max-width: 228px !important;
 }
 
-.plan-fform .lined .el-input-group__prepend .el-select__tags input{
+.plan-fform .lined .el-input-group__prepend .el-select__tags input {
   max-width: 20px !important;
 }
 
