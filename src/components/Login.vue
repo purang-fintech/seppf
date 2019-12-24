@@ -75,6 +75,12 @@
       <span class="icp" v-if="outerNetwork" @click="toICPGov()">沪ICP备18000644号</span>
       <span v-if="outerNetwork" style="margin-left:20px">交流QQ群号： 362260709</span>
       <span v-else>使用中如果遇到问题，请<a class="icp" href="mailto:liuyi@purang.com">联系管理员</a></span>
+      <span style="margin-left:20px">前端仓库：</span>
+      <github-button href="https://github.com/purang-fintech/seppf" data-show-count="true" aria-label="Star purang-fintech/seppf on GitHub">Star</github-button>
+      <github-button href="https://github.com/purang-fintech/seppf/issues" data-icon="octicon-issue-opened" aria-label="Issue purang-fintech/seppf on GitHub">Issue</github-button>
+      <span style="margin-left:10px">后端仓库：</span>
+      <github-button href="https://github.com/purang-fintech/seppb" data-show-count="true" data-icon="octicon-star" aria-label="Star purang-fintech/seppf on GitHub">Star</github-button>
+      <github-button href="https://github.com/purang-fintech/seppb/issues" data-icon="octicon-issue-opened" aria-label="Issue purang-fintech/seppf on GitHub">Issue</github-button>
     </div>
 
     <el-dialog :close-on-click-modal="modalClose" :visible.sync="showNew" width="950px">
@@ -223,6 +229,7 @@
 const emailPatern = /^[a-zA-Z0-9]+([._\\-]*[a-zA-Z0-9])*@([a-zA-Z0-9]+[-a-zA-Z0-9]*[a-zA-Z0-9]+.){1,63}[a-zA-Z0-9]+$/;
 import commonQuery from "@/components/util/CommonQuery.vue";
 import createProduct from "@/components/mgr/product/ProductCreate.vue";
+import GithubButton from 'vue-github-button'
 export default {
   data: function () {
     return {
@@ -299,7 +306,7 @@ export default {
           }
         ],
         userEmail: [{
-          type: 'email',
+          type: "email",
           required: true,
           message: "请输入格式正确的邮箱地址",
           trigger: "blur"
@@ -321,7 +328,8 @@ export default {
   },
 
   components: {
-    vProd: createProduct
+    vProd: createProduct,
+    GithubButton
   },
 
   created() {
@@ -333,12 +341,28 @@ export default {
     this.listDomains();
     this.activeName = this.outerNetwork ? "normal" : "ldap";
     this.normalDisabled = !this.outerNetwork && navigator.platform.indexOf("Mac") == -1;
-    this.ruleFormL.account = localStorage.userAccount ? localStorage.userAccount : this.ruleFormL.account;
-    this.ruleFormL.password = localStorage.userPassword ? localStorage.userPassword : this.ruleFormL.password;
-    this.ruleFormL.rememberPassword = localStorage.rememberPassword != null && localStorage.rememberPassword === "true" ? true : false;
-    this.ruleFormN.account = localStorage.userAccount ? localStorage.userAccount : this.ruleFormN.account;
-    this.ruleFormN.password = localStorage.userPassword ? localStorage.userPassword : this.ruleFormN.password;
-    this.ruleFormN.rememberPassword = localStorage.rememberPassword != null && localStorage.rememberPassword === "true" ? true : false;
+    this.ruleFormL.account = localStorage.userAccount ?
+      localStorage.userAccount :
+      this.ruleFormL.account;
+    this.ruleFormL.password = localStorage.userPassword ?
+      localStorage.userPassword :
+      this.ruleFormL.password;
+    this.ruleFormL.rememberPassword =
+      localStorage.rememberPassword != null &&
+      localStorage.rememberPassword === "true" ?
+      true :
+      false;
+    this.ruleFormN.account = localStorage.userAccount ?
+      localStorage.userAccount :
+      this.ruleFormN.account;
+    this.ruleFormN.password = localStorage.userPassword ?
+      localStorage.userPassword :
+      this.ruleFormN.password;
+    this.ruleFormN.rememberPassword =
+      localStorage.rememberPassword != null &&
+      localStorage.rememberPassword === "true" ?
+      true :
+      false;
   },
 
   mounted() {
@@ -358,7 +382,7 @@ export default {
 
     getRoles(productId) {
       return this.float.products.find(item => {
-        return item.productId == productId
+        return item.productId == productId;
       });
     },
 
@@ -367,7 +391,7 @@ export default {
       _self.showReg = true;
       _self.$nextTick(_ => {
         setTimeout(() => {
-          _self.resetForm('regForm');
+          _self.resetForm("regForm");
         }, 500);
       });
     },
@@ -378,7 +402,8 @@ export default {
       _self.products.splice(0, _self.products.length);
       _self.roles.splice(0, _self.roles.length);
 
-      _self.$axios({
+      _self
+        .$axios({
           method: "post",
           url: "/base/query",
           headers: {
@@ -414,24 +439,29 @@ export default {
       let applyRoles = [];
       _self.errors.splice(0, _self.errors.length);
 
-      _self.products.filter(item => {
-        return _self.applyForm.products.indexOf(item.value) != -1
-      }).forEach(d => {
-        applyProducts.push({
-          id: d.value,
-          product: d.label
+      _self.products
+        .filter(item => {
+          return _self.applyForm.products.indexOf(item.value) != -1;
+        })
+        .forEach(d => {
+          applyProducts.push({
+            id: d.value,
+            product: d.label
+          });
         });
-      });
-      _self.roles.filter(item => {
-        return _self.applyForm.roles.indexOf(item.value) != -1
-      }).forEach(d => {
-        applyRoles.push({
-          id: d.value,
-          role: d.label
+      _self.roles
+        .filter(item => {
+          return _self.applyForm.roles.indexOf(item.value) != -1;
+        })
+        .forEach(d => {
+          applyRoles.push({
+            id: d.value,
+            role: d.label
+          });
         });
-      });
 
-      _self.$axios({
+      _self
+        .$axios({
           method: "post",
           url: "/user/priv_apply",
           headers: {
@@ -453,7 +483,7 @@ export default {
             _self.errors = results;
             _self.showErrors = true;
           }
-        })
+        });
     },
 
     applyPriv(formName) {
@@ -513,7 +543,8 @@ export default {
 
     saveUserReg() {
       let _self = this;
-      _self.$axios({
+      _self
+        .$axios({
           method: "post",
           url: "/user/register",
           headers: {
@@ -534,7 +565,7 @@ export default {
           } else {
             _self.$message.warning("注册失败，请联系运维！");
           }
-        })
+        });
     },
 
     toICPGov() {
@@ -543,7 +574,8 @@ export default {
 
     normalAuth(callback) {
       let _self = this;
-      _self.$axios({
+      _self
+        .$axios({
           method: "post",
           url: "/user/normal_auth",
           headers: {
@@ -565,7 +597,10 @@ export default {
             _self.$message.success("登录认证通过，请继续操作！");
             sessionStorage.setItem("authType", "normal");
             localStorage.setItem("userAccount", user.userAccount);
-            localStorage.setItem("rememberPassword", _self.ruleFormN.rememberPassword);
+            localStorage.setItem(
+              "rememberPassword",
+              _self.ruleFormN.rememberPassword
+            );
             if (_self.ruleFormN.rememberPassword) {
               localStorage.setItem("userPassword", _self.ruleFormN.password);
             } else {
@@ -586,12 +621,13 @@ export default {
               }
             });
           }
-        })
+        });
     },
 
     listDomains() {
       let _self = this;
-      _self.$axios({
+      _self
+        .$axios({
           method: "post",
           url: "/user/list_domain",
           headers: {
@@ -632,7 +668,8 @@ export default {
         _self.$message.info("不要以域名或邮箱地址形式输入！");
         return;
       }
-      _self.$axios({
+      _self
+        .$axios({
           method: "post",
           url: "/user/ldap_auth",
           headers: {
@@ -657,7 +694,10 @@ export default {
             _self.$message.success("登录认证通过，请继续操作！");
             sessionStorage.setItem("authType", "ldap");
             localStorage.setItem("userAccount", user.userAccount);
-            localStorage.setItem("rememberPassword", _self.ruleFormL.rememberPassword);
+            localStorage.setItem(
+              "rememberPassword",
+              _self.ruleFormL.rememberPassword
+            );
             if (_self.ruleFormL.rememberPassword) {
               localStorage.setItem("userPassword", _self.ruleFormL.password);
             } else {
@@ -678,30 +718,32 @@ export default {
               }
             });
           }
-        })
+        });
     },
 
     queryFaviconFile(fileId) {
       let _self = this;
-      _self.$axios.post("/file/query/" + fileId)
-        .then(function (res) {
-          if (!res.data || res.data.length == 0) {
-            _self.userFavicon = "/static/img/baby.png";
-            return;
-          }
-          var file = res.data[0];
-          if (!file.url) {
-            _self.userFavicon = "/static/img/baby.png";
-            return;
-          }
-          _self.userFavicon = file.url;
-        })
+      _self.$axios.post("/file/query/" + fileId).then(function (res) {
+        if (!res.data || res.data.length == 0) {
+          _self.userFavicon = "/static/img/baby.png";
+          return;
+        }
+        var file = res.data[0];
+        if (!file.url) {
+          _self.userFavicon = "/static/img/baby.png";
+          return;
+        }
+        _self.userFavicon = file.url;
+      });
     },
 
     commitChoice(item) {
       let _self = this;
       localStorage.setItem("lastProduct", item.productId);
-      localStorage.setItem("userProducts", JSON.stringify(_self.float.products));
+      localStorage.setItem(
+        "userProducts",
+        JSON.stringify(_self.float.products)
+      );
 
       sessionStorage.setItem("userAccount", _self.userAccount);
       sessionStorage.setItem("userId", _self.userId);
@@ -720,7 +762,12 @@ export default {
           replace: true
         });
       } else {
-        if (localStorage.lastUrl && null != localStorage.lastUrl && localStorage.lastUrl != "" && _self.checkAuth(localStorage.lastUrl, item.roles)) {
+        if (
+          localStorage.lastUrl &&
+          null != localStorage.lastUrl &&
+          localStorage.lastUrl != "" &&
+          _self.checkAuth(localStorage.lastUrl, item.roles)
+        ) {
           _self.$router.push({
             path: localStorage.lastUrl,
             replace: true
@@ -741,7 +788,7 @@ export default {
           if (path == menu.index) {
             let authed = false;
             for (let k = 0; k < roles.length; k++) {
-              authed = menu.roleIds.indexOf(parseInt(roles[k])) > -1
+              authed = menu.roleIds.indexOf(parseInt(roles[k])) > -1;
             }
             return authed || menu.shows.indexOf(-1) > -1;
           }
@@ -756,7 +803,8 @@ export default {
 
     queryUserRole() {
       let _self = this;
-      _self.$axios({
+      _self
+        .$axios({
           method: "post",
           url: "/role/p_r_query_user",
           headers: {
@@ -769,7 +817,8 @@ export default {
         .then(function (res) {
           let privileges = eval(res.data);
           if (privileges.length == 0) {
-            _self.$confirm("是否现在申请？", "您没有任何产品的可用角色", {
+            _self
+              .$confirm("是否现在申请？", "您没有任何产品的可用角色", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "info"
@@ -780,7 +829,8 @@ export default {
                 return;
               })
               .catch(() => {
-                _self.$confirm("是否现在创建？", "创建一个新的产品/项目", {
+                _self
+                  .$confirm("是否现在创建？", "创建一个新的产品/项目", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     type: "info"
@@ -788,10 +838,16 @@ export default {
                   .then(() => {
                     _self.showCreateNew = true;
                     return;
-                  })
+                  });
               });
           }
-          let sortedPrivs = _self.sortData(privileges, "productId", "productName", "productCode", "children");
+          let sortedPrivs = _self.sortData(
+            privileges,
+            "productId",
+            "productName",
+            "productCode",
+            "children"
+          );
           _self.float.products.splice(0, _self.float.products.length);
           sortedPrivs.forEach(item => {
             let roles = [];
@@ -817,7 +873,7 @@ export default {
           }
           let lastProduct = _self.float.products.find(d => {
             return d.productId == parseInt(localStorage.lastProduct);
-          })
+          });
           if (!lastProduct) {
             _self.showChoice = true;
             return;
@@ -827,18 +883,19 @@ export default {
           } else {
             _self.showChoice = true;
           }
-        })
+        });
     },
 
     userSettingQuery() {
       let _self = this;
-      _self.$axios.post("/user/setting/query/" + _self.userId)
+      _self.$axios
+        .post("/user/setting/query/" + _self.userId)
         .then(function (res) {
           let settings = res.data;
           for (let p in settings) {
             sessionStorage.setItem(p, settings[p]);
           }
-        })
+        });
     },
 
     sortData(json, idKey, labelKey, codeKey, childKey) {
@@ -910,7 +967,7 @@ export default {
 }
 
 .input-userd .el-input__inner {
-  border: 1px solid #DCDFE6;
+  border: 1px solid #dcdfe6;
 }
 
 .ms-title {
@@ -998,6 +1055,12 @@ export default {
   color: #fff;
   font-size: 14px;
   text-align: center;
+}
+
+.footer>*{
+  vertical-align: middle;
+  height: 40px !important;
+  line-height: 0;
 }
 
 .icp {

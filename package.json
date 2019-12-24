@@ -29,6 +29,7 @@
     "v-contextmenu": "^2.7.0",
     "vue": "^2.6.10",
     "vue-cropperjs": "^2.2.1",
+    "vue-github-button": "^1.1.2",
     "vue-markdown": "^2.2.4",
     "vue-router": "^3.0.3",
     "vue-simplemde": "^0.4.6",
