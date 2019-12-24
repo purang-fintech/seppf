@@ -76,7 +76,7 @@
       <span v-if="outerNetwork" style="margin-left:20px">交流QQ群号： 362260709</span>
       <span v-else>使用中如果遇到问题，请<a class="icp" href="mailto:liuyi@purang.com">联系管理员</a></span>
       <span style="margin-left:20px">前端仓库：</span>
-      <github-button href="https://github.com/purang-fintech/seppf" data-show-count="true" aria-label="Star purang-fintech/seppf on GitHub">Star</github-button>
+      <github-button href="https://github.com/purang-fintech/seppf" data-show-count="true"data-icon="octicon-star"  aria-label="Star purang-fintech/seppf on GitHub">Star</github-button>
       <github-button href="https://github.com/purang-fintech/seppf/issues" data-icon="octicon-issue-opened" aria-label="Issue purang-fintech/seppf on GitHub">Issue</github-button>
       <span style="margin-left:10px">后端仓库：</span>
       <github-button href="https://github.com/purang-fintech/seppb" data-show-count="true" data-icon="octicon-star" aria-label="Star purang-fintech/seppf on GitHub">Star</github-button>

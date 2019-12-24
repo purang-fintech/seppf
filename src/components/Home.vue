@@ -186,7 +186,7 @@ export default {
       messagePageSize: parseInt(sessionStorage.tablePageSize) || 10,
       messageTotal: 0,
       userProducts: [],
-      isCollapse: (localStorage.isCollapse && localStorage.isCollapse === 'true') ? true : false,
+      isCollapse: localStorage.isCollapse && localStorage.isCollapse == 'true',
       items: [],
       showMessage: false,
       messages: [],
@@ -567,7 +567,7 @@ export default {
     setCollapse() {
       this.isCollapse = !this.isCollapse;
       localStorage.setItem("isCollapse", this.isCollapse);
-      if (localStorage.autoResize == 'true') {
+      if (sessionStorage.autoRefresh == 1) {
         this.$message.success("页面将自动重新自适应刷新");
         setTimeout(() => {
           window.location.reload();
@@ -681,17 +681,6 @@ export default {
   margin-top: 0 !important;
 }
 
-.header .el-switch {
-  background-color: #ffffff30;
-  border-radius: 2px;
-  padding: 5px 12px;
-}
-
-.header .el-switch .el-switch__label:not(.is-active) {
-  font-size: 13px !important;
-  color: #fff8dc;
-}
-
 .header .el-badge__content {
   border: 1px solid #e0dddd82;
 }
@@ -711,7 +700,8 @@ export default {
 .message-content .el-alert__description {
   font-size: 14px;
 }
-</style><style scoped>
+</style>
+<style scoped>
 .header {
   box-sizing: border-box;
   font-size: 20px;
@@ -855,28 +845,6 @@ export default {
   color: #3b434e;
   border: 1px solid #fff;
   font-weight: 600;
-}
-
-.float-body {
-  height: 320px;
-  overflow-y: auto;
-  padding: 10px 20px;
-}
-
-.float-body .el-form-item__label div {
-  height: 40px;
-  line-height: 20px;
-}
-
-.dialog-roles {
-  width: 220px;
-  margin-left: 5px;
-}
-
-.dialog-roles .el-radio {
-  width: 220px;
-  margin-bottom: 2px;
-  margin-left: 0 !important;
 }
 
 .header .favicon {
