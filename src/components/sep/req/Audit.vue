@@ -374,7 +374,6 @@ export default {
       tableData: [],
       pageInfo: {},
       maximize: false,
-
       queryLoading: false,
       datefmt: defaultDateFormat,
       timefmt: defaultTimeFormat,
@@ -597,6 +596,20 @@ export default {
 
   created() {
     let _self = this;
+    let params = [];
+    for (let p in _self.$route.params) {
+      params.push(p);
+    }
+    if (params.length > 0) {
+      _self.auditForm.prId = _self.$route.params.id;
+      _self.auditForm.submitTime.splice(0, _self.auditForm.submitTime.length);
+    } else {
+      let dayS = new Date();
+      dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 90);
+      _self.auditForm.submitTime.push(dateFormat(new Date(dayS), _self.datefmt));
+      _self.auditForm.submitTime.push(dateFormat(new Date(), _self.datefmt));
+    }
+
     _self.reqPriority.splice(0, _self.reqPriority.length);
     let requirementPriority = localStorage.getItem("requirementPriority");
     eval(requirementPriority).forEach(item => {
@@ -604,13 +617,9 @@ export default {
         value: item.priorityId,
         label: item.priorityName
       });
-    });
+    }); 
 
     _self.tableHeight = bodyAviHeightNTab - 70;
-    let dayS = new Date();
-    dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 90);
-    _self.auditForm.submitTime.push(dateFormat(new Date(dayS), _self.datefmt));
-    _self.auditForm.submitTime.push(dateFormat(new Date(), _self.datefmt));
 
     _self.queryChiefs();
     _self.queryITChiefs();
