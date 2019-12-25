@@ -32,13 +32,18 @@
           </el-table-column>
           <el-table-column property="objectTypeName" label="消息类型" width="140" align="center">
           </el-table-column>
+          <el-table-column property="objectId" label="目标对象ID" width="110" align="center">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="readAndRouter(scope.row)"># {{scope.row.objectId}}</el-button>
+            </template>
+          </el-table-column>
           <el-table-column property="userName" label="消息来自" width="140" align="center">
           </el-table-column>
           <el-table-column property="createdDate" label="消息时间" width="200" align="center">
           </el-table-column>
           <el-table-column label="消息摘要" header-align="center">
             <template slot-scope="scope">
-              <el-popover placement="top" width="500" trigger="click">
+              <el-popover placement="top" width="500" trigger="hover">
                 <el-alert type="success" :closable="false" :description="scope.row.content" effect="dark" class="message-content">
                 </el-alert>
                 <el-button slot="reference" type="text" size="small">{{ scope.row.title }}</el-button>
@@ -113,13 +118,18 @@
               </el-table-column>
               <el-table-column property="objectTypeName" label="消息类型" width="120" align="center">
               </el-table-column>
+              <el-table-column property="objectId" label="目标对象ID" width="110" align="center">
+                <template slot-scope="scope">
+                  <el-button type="text" size="small" @click="readAndRouter(scope.row)"># {{scope.row.objectId}}</el-button>
+                </template>
+              </el-table-column>
               <el-table-column property="userName" label="消息来自" width="120" align="center">
               </el-table-column>
               <el-table-column property="createdDate" label="消息时间" width="180" align="center">
               </el-table-column>
               <el-table-column label="消息摘要" header-align="center">
                 <template slot-scope="scope">
-                  <el-popover placement="top" width="500" trigger="click">
+                  <el-popover placement="top" width="500" trigger="hover">
                     <el-alert type="success" :closable="false" :description="scope.row.content" effect="dark" class="message-content">
                     </el-alert>
                     <el-button slot="reference" type="text" size="small">{{ scope.row.title }}</el-button>
@@ -154,13 +164,13 @@ import {
 import commonQuery from "@/components/util/CommonQuery.vue";
 import {
   Notification
-} from 'element-ui';
+} from "element-ui";
 export default {
   data: function () {
     return {
       pickOptions: pickOptions,
       datefmt: defaultDateFormat,
-      tabPosition: 'left',
+      tabPosition: "left",
       msgTHeight: bodyAviHeightTab - 40,
       queryChanged: false,
       activeName: "notRead",
@@ -178,14 +188,14 @@ export default {
       objectTypes: [],
       memberFull: [],
       userOptions: []
-    }
+    };
   },
 
   props: {
     messages: {
       type: Array,
       default () {
-        return {}
+        return {};
       }
     },
     refreshed: {
@@ -203,7 +213,7 @@ export default {
       immediate: true
     },
 
-    'readMessages.length': function (val) {
+    "readMessages.length": function (val) {
       if (val == 0) {
         this.currentPage = 1;
         this.haveReadMessages();
@@ -242,9 +252,40 @@ export default {
   methods: {
     memberQuery() {
       let _self = this;
-      commonQuery.memberQuery((result) => {
+      commonQuery.memberQuery(result => {
         _self.memberFull = result.usersFull;
         _self.userOptions = result.usersFull;
+      });
+    },
+
+    readAndRouter(row) {
+      let _self = this;
+      let routerTo = _self.objectTypes.find(d => {
+        return row.objectType == d.typeId;
+      });
+      if (!routerTo) {
+        _self.$message.warning("后端未正确定义对象跳转路由！");
+        return;
+      }
+      let param = {};
+      if (row.objectType == 6) {
+        param = {
+          id: row.objectId,
+          type: "coding"
+        }
+      } else if (row.objectType == 18) {
+        param = {
+          id: row.objectId,
+          type: "testing"
+        }
+      } else {
+        param = {
+          id: row.objectId
+        };
+      }
+      _self.$router.push({
+        name: routerTo.routerTo,
+        params: param
       });
     },
 
@@ -274,22 +315,22 @@ export default {
     },
 
     allHaveRead() {
-      this.$axios.post("/message/have-read/all", {})
-        .then(() => {
-          Notification.closeAll();
-        })
+      this.$axios.post("/message/have-read/all", {}).then(() => {
+        Notification.closeAll();
+      });
     },
 
     haveRead(data) {
       let ids = [data.id];
-      this.$axios.post("/message/have-read", {
+      this.$axios
+        .post("/message/have-read", {
           ids: ids
         })
         .then(() => {
           if (this.messages.length == 0) {
             Notification.closeAll();
           }
-        })
+        });
     },
 
     getReadMessages() {
@@ -308,7 +349,8 @@ export default {
         this.message.messageDateEnd = "";
         messageDate = null;
       }
-      this.$axios.post("/message/have-read::query", {
+      this.$axios
+        .post("/message/have-read::query", {
           objectType: this.message.objectType,
           messageFrom: this.message.messageFrom,
           messageDate: messageDate,
@@ -322,10 +364,10 @@ export default {
           setTimeout(() => {
             this.queryChanged = false;
           }, 200);
-        })
+        });
     }
   }
-}
+};
 </script>
 
 <style>

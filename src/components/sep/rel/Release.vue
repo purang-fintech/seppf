@@ -608,6 +608,7 @@ export default {
       userOptions2: [],
       userOptions3: [],
       form: {
+        id: "",
         relCode: "",
         relDate: [],
         creator: "",
@@ -859,6 +860,7 @@ export default {
     });
 
     if (params.length > 0) {
+      _self.form.id = _self.$route.params.id;
       _self.form.relCode = _self.$route.params.relCode;
       _self.form.status = _self.$route.params.status;
       _self.form.creator = _self.$route.params.creator;
@@ -1605,6 +1607,7 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
+            id: _self.form.id,
             relCode: _self.form.relCode,
             relDateBegin: relDateBegin,
             relDateEnd: relDateEnd,
