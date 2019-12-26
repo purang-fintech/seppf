@@ -602,6 +602,7 @@ export default {
     }
     if (params.length > 0) {
       _self.auditForm.prId = _self.$route.params.id;
+      _self.auditForm.auditStatus = "",
       _self.auditForm.submitTime.splice(0, _self.auditForm.submitTime.length);
     } else {
       let dayS = new Date();
@@ -642,14 +643,14 @@ export default {
     queryChiefs() {
       let _self = this;
       commonQuery.roleMemberQuery(sessionStorage.productId, 26, (result) => {
-        _self.auditForm.chiefs = result.users;
+        _self.auditResult.chiefs = result.users;
       });
     },
 
     queryITChiefs() {
       let _self = this;
       commonQuery.roleMemberQuery(sessionStorage.productId, 30, (result) => {
-        _self.auditForm.itChiefs = result.users;
+        _self.auditResult.itChiefs = result.users;
       });
     },
 

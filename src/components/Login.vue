@@ -247,12 +247,12 @@ export default {
       products: [],
       roles: [],
       ruleFormL: {
-        account: "GUEST",
+        account: "",
         password: "",
         rememberPassword: true
       },
       ruleFormN: {
-        account: "GUEST",
+        account: "",
         password: "",
         rememberPassword: true
       },

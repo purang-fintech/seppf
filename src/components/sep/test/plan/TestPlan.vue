@@ -711,6 +711,7 @@ export default {
       baseHeight: "",
       planTypes: [],
       pmain: {
+        planId: "",
         planType: "",
         hideClosed: true,
         release: {
@@ -884,12 +885,21 @@ export default {
   },
 
   created() {
-    let dayS = new Date();
-    dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 90);
-    this.pmain.planedDate.push(dateFormat(new Date(dayS), this.datefmt));
-    let dayE = new Date();
-    dayE.setTime(dayE.getTime() + 3600 * 1000 * 24 * 90);
-    this.pmain.planedDate.push(dateFormat(new Date(dayE), this.datefmt));
+    let params = [];
+    for (let p in this.$route.params) {
+      params.push(p);
+    }
+    if (params.length > 0) {
+      this.pmain.planId = this.$route.params.id;
+      this.pmain.planedDate.splice(0, this.pmain.planedDate.length);
+    } else {
+      let dayS = new Date();
+      dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 90);
+      this.pmain.planedDate.push(dateFormat(new Date(dayS), this.datefmt));
+      let dayE = new Date();
+      dayE.setTime(dayE.getTime() + 3600 * 1000 * 24 * 90);
+      this.pmain.planedDate.push(dateFormat(new Date(dayE), this.datefmt));
+    }
 
     this.planTypes.splice(0, this.planTypes.length);
     let testPeriod = localStorage.getItem("testPeriod");
@@ -1600,6 +1610,7 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
+            planId: _self.pmain.planId,
             relId: _self.pmain.release.selected,
             planStatus: _self.pmain.planStatus,
             planType: _self.pmain.planType,

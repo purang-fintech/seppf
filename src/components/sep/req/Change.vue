@@ -208,10 +208,14 @@ export default {
     }
 
     _self.tableHeight = bodyAviHeightNTab - 70 - 45;
-    let dayS = new Date();
-    dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 90);
-    _self.changeForm.changeTime.push(dateFormat(new Date(dayS), _self.datefmt));
-    _self.changeForm.changeTime.push(dateFormat(new Date(), _self.datefmt));
+    if (_self.params.length == 0) {
+      let dayS = new Date();
+      dayS.setTime(dayS.getTime() - 3600 * 1000 * 24 * 90);
+      _self.changeForm.changeTime.push(dateFormat(new Date(dayS), _self.datefmt));
+      _self.changeForm.changeTime.push(dateFormat(new Date(), _self.datefmt));
+    } else {
+      _self.changeForm.changeTime.splice(0, _self.changeForm.changeTime.length);
+    }
 
     _self.memberQuery(_self.changeAuditQuery);
   },
