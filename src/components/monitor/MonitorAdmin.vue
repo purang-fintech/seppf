@@ -1,5 +1,5 @@
 <template>
-  <iframe class="monitor-frame" src="http://10.10.96.140:8009/octopus" :style="{height:bodyHeight + 'px'}">
+  <iframe class="monitor-frame" src="http://localhost:8009/octopus" :style="{height:bodyHeight + 'px'}">
   </iframe>
 </template>
 

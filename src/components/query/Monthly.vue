@@ -183,7 +183,8 @@ export default {
   created() {
     let _self = this;
     let current = new Date();
-    let lastMonth = new Date(current.getFullYear() + "-" + current.getMonth());
+    const isJan = current.getMonth() == 0;
+    let lastMonth = new Date((isJan ? current.getFullYear() - 1 : current.getFullYear()) + "-" + (isJan ? 12 : current.getMonth()));
     _self.month = dateFormat(lastMonth, "yyyy-MM");
     _self.setQueryPeriod();
     _self.refreshData();
@@ -214,7 +215,9 @@ export default {
       let _self = this;
       _self.queryPeriod.splice(0, _self.queryPeriod.length);
       let start = new Date(_self.month);
-      let end = new Date(start.getFullYear() + "-" + (start.getMonth() + 2));
+      let endYear = start.getMonth() == 11 ? start.getFullYear() + 1 : start.getFullYear();
+      let endMonth = start.getMonth() == 11 ? 1 : (start.getMonth() + 2);
+      let end = new Date(endYear + "-" + endMonth);
       _self.queryPeriod.push(dateFormat(start, _self.datafmt));
       _self.queryPeriod.push(dateFormat(end, _self.datafmt));
     },

@@ -1078,10 +1078,16 @@ export default {
         })
     },
 
-    relReqQuery(relId) {
+    relReqQuery(relId, pageNum, pageSize) {
       let _self = this;
+      if (!pageNum) {
+        pageNum = _self.releasedReq.pageNum;
+      }
+      if (!pageSize) {
+        pageSize = _self.releasedReq.pageSize;
+      }
       _self.reledLoading = true;
-      _self.$axios.post("/req/rel_query/" + relId + "/" + _self.releasedReq.pageNum + "/" + _self.releasedReq.pageSize)
+      _self.$axios.post("/req/rel_query/" + relId + "/" + pageNum + "/" + pageSize)
         .then(function (res) {
           _self.releasedReq.reqs = eval(res.data.list);
           _self.releasedReq.pageInfo = res.data;
@@ -1306,7 +1312,7 @@ export default {
       _self.currentRel.relDateAct = data.relDateAct;
 
       _self.showDialogMod = true;
-      _self.relReqQuery(data.id);
+      _self.relReqQuery(data.id, 1, 500);
     },
 
     setQuery() {

@@ -183,6 +183,9 @@
             <el-checkbox label="6" key="6" border>测试主管</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
+        <el-form-item label="过程质量预警配置">
+          <el-checkbox v-model="configForm.qaWarning" border>打开产品研发过程质量预警</el-checkbox>
+        </el-form-item>
       </el-form>
     </el-card>
 
@@ -310,6 +313,7 @@ export default {
         testResponser: "",
         testAssistant: [],
         changeAuditor: [],
+        qaWarning: true,
         dreTarget: 99.95,
         paramChoosen: 1,
         defaultPrams: [],
@@ -629,6 +633,7 @@ export default {
           }
           _self.configForm.currentParams = _self.configForm.defaultPrams.concat([]);
           _self.configForm.dreTarget = json.dreTarget;
+          _self.configForm.qaWarning = json.qaWarning == 1;
         })
     },
 
@@ -669,6 +674,7 @@ export default {
           productId: sessionStorage.productId,
           memberConfig: JSON.stringify(memberConfig),
           changeAuditor: _self.configForm.changeAuditor.toString(),
+          qaWarning: _self.configForm.qaWarning ? 1 : 0,
           gompertzDefine: JSON.stringify(gompertzDefine),
           gompertzParams: JSON.stringify(gompertzParams),
           dreTarget: _self.configForm.dreTarget

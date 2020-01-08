@@ -76,11 +76,11 @@
       <span v-if="outerNetwork" style="margin-left:20px">交流QQ群号： 362260709</span>
       <span v-else>使用中如果遇到问题，请<a class="icp" href="mailto:liuyi@purang.com">联系管理员</a></span>
       <span style="margin-left:20px">前端仓库：</span>
-      <github-button href="https://github.com/purang-fintech/seppf" data-show-count="true"data-icon="octicon-star"  aria-label="Star purang-fintech/seppf on GitHub">Star</github-button>
-      <github-button href="https://github.com/purang-fintech/seppf/issues" data-icon="octicon-issue-opened" aria-label="Issue purang-fintech/seppf on GitHub">Issue</github-button>
+      <github-button href="https://github.com/purang-fintech/seppf" data-icon="octicon-star">Star</github-button>
+      <github-button href="https://github.com/purang-fintech/seppf/issues" data-icon="octicon-issue-opened">Issue</github-button>
       <span style="margin-left:10px">后端仓库：</span>
-      <github-button href="https://github.com/purang-fintech/seppb" data-show-count="true" data-icon="octicon-star" aria-label="Star purang-fintech/seppf on GitHub">Star</github-button>
-      <github-button href="https://github.com/purang-fintech/seppb/issues" data-icon="octicon-issue-opened" aria-label="Issue purang-fintech/seppf on GitHub">Issue</github-button>
+      <github-button href="https://github.com/purang-fintech/seppb" data-icon="octicon-star">Star</github-button>
+      <github-button href="https://github.com/purang-fintech/seppb/issues" data-icon="octicon-issue-opened">Issue</github-button>
     </div>
 
     <el-dialog :close-on-click-modal="modalClose" :visible.sync="showNew" width="950px">
@@ -207,7 +207,7 @@
           <el-input v-model="regform.userAccount" placeholder="5到15个英文字母，不区分大小写" clearable suffix-icon="iconfont icon-mine"></el-input>
         </el-form-item>
         <el-form-item label="登录密码" prop="password">
-          <el-input type="password" placeholder="账号密码（双重SHA-256加密存储）" v-model="regform.password" clearable suffix-icon="iconfont icon-lock"></el-input>
+          <el-input type="password" v-model="regform.password" placeholder="账号密码（双重SHA-256加密存储）" clearable suffix-icon="iconfont icon-lock"></el-input>
         </el-form-item>
         <el-form-item label="用户姓名" prop="userName">
           <el-input v-model="regform.userName" placeholder="您的真实姓名" clearable suffix-icon="iconfont icon-people"></el-input>
@@ -232,6 +232,39 @@ import createProduct from "@/components/mgr/product/ProductCreate.vue";
 import GithubButton from 'vue-github-button'
 export default {
   data: function () {
+    let accountValidator = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('用户账户不能为空！'));
+      }
+      if (value.length < 5 || value.length > 10) {
+        return callback(new Error('请输入5到10个字符！'));
+      }
+      this.checkAccount(value.toUpperCase()).then(res => {
+        if (res.data > 0) {
+          return callback(new Error('用户账户已存在！'));
+        } else {
+          return callback();
+        }
+      });
+    };
+    let emailValidator = (rule, value, callback) => {
+      this.checkEmail(value.toUpperCase()).then(res => {
+        if (res.data > 0) {
+          return callback(new Error('邮箱已被占用！'));
+        } else {
+          return callback();
+        }
+      });
+    };
+    let nameValidator = (rule, value, callback) => {
+      this.checkName(value.toUpperCase()).then(res => {
+        if (res.data > 0) {
+          return callback(new Error('用户姓名已存在，请加上数字后缀！'));
+        } else {
+          return callback();
+        }
+      });
+    };
     return {
       maximize: false,
       outerNetwork: window.location.href.indexOf("seqcer.") > -1,
@@ -294,27 +327,38 @@ export default {
       },
       regRules: {
         userAccount: [{
-            required: true,
-            message: "请输入用户账号",
-            trigger: "blur"
-          },
-          {
-            min: 5,
-            max: 15,
-            message: "长度在 5 到 15 个字",
-            trigger: "blur"
-          }
-        ],
+          required: true,
+          message: "请输入用户账号",
+          trigger: "blur"
+        },
+        {
+          min: 5,
+          max: 15,
+          message: "长度在 5 到 15 个字",
+          trigger: "blur"
+        },
+        {
+        validator: accountValidator,
+        trigger: "blur" 
+        }],
         userEmail: [{
           type: "email",
           required: true,
           message: "请输入格式正确的邮箱地址",
           trigger: "blur"
+        },
+        {
+          validator: emailValidator,
+          trigger: "blur" 
         }],
         userName: [{
           required: true,
           message: "请输入用户姓名",
           trigger: "blur"
+        },
+        {
+          validator: nameValidator,
+          trigger: "blur" 
         }],
         password: [{
           required: true,
@@ -394,6 +438,18 @@ export default {
           _self.resetForm("regForm");
         }, 500);
       });
+    },
+
+    checkAccount(value){
+      return this.$axios.get("/user/exists/account/" + value);
+    },
+
+    checkEmail(value){
+      return this.$axios.get("/user/exists/email/" + value);
+    },
+
+    checkName(value){
+      return this.$axios.get("/user/exists/name/" + value);
     },
 
     queryBaseInfo() {
