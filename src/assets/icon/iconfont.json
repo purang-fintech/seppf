@@ -83,6 +83,13 @@
       "unicode_decimal": 58947
     },
     {
+      "icon_id": "973535",
+      "name": "Star",
+      "font_class": "star",
+      "unicode": "e641",
+      "unicode_decimal": 58945
+    },
+    {
       "icon_id": "1302480",
       "name": "coding",
       "font_class": "coding",

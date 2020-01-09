@@ -15,16 +15,15 @@ export default new Router({
     {
       path: '/home',
       component: resolve => require(['@/components/Home.vue'], resolve),
-      children: [
-        {
+      children: [{
           path: '/monitor',
           name: 'monitor',
           meta: {
-              requireAuth: true,
-              keepAlive: false
+            requireAuth: true,
+            keepAlive: false
           },
           component: resolve => require(['@/components/monitor/MonitorAdmin.vue'], resolve)
-        }, 
+        },
         {
           path: '/message',
           name: 'message',
@@ -432,7 +431,7 @@ export default new Router({
             parent: "/instance"
           },
           component: resolve => require(['@/components/sep/opr/JenkinsBuild.vue'], resolve)
-        }, 
+        },
         {
           path: '/resources',
           name: 'resources',

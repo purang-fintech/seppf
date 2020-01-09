@@ -76,11 +76,19 @@
       <span v-if="outerNetwork" style="margin-left:20px">交流QQ群号： 362260709</span>
       <span v-else>使用中如果遇到问题，请<a class="icp" href="mailto:liuyi@purang.com">联系管理员</a></span>
       <span style="margin-left:20px">前端仓库：</span>
-      <github-button href="https://github.com/purang-fintech/seppf" data-icon="octicon-star">Star</github-button>
-      <github-button href="https://github.com/purang-fintech/seppf/issues" data-icon="octicon-issue-opened">Issue</github-button>
+      <div class="widget">
+        <el-link class="btn" target="_blank" href="https://github.com/purang-fintech/seppf"><i class="iconfont icon-star"/>Star</el-link>
+      </div>
+      <div class="widget">
+        <el-link class="btn" target="_blank" href="https://github.com/purang-fintech/seppf/issues"><i class="el-icon-warning"/>Issue</el-link>
+      </div>
       <span style="margin-left:10px">后端仓库：</span>
-      <github-button href="https://github.com/purang-fintech/seppb" data-icon="octicon-star">Star</github-button>
-      <github-button href="https://github.com/purang-fintech/seppb/issues" data-icon="octicon-issue-opened">Issue</github-button>
+      <div class="widget">
+        <el-link class="btn" target="_blank" href="https://github.com/purang-fintech/seppb"><i class="iconfont icon-star"/>Star</el-link>
+      </div>
+      <div class="widget">
+        <el-link class="btn" target="_blank" href="https://github.com/purang-fintech/seppb/issues"><i class="el-icon-warning"/>Issue</el-link>
+      </div>
     </div>
 
     <el-dialog :close-on-click-modal="modalClose" :visible.sync="showNew" width="950px">
@@ -229,7 +237,6 @@
 const emailPatern = /^[a-zA-Z0-9]+([._\\-]*[a-zA-Z0-9])*@([a-zA-Z0-9]+[-a-zA-Z0-9]*[a-zA-Z0-9]+.){1,63}[a-zA-Z0-9]+$/;
 import commonQuery from "@/components/util/CommonQuery.vue";
 import createProduct from "@/components/mgr/product/ProductCreate.vue";
-import GithubButton from 'vue-github-button'
 export default {
   data: function () {
     let accountValidator = (rule, value, callback) => {
@@ -373,7 +380,6 @@ export default {
 
   components: {
     vProd: createProduct,
-    GithubButton
   },
 
   created() {
@@ -1012,6 +1018,8 @@ export default {
 </script>
 
 <style>
+@import '../assets/style/github.css';
+
 .ms-login .el-input i,
 .reg-dialog .el-input i {
   margin: 0 10px;
@@ -1115,7 +1123,6 @@ export default {
 
 .footer>*{
   vertical-align: middle;
-  height: 40px !important;
   line-height: 0;
 }
 
