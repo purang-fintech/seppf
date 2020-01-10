@@ -404,6 +404,25 @@ export default new Router({
           component: resolve => require(['@/components/sep/opr/BuildDeployment.vue'], resolve)
         },
         {
+          path: '/SonarScan',
+          name: 'SonarScan',
+          meta: {
+            requireAuth: true,
+            keepAlive: true,
+            parent: "/build"
+          },
+          component: resolve => require(['@/components/sep/opr/SonarScan.vue'], resolve)
+        },
+        {
+          path: '/sonar',
+          name: 'sonar',
+          meta: {
+            requireAuth: true,
+            keepAlive: true
+          },
+          component: resolve => require(['@/components/sep/opr/Sonar.vue'], resolve)
+        },
+        {
           path: '/instance',
           name: 'instance',
           meta: {
@@ -514,6 +533,15 @@ export default new Router({
         keepAlive: false
       },
       component: resolve => require(['@/components/sep/opr/BuildLog.vue'], resolve)
+    },
+    {
+      path: '/sonarDetail',
+      name: 'sonarDetail',
+      meta: {
+        requireAuth: false,
+        keepAlive: false
+      },
+      component: resolve => require(['@/components/sep/opr/SonarDetail.vue'], resolve)
     }
   ]
 });

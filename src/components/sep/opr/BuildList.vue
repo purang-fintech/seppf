@@ -544,9 +544,10 @@
             <span class="breq-sum-tips" @click="showBuildDetail(scope.row)">{{scope.row.description}}</span>
           </template>
         </el-table-column>
-        <el-table-column width="120" align="center" label="操作">
+        <el-table-column width="165" align="center" label="操作">
           <template slot-scope="scope">
             <el-button v-no-more-click type="warning" size="mini" @click.stop="editBuildInfo(scope.row)" :disabled="!scope.row.editAble">编辑</el-button>
+            <el-button v-no-more-click type="success" size="mini"@click="routeToSonar(scope.row)" :disabled="!scope.row.buildAble">扫描</el-button>
             <el-button v-no-more-click type="success" size="mini" @click="routeToDeploy(scope.row)" :disabled="!scope.row.buildAble">构建</el-button>
           </template>
         </el-table-column>
@@ -1018,6 +1019,9 @@ export default {
         }
       });
     },
+      routeToSonar(data) {
+        this.$router.push({ name: 'SonarScan', query: { 'noteId': data.id}});
+      },
 
     handleCurrentChange(current) {
       if (this.queryChanged == true) {

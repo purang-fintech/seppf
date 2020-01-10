@@ -330,7 +330,59 @@ export default {
           }
         });
       })
-  },
+    },
+    openRelQuerySonar(callback) {
+      let _self =  this;
+      let result = {
+        releases: [],
+        releasesWithBranch: [],
+        original: []
+      };
+      let mst={
+        value: "master",
+        label: "master",
+        rdate: "",
+        disabled: false
+      };
+      let rels={
+        value: "release",
+        label: "release",
+        rdate: "",
+        disabled: false
+      };
+      axios({
+        method: "post",
+        url: "/release/opening",
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded"
+        }
+      })
+        .then(function (res) {
+          result.original = eval(res.data);
+          result.original.forEach(item => {
+            result.releases.push({
+              value: item.id,
+              label: item.relCode,
+              rdate: item.relDate,
+              disabled: item.status === 0
+            });
+            result.releasesWithBranch.push({
+              value: item.id,
+              label: "[" + item.branchName + "] " + item.relCode,
+              rdate: item.relDate,
+              disabled: item.status === 0
+            });
+          });
+          result.releases.push(mst);
+          result.releases.push(rels);
+          Vue.prototype.$nextTick(() => {
+            if (typeof callback == "function") {
+              callback && callback(result);
+            }
+          });
+        })
+    },
+
 
   attachmentQuery(fileIds) {
     let _self = this;

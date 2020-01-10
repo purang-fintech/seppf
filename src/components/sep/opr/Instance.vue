@@ -31,6 +31,16 @@
         </el-table-column>
         <el-table-column prop="user" label="创建人" align="center">
         </el-table-column>
+        <el-table-column
+          prop="projectName"
+          label="项目名称"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="user"
+          label="创建人"
+          align="center">
+        </el-table-column>
         <el-table-column prop="description" label="描述" align="center">
         </el-table-column>
         <el-table-column prop="updatedDate" label="修改时间" align="center">
@@ -58,6 +68,9 @@
           <el-select v-model="instanceForm.type" placeholder="实例类型" style="width:95%">
             <el-option v-for="type in instanceTypes" :label="type.value" :value="type.name" :key="type.name"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="项目名称" prop="description">
+          <el-input   v-model="instanceForm.projectName"   style="width:95%"></el-input>
         </el-form-item>
         <el-form-item label="构建参数" prop="params" required>
           <el-input v-model="instanceForm.params" placeholder="多参数请用逗号,隔开" style="width:95%"></el-input>
@@ -101,6 +114,7 @@ export default {
         id: null,
         instance: null,
         type: null,
+        projectName: null,
         description: null,
         params: null
       },
@@ -108,6 +122,7 @@ export default {
       addInstanceProp: false,
       updateInstanceProp: false,
       instanceTypes: [],
+      projectName:'',
       instanceFormTitle: '',
       dialogInstanceVisible: false,
       instances: [],
@@ -177,6 +192,7 @@ export default {
       this.dialogInstanceVisible = true;
       this.instanceForm.description = row.description;
       this.instanceForm.instance = row.instance;
+      this.instanceForm.projectName = row.projectName;
       this.instanceForm.type = row.type;
       this.instanceForm.id = row.id;
       this.instanceForm.params = row.params;
@@ -221,6 +237,7 @@ export default {
       _self.$axios.post("/instances/create", {
           instance: _self.instanceForm.instance,
           description: _self.instanceForm.description,
+          projectName:_self.instanceForm.projectName,
           type: _self.instanceForm.type,
           params: _self.instanceForm.params
         })
@@ -239,6 +256,7 @@ export default {
       _self.$axios.post("/instances/update", {
           instance: _self.instanceForm.instance,
           description: _self.instanceForm.description,
+          projectName:_self.instanceForm.projectName,
           type: _self.instanceForm.type,
           id: _self.instanceForm.id,
           params: _self.instanceForm.params
@@ -296,7 +314,7 @@ export default {
   clear: both
 }
 
-.box-card {
-  width: 100%;
-}
+  .box-card {
+    width: 100%;
+  }
 </style>
