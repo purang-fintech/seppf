@@ -1665,7 +1665,6 @@ export default {
           improveOne: _self.currentProblem.improveOne,
           improveTwo: _self.currentProblem.improveTwo.selected,
           improvePlanTo: _self.currentProblem.improvePlanTo,
-          improveDetail: _self.currentProblem.detail,
           improveDetail: _self.currentProblem.improveDetail,
           detail: _self.currentProblem.detail
         })

@@ -53,7 +53,7 @@ function downloadSVG(fileURI, fileName) {
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      alert(err);
+      console.log(err);
     }
   }
 

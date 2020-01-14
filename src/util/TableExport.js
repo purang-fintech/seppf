@@ -38,6 +38,6 @@ export default function ExportCsv(data, columns, fileName) {
     link.click();
     document.body.removeChild(link); // Required for FF
   } catch (err) {
-    alert(err);
+    console.log(err);
   }
 }

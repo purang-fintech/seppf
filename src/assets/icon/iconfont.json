@@ -452,6 +452,13 @@
       "font_class": "icon-product",
       "unicode": "e601",
       "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "5924896",
+      "name": "radar",
+      "font_class": "radar",
+      "unicode": "e668",
+      "unicode_decimal": 58984
     }
   ]
 }

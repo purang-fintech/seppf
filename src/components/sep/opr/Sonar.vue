@@ -9,15 +9,15 @@
       </el-breadcrumb>
     </div>
 
-    <el-card class="box-card" shadow="hover">
+    <el-card shadow="hover">
       <div class="sonar-form" id="sonarList">
         <el-form v-model="qform" :inline="true" size="small" label-width="100px">
           <el-form-item label="实例项目名称" prop="projectKey">
             <el-input v-model="qform.projectKey" placeholder="请输入" clearable></el-input>
           </el-form-item>
           <el-form-item style="float:right">
-            <el-button v-no-more-click type="primary" icon="el-icon-search" @click="querySonarHistories()">查询</el-button>
-            <el-button v-no-more-click type="primary" icon="el-icon-data-analysis" @click="dialogSonarVisible = true">立即扫描
+            <el-button v-no-more-click size="mini" type="primary" icon="el-icon-search" @click="querySonarHistories()">查询</el-button>
+            <el-button v-no-more-click size="mini" type="primary" icon="iconfont icon-radar" @click="dialogSonarVisible = true">立即扫描
             </el-button>
           </el-form-item>
         </el-form>
@@ -26,7 +26,7 @@
           :data="sonarScanResults"
           empty-text="暂无扫描记录"
           :max-height="tableHeight"
-          size="medium"
+          size="small"
           stripe
           :border="showBorder"
           v-loading="queryLoading"
@@ -37,43 +37,34 @@
           </el-table-column>
           <el-table-column prop="gitBranch" label="分支版本" align="center">
           </el-table-column>
-          <el-table-column prop="submitter" label="触发人" width="80" align="center">
+          <el-table-column prop="submitter" label="触发人" width="90" align="center">
           </el-table-column>
-          <el-table-column prop="startTime" label="提交时间" width="150" align="center">
+          <el-table-column prop="startTime" label="提交时间" width="140" align="center">
           </el-table-column>
-          <el-table-column prop="analysisStatus" label="扫描结果" width="80" align="center">
+          <el-table-column prop="analysisStatus" label="扫描结果" width="90" align="center">
             <template slot-scope="scope">
-              <span class="red" v-if="scope.row.analysisStatus==='ERROR'"><b> {{"未通过"}} </b></span>
-              <span class="green" v-else-if="scope.row.analysisStatus==='OK'"><b> {{"通过"}} </b></span>
-              <span class="wait" v-else><b> {{"暂无数据"}} </b></span>
+              <el-tag type="danger" size="small" effect="dark" v-if="scope.row.analysisStatus==='ERROR'">质量欠佳</el-tag>
+              <el-tag type="success" size="small" effect="dark" v-else-if="scope.row.analysisStatus==='OK'">质量良好</el-tag>
+              <el-tag type="info" size="small" effect="dark" v-else>暂无数据</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="ncloc" label="代码行数" width="100" align="center">
+          <el-table-column prop="ncloc" label="代码行数" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="coverage" label="单元测试覆盖率" width="110" align="center">
-            <template slot-scope="scope">
-              <span class="red" v-if="scope.row.coverage===0"><b> {{0}} </b></span>
-              <span v-else-if="scope.row.coverage===null"><b> {{""}} </b></span>
-              <span class="wait" v-else><b> {{scope.row.coverage+"%"}} </b></span>
-            </template>
+          <el-table-column prop="coverage" label="单测覆盖率" width="90" align="center">
           </el-table-column>
-          <el-table-column prop="duplicatedLinesDensity" label="重复比例" width="100" align="center">
-            <template slot-scope="scope">
-              <span v-if="scope.row.duplicatedLinesDensity===null"><b> {{""}} </b></span>
-              <span class="green" v-else-if="scope.row.duplicatedLinesDensity<25"><b> {{scope.row.duplicatedLinesDensity+"%"}} </b></span>
-              <span class="common" v-else-if="scope.row.duplicatedLinesDensity>=25 && scope.row.duplicatedLinesDensity<=40"><b> {{scope.row.duplicatedLinesDensity+"%"}} </b></span>
-              <span class="red" v-else-if="scope.row.duplicatedLinesDensity>=40"><b> {{scope.row.duplicatedLinesDensity+"%"}} </b></span>
-            </template>
+          <el-table-column prop="duplicatedLinesDensity" label="重复比例" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="codeSmells" label="潜在问题" width="100" align="center">
+          <el-table-column prop="codeSmells" label="坏味道" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="bugs" label="缺陷数(bug)" width="100" align="center">
+          <el-table-column prop="bugs" label="缺陷数" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="vulnerabilities" label="安全威胁" width="100" align="center">
+          <el-table-column prop="vulnerabilities" label="安全漏洞" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="sqaleIndex" label="技术债(小时)" width="110px" align="center">
+          <el-table-column prop="hotspots" label="命中热点" width="80" align="center">
           </el-table-column>
-          <el-table-column label="详情" width="80px" align="center">
+          <el-table-column prop="sqaleIndex" label="技术债(小时)" width="100" align="center">
+          </el-table-column>
+          <el-table-column label="详情" width="80" align="center">
             <template slot-scope="scope">
               <el-button v-no-more-click type="text" @click="viewDetail(scope.row)">查看详情</el-button>
             </template>
@@ -256,25 +247,5 @@ export default {
 <style>
 .demo-form-inline {
   padding: 10px 30px 10px 10px;
-}
-
-.box-card {
-  width: 100%;
-}
-
-.red {
-  color: #a70f27;
-}
-
-.green {
-  color: #4ca720;
-}
-
-.wait {
-  color: #1671a7;
-}
-
-.common {
-  color: #3799a7;
 }
 </style>

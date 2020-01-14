@@ -679,10 +679,8 @@ export default {
           type: "warning"
         })
         .then(() => {
-          alert("哈？你觉得我会在一个Demo上实现这个？-_#!");
         })
         .catch(() => {
-          alert("对自己的测试没自信了吧？怂了吧?哈哈！ -_#!");
         });
     },
 

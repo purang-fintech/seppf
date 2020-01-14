@@ -9,7 +9,7 @@
         <el-breadcrumb-item>代码扫描</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <el-card class="box-card" shadow="hover">
+    <el-card shadow="hover">
       <div slot="header" class="clearfix">
         <span style="font-size: 15px">代码扫描</span>
         <el-button v-no-more-click style="float:right; padding:3px 0;margin-left:12px" type="text" icon="el-icon-right" @click="releaseQuery(),dialogSonarVisible = true">立即扫描
@@ -21,48 +21,39 @@
       <div v-if="sonarScanResults.length > 0">
         <el-collapse v-model="activeNames" v-for="sonarScanResult  in sonarScanResults" :key="sonarScanResult.id">
           <el-collapse-item :title="'Sonar扫描版本: '+sonarScanResult.projectVersion" :name="sonarScanResult.projectVersion">
-            <el-table :data="sonarScanResult.sonarScanHistorys" empty-text="暂无扫描记录">
-              <el-table-column prop="projectKey" label="实例项目名称" width="180" align="center">
+            <el-table :data="sonarScanResult.sonarScanHistorys" size="small" empty-text="暂无扫描记录" :highlight-current-row="false">
+              <el-table-column prop="projectKey" label="实例项目名称" align="center">
               </el-table-column>
-              <el-table-column prop="gitBranch" label="分支版本" width="80" align="center">
+              <el-table-column prop="gitBranch" label="分支版本" align="center">
               </el-table-column>
-              <el-table-column prop="submitter" label="触发人" width="80" align="center">
+              <el-table-column prop="submitter" label="触发人" width="90" align="center">
               </el-table-column>
-              <el-table-column prop="startTime" label="提交时间" width="150" align="center">
+              <el-table-column prop="startTime" label="提交时间" width="140" align="center">
               </el-table-column>
-              <el-table-column prop="analysisStatus" label="扫描结果" min-width="8%" align="center">
+              <el-table-column prop="analysisStatus" label="扫描结果" width="90" align="center">
                 <template slot-scope="scope">
-                  <span class="red" v-if="scope.row.analysisStatus==='ERROR'"><b> {{"未通过"}} </b></span>
-                  <span class="green" v-else-if="scope.row.analysisStatus==='OK'"><b> {{"通过"}} </b></span>
-                  <span class="wait" v-else><b> {{"暂无数据"}} </b></span>
+                  <el-tag type="danger" size="small" effect="dark" v-if="scope.row.analysisStatus==='ERROR'">质量欠佳</el-tag>
+                  <el-tag type="success" size="small" effect="dark" v-else-if="scope.row.analysisStatus==='OK'">质量良好</el-tag>
+                  <el-tag type="info" size="small" effect="dark" v-else>暂无数据</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="ncloc" label="代码行数" min-width="8%" align="center">
+              <el-table-column prop="ncloc" label="代码行数" width="80" align="center">
               </el-table-column>
-              <el-table-column prop="coverage" label="单元测试覆盖率" width="110" align="center">
-                <template slot-scope="scope">
-                  <span class="red" v-if="scope.row.coverage===0"><b> {{0}} </b></span>
-                  <span v-else-if="scope.row.coverage===null"><b> {{""}} </b></span>
-                  <span class="wait" v-else><b> {{scope.row.coverage+"%"}} </b></span>
-                </template>
+              <el-table-column prop="coverage" label="单测覆盖率" width="90" align="center">
               </el-table-column>
-              <el-table-column prop="duplicatedLinesDensity" label="重复比例" min-width="8%" align="center">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.duplicatedLinesDensity===null"><b> {{""}} </b></span>
-                  <span class="green" v-else-if="scope.row.duplicatedLinesDensity<25"><b> {{scope.row.duplicatedLinesDensity+"%"}} </b></span>
-                  <span class="common" v-else-if="scope.row.duplicatedLinesDensity>=25 && scope.row.duplicatedLinesDensity<=40"><b> {{scope.row.duplicatedLinesDensity+"%"}} </b></span>
-                  <span class="red" v-else-if="scope.row.duplicatedLinesDensity>=40"><b> {{scope.row.duplicatedLinesDensity+"%"}} </b></span>
-                </template>
+              <el-table-column prop="duplicatedLinesDensity" label="重复比例" width="80" align="center">
               </el-table-column>
-              <el-table-column prop="codeSmells" label="潜在问题" min-width="8%" align="center">
+              <el-table-column prop="codeSmells" label="坏味道" width="80" align="center">
               </el-table-column>
-              <el-table-column prop="bugs" label="缺陷数(bug)" min-width="8%" align="center">
+              <el-table-column prop="bugs" label="缺陷数" width="80" align="center">
               </el-table-column>
-              <el-table-column prop="vulnerabilities" label="安全威胁" min-width="8%" align="center">
+              <el-table-column prop="vulnerabilities" label="安全漏洞" width="80" align="center">
               </el-table-column>
-              <el-table-column prop="sqaleIndex" label="技术债(小时)" min-width="8%" align="center">
+              <el-table-column prop="hotspots" label="命中热点" width="80" align="center">
               </el-table-column>
-              <el-table-column label="详情" min-width="8%" align="center">
+              <el-table-column prop="sqaleIndex" label="技术债(小时)" width="100" align="center">
+              </el-table-column>
+              <el-table-column label="详情" width="80" align="center">
                 <template slot-scope="scope">
                   <el-button v-no-more-click type="text" @click="viewDetail(scope.row)">查看详情</el-button>
                 </template>
@@ -164,7 +155,7 @@ export default {
         return;
       }
       this.querySonarHistories(this);
-    }, 1000)
+    }, 5000)
   },
 
   methods: {
@@ -264,25 +255,5 @@ export default {
 <style>
 .demo-form-inline {
   padding: 10px 30px 10px 10px;
-}
-
-.box-card {
-  width: 100%;
-}
-
-.red {
-  color: #a70f27;
-}
-
-.green {
-  color: #4ca720;
-}
-
-.wait {
-  color: #1671a7;
-}
-
-.common {
-  color: #3799a7;
 }
 </style>
