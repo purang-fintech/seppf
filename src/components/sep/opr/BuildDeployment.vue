@@ -101,10 +101,7 @@
           </el-select>
 
         </el-form-item>
-        <br>
-        <el-form-item label="代码扫描" prop="sonarScan">
-          <el-checkbox v-model="buildEnv.sonarScan"  border size="medium"></el-checkbox>
-        </el-form-item>
+
       </el-form>
       <el-form
         :rules="rules"
@@ -221,7 +218,7 @@ export default {
         gitBranch: this.rel_code,
         prodBranch: null,
         buildType: '',
-        sonarScan:false
+
       },
       gitBranchSelected: "",
       nonJobNameCount: 0,
@@ -392,8 +389,7 @@ export default {
           submitter: sessionStorage.userId,
           instances: _self.buildEnv.instances,
           buildMethod: _self.buildMethod,
-          buildType: _self.buildEnv.buildType,
-          sonarScan:_self.buildEnv.sonarScan
+          buildType: _self.buildEnv.buildType
         })
         .then(function (res) {
           _self.queryBuildHistories(self);

@@ -177,6 +177,26 @@ export default {
   },
 
   data: function () {
+    let emailValidator = (rule, value, callback) => {
+      this.checkEmail(value.toUpperCase()).then(res => {
+        if (res.data > 0) {
+          return callback(new Error('该邮箱地址已被占用！'));
+        } else {
+          return callback();
+        }
+      });
+    };
+
+    let nameValidator = (rule, value, callback) => {
+      this.checkName(value.toUpperCase()).then(res => {
+        if (res.data > 0) {
+          return callback(new Error('用户姓名已存在，请加上数字后缀！'));
+        } else {
+          return callback();
+        }
+      });
+    };
+
     return {
       userInfo: {
         userId: "",
@@ -213,19 +233,26 @@ export default {
           required: true,
           message: "请输入邮箱地址",
           trigger: "blur"
+        },
+        {
+          validator: emailValidator,
+          trigger: "blur" 
         }],
         userName: [{
-            required: true,
-            message: "请输入用户姓名",
-            trigger: "blur"
-          },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字",
-            trigger: "blur"
-          }
-        ],
+          required: true,
+          message: "请输入用户姓名",
+          trigger: "blur"
+        },
+        {
+          min: 2,
+          max: 20,
+          message: "长度在 2 到 20 个字",
+          trigger: "blur"
+        },
+        {
+          validator: nameValidator,
+          trigger: "blur" 
+        }],
         newPwd: {
           min: 5,
           max: 20,
@@ -299,6 +326,14 @@ export default {
   },
 
   methods: {
+    checkEmail(value){
+      return this.$axios.get("/user/exists/email/" + this.userInfo.userId + "/" + value);
+    },
+
+    checkName(value){
+      return this.$axios.get("/user/exists/name/" + this.userInfo.userId + "/" + value);
+    },
+
     checkSaveUserBase(formName) {
       let _self = this;
       _self.$refs[formName].validate(valid => {
@@ -307,7 +342,7 @@ export default {
           return;
         } else {
           if (!emailPatern.test(_self.userInfo.userEmail)) {
-            _self.$message.warning("用户邮箱地址格式不正确！ ");
+            _self.$message.warning("用户邮箱地址格式不正确！ "); 
             return;
           }
           if (_self.userInfo.newPwd || _self.userInfo.secNewPwd) {

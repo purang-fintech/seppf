@@ -81,13 +81,22 @@
           <el-checkbox v-model="newSettings.useExists" size="mini" border style="margin-right:10px">选择已有配置</el-checkbox>
         </el-form-item>
         <el-form-item
+          label="新配置项类型"
+          prop="settingType"
+          :rules="[{ required: true, message: '请输入配置项类型', trigger: 'blur' }]"
+          style="width:240px"
+          required
+          v-if="!newSettings.useExists">
+          <el-input placeholder="请输入" v-model="newSettings.settingType" style="width:120px" clearable></el-input>
+        </el-form-item>
+        <el-form-item
           label="新配置项名称"
           prop="settingName"
           :rules="[{ required: true, message: '请输入配置项名称', trigger: 'blur' }]"
-          style="width:315px"
+          style="width:310px"
           required
           v-if="!newSettings.useExists">
-          <el-input placeholder="请输入配置项名称" v-model="newSettings.settingName" clearable></el-input>
+          <el-input placeholder="请输入" v-model="newSettings.settingName" style="width:180px" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-select v-model="existSetting.selected" placeholder="请选择" @change="loadExistSetting()" v-if="newSettings.useExists">
@@ -95,7 +104,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="配置条目限制" prop="settingLimit" :rules="[{ type: 'number', required: true, message: '请输入正整数或0', trigger: 'blur' }]">
-          <el-input v-model.number="newSettings.settingLimit" placeholder="请输入正整数或0(无限制)"></el-input>
+          <el-input v-model.number="newSettings.settingLimit" placeholder="正整数或0" style="width:100px"></el-input>
         </el-form-item>
       </el-form>
       <div style="border-bottom:1px solid #e4edf3;width:100%;margin-bottom:5px"></div>
@@ -172,6 +181,9 @@
         </button>
       </div>
       <el-form :model="currentConfig" :inline="true" size="mini" label-width="120px">
+        <el-form-item label="配置项类型" prop="settingType" :rules="[{ required: true, message: '请输入配置项类型', trigger: 'blur' }]">
+          <el-input v-model="currentConfig.settingType" disabled></el-input>
+        </el-form-item>
         <el-form-item label="配置项名称" prop="settingName" :rules="[{ required: true, message: '请输入配置项名称', trigger: 'blur' }]">
           <el-input v-model="currentConfig.settingName"></el-input>
         </el-form-item>
@@ -258,6 +270,7 @@ export default {
       showAddConfig: false,
       showModConfig: false,
       newSettings: {
+        settingType: "",
         settingName: "",
         settingLimit: "",
         useExists: false,
@@ -312,6 +325,7 @@ export default {
         _self.$message.warning("不允许存在空值配置！");
         return;
       }
+      let settingType = _self.newSettings.settingType;
       let settingName = _self.newSettings.settingName;
       let settingLimit = _self.newSettings.settingLimit;
       let settingKeys = JSON.stringify(_self.newSettings.data);
@@ -326,13 +340,13 @@ export default {
         _self.updateConfig(exists.label, settingLimit, settingKeys, exists.value);
       } else {
         let duplicated = _self.configurations.find(cfg => {
-          return cfg.settingName == settingName;
+          return cfg.settingName == settingName || cfg.settingType == settingType;
         });
         if (duplicated) {
-          _self.$message.warning("配置项名称不可以重复！");
+          _self.$message.warning("配置类型和名称不可以重复！");
           return;
         }
-        _self.createConfig(settingName, settingLimit, settingKeys);
+        _self.createConfig(settingType, settingName, settingLimit, settingKeys);
       }
     },
 
@@ -362,7 +376,7 @@ export default {
       let index = -1;
       let currentSetting = undefined;
       for (let i = 0; i < _self.settings.length; i++) {
-        if (_self.settings[i].settingType === _self.currentConfig.id) {
+        if (_self.settings[i].configId === _self.currentConfig.id) {
           currentSetting = _self.settings[i];
           index = i;
           break;
@@ -462,7 +476,7 @@ export default {
           },
           params: {
             id: _self.settings.find(set => {
-              return set.settingType === _self.currentConfig.id;
+              return set.configId === _self.currentConfig.id;
             }).id
           }
         })
@@ -480,7 +494,7 @@ export default {
         });
     },
 
-    createConfig(settingName, settingLimit, settingKeys) {
+    createConfig(settingType, settingName, settingLimit, settingKeys) {
       let _self = this;
       _self.$axios({
           method: "post",
@@ -489,6 +503,7 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
+            settingType: settingType.toUpperCase(),
             settingName: settingName,
             settingLimit: settingLimit,
             settingKeys: settingKeys
@@ -549,7 +564,7 @@ export default {
       _self.showModConfig = true;
     },
 
-    createNewSetting(settingType) {
+    createNewSetting(configId) {
       let _self = this;
       _self.$axios({
           method: "post",
@@ -558,7 +573,7 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
-            settingType: settingType,
+            configId: configId,
             settingValue: "[]"
           }
         })
@@ -580,7 +595,7 @@ export default {
       let rowCount = 0;
       let cntSetting = {};
       for (let i = 0; i < _self.settings.length; i++) {
-        if (_self.settings[i].settingType == config.id) {
+        if (_self.settings[i].configId == config.id) {
           cntSetting = _self.settings[i];
           break;
         }
@@ -604,7 +619,7 @@ export default {
       let _self = this;
       let emptyKeys = 0;
       let configedSetting = _self.settings.find(d => {
-        return d.settingType == configItem.id;
+        return d.configId == configItem.id;
       });
       let configedValue = configedSetting.settingValue;
       let keyCount = configItem.settingKeys.length;
@@ -647,7 +662,7 @@ export default {
     saveCurrentSetting(configItem) {
       let _self = this;
       let configedSetting = _self.settings.find(d => {
-        return d.settingType == configItem.id;
+        return d.configId == configItem.id;
       });
       let configedValue = configedSetting.settingValue;
       let existEmpty = false;
@@ -683,7 +698,7 @@ export default {
       }
       _self.configurations.forEach(item => {
         let configedSetting = _self.settings.find(d => {
-          return d.settingType == item.id;
+          return d.configId == item.id;
         });
         if (!configedSetting || !configedSetting.settingValue) {
           return;
@@ -736,7 +751,7 @@ export default {
         delete _self.currentSetting[key];
       }
       let configedValue = _self.settings.find(d => {
-        return d.settingType == configItem.id;
+        return d.configId == configItem.id;
       }).settingValue;
       configItem.settingKeys.forEach(item => {
         if (!row[item.paramKey] || row[item.paramKey] == null) {
@@ -751,7 +766,7 @@ export default {
     listSettingValue(configId) {
       let _self = this;
       let configedSetting = _self.settings.find(item => {
-        return item.settingType == configId;
+        return item.configId == configId;
       });
       if (!configedSetting) {
         return [];
@@ -819,7 +834,7 @@ export default {
           _self.existSetting.opts.splice(0, _self.existSetting.opts.length);
           _self.configurations.forEach(item => {
             _self.existSetting.opts.push({
-              label: item.settingName,
+              label: item.settingType + " - " + item.settingName,
               value: item.id
             });
           });

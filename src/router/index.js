@@ -403,16 +403,7 @@ export default new Router({
           },
           component: resolve => require(['@/components/sep/opr/BuildDeployment.vue'], resolve)
         },
-        {
-          path: '/SonarScan',
-          name: 'SonarScan',
-          meta: {
-            requireAuth: true,
-            keepAlive: true,
-            parent: "/build"
-          },
-          component: resolve => require(['@/components/sep/opr/SonarScan.vue'], resolve)
-        },
+
         {
           path: '/sonar',
           name: 'sonar',

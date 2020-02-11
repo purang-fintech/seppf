@@ -1022,7 +1022,9 @@ export default {
             </span>
             <span>
               <el-button v-no-more-click size="small" type="text" on-click={() => this.import(data, node)} >
-                <i class="el-icon-upload2"></i>
+                <el-tooltip effect="dark" placement="left" content="测试用例上传">
+                  <i class="el-icon-upload2"></i>
+                </el-tooltip>
               </el-button>
               <el-button v-no-more-click size="small" type="text" on-click={() => this.append(data)} >
                 <i class="iconfont icon-addition"></i>

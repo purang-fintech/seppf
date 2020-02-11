@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showWarning" width="950px" :show-close="false" custom-class="popver-dialog">
+    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showWarning" width="1024px" :show-close="false" custom-class="popver-dialog">
       <el-table
         :data="warnings"
         size="mini"
@@ -16,27 +16,20 @@
         </el-table-column>
         <el-table-column prop="typeName" label="告警类型" width="100" align="center">
         </el-table-column>
+        <el-table-column prop="subTypeName" label="告警子类型" width="150" align="center">
+        </el-table-column>
         <el-table-column prop="levelName" label="告警级别" width="100" align="center">
         </el-table-column>
         <el-table-column label="告警摘要" header-align="center">
           <template slot-scope="scope">
             <el-popover placement="top" width="500" trigger="click">
-              <el-alert title="告警内容" type="warning" :closable="false" :description="scope.row.summary + '，详情：' + scope.row.content">
+              <el-alert title="计算规则说明" type="warning" :closable="false" :description="scope.row.summary + '，表达式：' + scope.row.content">
               </el-alert>
               <el-button slot="reference" type="text" size="small" style="margin-left:5px">{{ scope.row.summary }}</el-button>
             </el-popover>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 50]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
       <div slot="footer">
         <el-button type="primary" icon="el-icon-close" @click="closeWarning()" size="mini">关闭</el-button>
       </div>
@@ -178,9 +171,7 @@ export default {
       productId: sessionStorage.productId,
       productName: sessionStorage.productName,
       favicon: "/static/img/baby.png",
-      warnTHeight: 0,
-      currentPage: 1,
-      pageSize: 10,
+      warnTHeight: 500,
       total: 0,
       messageCurrentPage: 1,
       messagePageSize: parseInt(sessionStorage.tablePageSize) || 10,
@@ -195,9 +186,9 @@ export default {
       showNewProduct: false,
       authed: sessionStorage.userId && sessionStorage.userId != null,
       websock: null,
-      isShowAlert: false,
+      isShowWarning: false,
       isShowMesage: false,
-      newAlertCount: 0,
+      newWarningCount: 0,
       newMessageCount: 0,
       timeout: 4000,
       viewRefreshed: true
@@ -386,28 +377,6 @@ export default {
       }
     },
 
-    handleSizeChange(val) {
-      this.pageSize = val;
-      //todo 异步请求一次
-      let params = {
-        "pageNum": this.currentPage,
-        "pageSize": this.pageSize,
-        "messageTypes": ["ALARM"]
-      };
-      this.websocketsend(JSON.stringify(params));
-    },
-
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      //异步请求一次
-      let params = {
-        "pageNum": this.currentPage,
-        "pageSize": this.pageSize,
-        "messageTypes": ["ALARM"]
-      };
-      this.websocketsend(JSON.stringify(params));
-    },
-
     initWebSocket() {
       //初始化weosocket
       const wsuri = "ws://" + baseUrl.substr(7, baseUrl.length) + "myHandler";
@@ -421,14 +390,14 @@ export default {
     websocketonopen() {
       this.start();
       //连接建立之后执行send方法发送数据
-      let messageTypes = ["ALARM"];
+      let messageTypes = ["WARNING"];
       if (this.messageOn) {
-        messageTypes = ["ALARM", "NOTICE"];
+        messageTypes = ["WARNING", "MESSAGE"];
       }
       let params = {
-        alertPage: {
-          pageNum: this.currentPage,
-          pageSize: this.pageSize
+        warningPage: {
+          pageNum: 1,
+          pageSize: 100
         },
         messagePage: {
           pageNum: this.messageCurrentPage,
@@ -447,21 +416,21 @@ export default {
 
     websocketonmessage(e) { //数据接收
       let resp = JSON.parse(e.data);
-      if (resp.alerts) {
-        this.warnings = eval(resp.alerts.list);
-        this.total = resp.alerts.total;
+      if (resp.warnings) {
+        this.warnings = eval(resp.warnings.list);
+        this.total = resp.warnings.total;
       };
-      this.newAlertCount = resp.newAlertCount;
-      if (resp.newAlertCount && resp.newAlertCount > 0 && !this.isShowAlert) {
-        this.isShowAlert = true;
-        const alertNotify = this.$notify({
+      this.newWarningCount = resp.newWarningCount;
+      if (resp.newWarningCount && resp.newWarningCount > 0 && !this.isShowWarning) {
+        this.isShowWarning = true;
+        const warningNotify = this.$notify({
           dangerouslyUseHTMLString: true,
           message: '<span style="font-weight:600;cursor:pointer;color:#EE6F6F">您有新的告警（点击查看）</span>',
           duration: 0,
           type: 'warning',
           position: 'bottom-right',
           showClose: false,
-          onClick: () => this.newOpenWarning(alertNotify),
+          onClick: () => this.newOpenWarning(warningNotify),
         });
       }
       if (resp.messages && resp.messages.list != null) {
@@ -499,21 +468,13 @@ export default {
     newOpenWarning(val) {
       this.openWarning();
       val.close();
-      this.isShowAlert = false;
+      this.isShowWarning = false;
     },
 
     hotKeyPress(e) {
       if (e.ctrlKey && e.keyCode == 81) {
         e.preventDefault();
         this.$router.push("/fuzzq");
-      }
-    },
-
-    setWarnTHeight() {
-      if (this.warnings * 40 > 360) {
-        this.warnTHeight = 380;
-      } else {
-        this.warnTHeight = 450;
       }
     },
 

@@ -20,7 +20,7 @@
             <span style="color: #3ab4d7;font-weight: 600;cursor:pointer">{{scope.row.instance}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="实例类型" width="180" align="center">
+        <el-table-column label="实例类型" width="70" align="center">
           <template slot-scope="scope">
             <div v-for="type in instanceTypes">
               <span v-if="type.name == scope.row.type">
@@ -31,15 +31,11 @@
         </el-table-column>
         <el-table-column prop="user" label="创建人" align="center">
         </el-table-column>
-        <el-table-column
-          prop="projectName"
-          label="项目名称"
-          align="center">
+        <el-table-column prop="projectName"  label="项目名称" align="center">
         </el-table-column>
-        <el-table-column
-          prop="user"
-          label="创建人"
-          align="center">
+        <el-table-column prop="repoUrl"  label="仓库地址" align="center">
+        </el-table-column>
+        <el-table-column prop="namespace"  label="命名空间" align="center">
         </el-table-column>
         <el-table-column prop="description" label="描述" align="center">
         </el-table-column>
@@ -69,13 +65,22 @@
             <el-option v-for="type in instanceTypes" :label="type.value" :value="type.name" :key="type.name"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="项目名称" prop="description">
+        <el-form-item label="项目名称" prop="description" required>
           <el-input   v-model="instanceForm.projectName"   style="width:95%"></el-input>
         </el-form-item>
+        <el-form-item label="仓库地址" prop="repoUrl" required>
+          <el-select v-model="instanceForm.repoUrl" placeholder="实例类型" style="width:95%">
+            <el-option v-for="item in repoUrls" :label="item.repoUrl" :value="item.repoUrl" :key="item.repoUrl"></el-option>
+          </el-select>
+        </el-form-item>
+          <el-form-item label="命名空间" prop="namespace" required>
+            <el-input   v-model="instanceForm.namespace"   style="width:95%"></el-input>
+          </el-form-item>
+
         <el-form-item label="构建参数" prop="params" required>
           <el-input v-model="instanceForm.params" placeholder="多参数请用逗号,隔开" style="width:95%"></el-input>
         </el-form-item>
-        <el-form-item label="实例描述" prop="description">
+        <el-form-item label="实例描述" prop="description" >
           <el-input type="textarea" v-model="instanceForm.description" :maxlength="2000" :rows="4" style="width:95%"></el-input>
         </el-form-item>
       </el-form>
@@ -114,7 +119,9 @@ export default {
         id: null,
         instance: null,
         type: null,
+        repoUrl:null,
         projectName: null,
+        namespace:null,
         description: null,
         params: null
       },
@@ -123,9 +130,11 @@ export default {
       updateInstanceProp: false,
       instanceTypes: [],
       projectName:'',
+      namespace:'',
       instanceFormTitle: '',
       dialogInstanceVisible: false,
       instances: [],
+      repoUrls:[],
       rules: {
         instance: [{
           validator: checkInstance,
@@ -144,6 +153,7 @@ export default {
     this.tableHeight = bodyAviHeightNTab - 55;
     this.listInstances();
     this.listInstanceTypes();
+
   },
 
   methods: {
@@ -186,6 +196,7 @@ export default {
     },
 
     editInstance(row) {
+      this.listGitInfo();
       this.updateInstanceProp = true;
       this.addInstanceProp = false;
       this.instanceFormTitle = '修改实例';
@@ -193,6 +204,8 @@ export default {
       this.instanceForm.description = row.description;
       this.instanceForm.instance = row.instance;
       this.instanceForm.projectName = row.projectName;
+      this.instanceForm.namespace = row.namespace;
+      this.instanceForm.repoUrl = row.repoUrl;
       this.instanceForm.type = row.type;
       this.instanceForm.id = row.id;
       this.instanceForm.params = row.params;
@@ -210,11 +223,20 @@ export default {
         })
     },
 
+    listGitInfo() {
+      let _self = this;
+      _self.$axios.get("/gitInfo", {})
+        .then(res => {
+          _self.repoUrls = res.data;
+        })
+    },
+
     addInstanceDialog() {
       this.updateInstanceProp = false;
       this.addInstanceProp = true;
       this.instanceFormTitle = '添加实例';
       this.dialogInstanceVisible = true;
+      this.listGitInfo();
     },
 
     saveInstanceAndValid(instanceForm) {
@@ -238,6 +260,8 @@ export default {
           instance: _self.instanceForm.instance,
           description: _self.instanceForm.description,
           projectName:_self.instanceForm.projectName,
+          repoUrl:_self.instanceForm.repoUrl,
+          namespace:_self.instanceForm.namespace,
           type: _self.instanceForm.type,
           params: _self.instanceForm.params
         })
@@ -257,6 +281,8 @@ export default {
           instance: _self.instanceForm.instance,
           description: _self.instanceForm.description,
           projectName:_self.instanceForm.projectName,
+          repoUrl:_self.instanceForm.repoUrl,
+          namespace:_self.instanceForm.namespace,
           type: _self.instanceForm.type,
           id: _self.instanceForm.id,
           params: _self.instanceForm.params

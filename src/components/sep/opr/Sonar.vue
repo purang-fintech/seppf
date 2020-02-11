@@ -17,7 +17,7 @@
           </el-form-item>
           <el-form-item style="float:right">
             <el-button v-no-more-click size="mini" type="primary" icon="el-icon-search" @click="querySonarHistories()">查询</el-button>
-            <el-button v-no-more-click size="mini" type="primary" icon="iconfont icon-radar" @click="dialogSonarVisible = true">立即扫描
+            <el-button v-no-more-click size="mini" type="primary" icon="iconfont icon-radar" @click="listInstance(),dialogSonarVisible = true">立即扫描
             </el-button>
           </el-form-item>
         </el-form>
@@ -33,7 +33,7 @@
           element-loading-text="查询中..."
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)">
-          <el-table-column prop="projectKey" label="实例项目名称" align="center">
+          <el-table-column prop="projectKey" label="实例名称" width="140" align="center">
           </el-table-column>
           <el-table-column prop="gitBranch" label="分支版本" align="center">
           </el-table-column>
@@ -51,22 +51,40 @@
           <el-table-column prop="ncloc" label="代码行数" width="80" align="center">
           </el-table-column>
           <el-table-column prop="coverage" label="单测覆盖率" width="90" align="center">
+            <template slot-scope="scope">
+              <span  class="breq-sum-tips" type="text" @click="viewDrawer(scope.row.projectKey,'coverage')">{{scope.row.coverage}}</span>
+            </template>
           </el-table-column>
-          <el-table-column prop="duplicatedLinesDensity" label="重复比例" width="80" align="center">
+          <el-table-column prop="duplicatedLinesDensity"   label="重复比例" width="80" align="center">
+            <template slot-scope="scope">
+              <span  class="breq-sum-tips" type="text" @click="viewDrawer(scope.row.projectKey,'duplicated_lines_density')">{{scope.row.duplicatedLinesDensity}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="codeSmells" label="坏味道" width="80" align="center">
+            <template slot-scope="scope">
+              <span  class="breq-sum-tips" type="text" @click="viewDrawer(scope.row.projectKey,'CODE_SMELL')">{{scope.row.codeSmells}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="bugs" label="缺陷数" width="80" align="center">
+            <template slot-scope="scope">
+              <span  class="breq-sum-tips" type="text" @click="viewDrawer(scope.row.projectKey,'BUG')">{{scope.row.bugs}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="vulnerabilities" label="安全漏洞" width="80" align="center">
+            <template slot-scope="scope">
+              <span  class="breq-sum-tips" type="text" @click="viewDrawer(scope.row.projectKey,'VULNERABILITY')">{{scope.row.vulnerabilities}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="hotspots" label="命中热点" width="80" align="center">
+            <template slot-scope="scope">
+              <span  class="breq-sum-tips" type="text" @click="viewDrawer(scope.row.projectKey,'SECURITY_HOTSPOT')">{{scope.row.hotspots}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="sqaleIndex" label="技术债(小时)" width="100" align="center">
           </el-table-column>
           <el-table-column label="详情" width="80" align="center">
             <template slot-scope="scope">
-              <el-button v-no-more-click type="text" @click="viewDetail(scope.row)">查看详情</el-button>
+              <el-button v-no-more-click type="text" @click="viewDetail(scope.row)">结果总览</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -84,6 +102,11 @@
       </div>
     </el-card>
 
+    <el-drawer
+      title="最靓的标题" :visible.sync="drawer" size="70%" :with-header ="false" >
+      <iframe :src="_self.draw.url"  style="margin-top:-110px; height: 100%;width:100%"  frameborder="0"></iframe>
+    </el-drawer>
+
     <el-dialog :close-on-click-modal="modalClose" title="项目扫描" :visible.sync="dialogSonarVisible" width="50%">
       <el-form
         :rules="rules"
@@ -92,12 +115,21 @@
         :model="sonarScan"
         label-width="100px"
         size="medium">
-        <el-form-item label="填写项目:" prop="sonarProjectNames">
-          <el-input v-model=" sonarScan.sonarProjectNames" style="width:98%" placeholder="项目名称之间请用逗号分隔,例：project1,project2" clearable></el-input>
+        <el-form-item label="扫描实例:" prop="sonarProjectNames">
+          <el-select v-model="sonarScan.instance" value-key="instance" placeholder="选择实例" style="width:95%" @change="listBranch" clearable>
+            <el-option v-for="item in instances" :label="item.instance+' 【'+item.description+'】'" :value="item" :key="item.instance" ></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="Git分支:" prop="gitBranch">
-          <el-input v-model="sonarScan.gitBranch" style="width:98%" placeholder="例：release/JRC1.2.1或master或feature1123" filterable clearable>
-          </el-input>
+        <el-form-item label="GIT分支:" prop="gitBranch">
+          <el-select v-model="sonarScan.gitBranch" placeholder="选择分支" style="width:95%"   clearable>
+            <el-option v-for="item in branches" :label="item.name" :value="item.name" :key="item.name" ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="主要语言:" prop="language">
+          <el-radio-group v-model="sonarScan.language">
+            <el-radio-button label="JAVA"></el-radio-button>
+            <el-radio-button label="JS"></el-radio-button>
+          </el-radio-group>
         </el-form-item>
       </el-form>
 
@@ -127,6 +159,10 @@ export default {
       checkAllInstance: false,
       isIndeterminate: true,
       productId: null,
+      drawer: false,
+      draw:{
+        url:""
+      },
       qform: {
         projectKey: ""
       },
@@ -135,8 +171,10 @@ export default {
       rel_code: null,
       sonarScanResults: [],
       releases: [],
+      instances:[],
+      branches:[],
       rel_code: null,
-      sonarProjectNames: [],
+      sonarProjectNames: "",
       projectEntry: [{
         instance: "",
         paramValue: "",
@@ -144,18 +182,24 @@ export default {
       }],
       sonarScan: {
         gitBranch: this.rel_code,
-        sonarProjectNames: ""
+        instance: {},
+        language:'JAVA'
       },
       dialogSonarVisible: false,
       rules: {
         sonarProjectNames: [{
           required: true,
-          message: "请填写扫描项目",
+          message: "请选择扫描项目",
           trigger: "blur"
         }],
         gitBranch: [{
           required: true,
-          message: "请填写项目分支",
+          message: "请选择项目分支",
+          trigger: "blur"
+        }],
+        language: [{
+          required: true,
+          message: "请选择主要语言",
           trigger: "blur"
         }]
       }
@@ -166,13 +210,13 @@ export default {
     this.querySonarHistories(this);
     this.productId = sessionStorage.productId;
     this.qform.projectKey = "";
-    // this.timer = setInterval(() => {
-    //   if (document.getElementById("sonarList") === null) {
-    //     clearInterval(this.timer);
-    //     return;
-    //   }
-    //   this.querySonarHistories(this);
-    // }, 2000)
+    this.timer = setInterval(() => {
+      if (document.getElementById("sonarList") === null) {
+        clearInterval(this.timer);
+        return;
+      }
+      this.querySonarHistories(this);
+    }, 2000)
   },
 
   methods: {
@@ -213,8 +257,9 @@ export default {
           productId: sessionStorage.productId,
           noteId: _self.noteId,
           gitBranch: _self.sonarScan.gitBranch,
+          language: _self.sonarScan.language,
           submitter: sessionStorage.userId,
-          projectKeys: _self.sonarScan.sonarProjectNames.split(",")
+          projectKeys: _self.sonarScan.instance.projectName.split(",")
         })
         .then(function (res) {
           _self.dialogSonarVisible = false;
@@ -224,6 +269,33 @@ export default {
           });
         })
         .catch(e => {});
+    },
+    listInstance() {
+      let _self = this;
+      _self.$axios.get("/listInstance", {
+        productId: sessionStorage.productId
+      })
+        .then(res => {
+          _self.instances = res.data;
+        })
+    },
+    listBranch(data) {
+      let _self = this;
+      if (!data){
+        return
+      }
+      console.log(data)
+      let name =data.projectName;
+      let url = data.repoUrl
+      let space = data.namespace
+      _self.$axios.post("/listBranch",{
+        repoUrl:url,
+        projectName:name,
+        namespace:space
+        }
+      ).then(res => {
+          _self.branches = res.data;
+        })
     },
 
     validateAndBuild(sonarProjects) {
@@ -239,6 +311,19 @@ export default {
         }
       });
       window.open(routeData.href, "_blank");
+    },
+
+    viewDrawer(projectKey,point) {
+      let _self = this;
+      _self.drawer = true;
+
+      if(point == 'CODE_SMELL' ||point == 'BUG'||point == 'VULNERABILITY'||point =='SECURITY_HOTSPOT'){
+        _self.draw.url = "http://sonar.purang.com/project/issues?id="+projectKey+"&resolved=false&types="+point
+      }
+      if(point == 'duplicated_lines_density' ||point == 'coverage' ){
+        _self.draw.url = "http://sonar.purang.com/component_measures?id="+projectKey+"&metric="+point+"&view=list"
+      }
+
     }
   }
 };
@@ -247,5 +332,9 @@ export default {
 <style>
 .demo-form-inline {
   padding: 10px 30px 10px 10px;
+}
+.breq-sum-tips {
+  color: #3AB4D7 !important;
+  cursor: pointer !important;
 }
 </style>
