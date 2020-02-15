@@ -3,7 +3,7 @@
     <div class="crumbs">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>
-          <i class="iconfont icon-tech"></i> 发布管理
+          <i class="iconfont icon-release"></i> 发布管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>发布清单</el-breadcrumb-item>
       </el-breadcrumb>

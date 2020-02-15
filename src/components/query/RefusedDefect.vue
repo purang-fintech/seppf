@@ -3,7 +3,7 @@
     <div class="crumbs">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>
-          <i class="iconfont icon-bug"></i> 综合查询
+          <i class="el-icon-search"></i> 综合查询
         </el-breadcrumb-item>
         <el-breadcrumb-item>被拒缺陷</el-breadcrumb-item>
       </el-breadcrumb>
