@@ -726,7 +726,7 @@ export default {
       });
     },
 
-    productQuery() {
+    productQuery(callback) {
       let _self = this;
       _self.$axios({
           method: "post",
@@ -741,6 +741,9 @@ export default {
         .then(function (res) {
           _self.productInfo = eval(res.data.list)[0];
           _self.editing = false;
+          if (typeof callback == "function") {
+            callback(_self.productInfo);
+          }
         })
     },
 
@@ -759,10 +762,19 @@ export default {
           if ((res.data = 1)) {
             _self.$message.success("修改成功！");
             _self.productQuery();
+            _self.baseProductsReQuery();
           } else {
             _self.$message.warning("修改失败");
             console.log(response);
           }
+        })
+    },
+
+    baseProductsReQuery(){
+      let _self = this;
+      _self.$axios.post("/base/products")
+        .then(function (res) {
+          localStorage.setItem("products", JSON.stringify(res.data));
         })
     },
 
@@ -784,6 +796,7 @@ export default {
           if ((res.data = 1)) {
             _self.$message.success("产品禁用成功！");
             _self.productQuery();
+            _self.baseProductsReQuery();
           } else {
             _self.$message.warning("产品禁用失败");
             console.log(response);

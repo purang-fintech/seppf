@@ -10,7 +10,10 @@
     </div>
 
     <el-card shadow="hover">
-      <div class="sonar-form" id="sonarList">
+      <div v-if="!sonarConfig">
+        未配置SONAR服务或配置错误，请联系管理员！
+      </div>
+      <div v-if="sonarConfig" class="sonar-form" id="sonarList">
         <el-form v-model="qform" :inline="true" size="small" label-width="100px">
           <el-form-item label="实例项目名称" prop="projectKey">
             <el-input v-model="qform.projectKey" placeholder="请输入" clearable></el-input>
@@ -33,7 +36,7 @@
           element-loading-text="查询中..."
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)">
-          <el-table-column prop="projectKey" label="实例名称" width="140" align="center">
+          <el-table-column prop="instanceName" label="实例名称" width="140" align="center">
           </el-table-column>
           <el-table-column prop="gitBranch" label="分支版本" align="center">
           </el-table-column>
@@ -143,7 +146,7 @@
 </template>
 
 <script>
-import commonQuery from "@/components/util/CommonQuery.vue";
+
 
 export default {
   name: "BuildDeployment",
@@ -159,6 +162,7 @@ export default {
       checkAllInstance: false,
       isIndeterminate: true,
       productId: null,
+      sonarConfig:true,
       drawer: false,
       draw:{
         url:""
@@ -210,6 +214,7 @@ export default {
     this.querySonarHistories(this);
     this.productId = sessionStorage.productId;
     this.qform.projectKey = "";
+    this.handleSonarConfig();
     this.timer = setInterval(() => {
       if (document.getElementById("sonarList") === null) {
         clearInterval(this.timer);
@@ -220,12 +225,14 @@ export default {
   },
 
   methods: {
-    releaseQuery() {
+    handleSonarConfig(){
       let _self = this;
-      _self.releases.splice(0, _self.releases.length);
-      commonQuery.openRelQuerySonar(result => {
-        _self.releases = result.releases;
-      });
+      _self.$axios
+    .post("/build/handleSonarConfig")
+        .then(function (res) {
+          _self.sonarConfig=res.data
+        })
+        .catch(e => {});
     },
     querySonarHistories(self) {
       let _self = this;
@@ -259,6 +266,7 @@ export default {
           gitBranch: _self.sonarScan.gitBranch,
           language: _self.sonarScan.language,
           submitter: sessionStorage.userId,
+          instanceName: _self.sonarScan.instance.instance,
           projectKeys: _self.sonarScan.instance.projectName.split(",")
         })
         .then(function (res) {

@@ -101,7 +101,7 @@
                 </el-date-picker>
               </el-form-item>
               <el-form-item style="width:90%">
-                <el-button type="primary" @click="haveReadMessages()" icon="el-icon-search" style="float:right">搜索</el-button>
+                <el-button type="primary" @click="haveReadMessages()" icon="el-icon-search" style="float:right">查询</el-button>
               </el-form-item>
             </el-form>
           </el-col>

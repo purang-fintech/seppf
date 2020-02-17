@@ -65,16 +65,16 @@
             <el-option v-for="type in instanceTypes" :label="type.value" :value="type.name" :key="type.name"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="项目名称" prop="description" required>
-          <el-input   v-model="instanceForm.projectName"   style="width:95%"></el-input>
+        <el-form-item label="项目名称" prop="description" >
+          <el-input   v-model="instanceForm.projectName"  placeholder="项目的名称"  style="width:95%"></el-input>
         </el-form-item>
-        <el-form-item label="仓库地址" prop="repoUrl" required>
+        <el-form-item label="仓库地址" prop="repoUrl"  >
           <el-select v-model="instanceForm.repoUrl" placeholder="实例类型" style="width:95%">
             <el-option v-for="item in repoUrls" :label="item.repoUrl" :value="item.repoUrl" :key="item.repoUrl"></el-option>
           </el-select>
         </el-form-item>
-          <el-form-item label="命名空间" prop="namespace" required>
-            <el-input   v-model="instanceForm.namespace"   style="width:95%"></el-input>
+          <el-form-item label="命名空间" prop="namespace"  >
+            <el-input   v-model="instanceForm.namespace"  placeholder="请填写项目命名空间（项目路径）"  style="width:95%"></el-input>
           </el-form-item>
 
         <el-form-item label="构建参数" prop="params" required>

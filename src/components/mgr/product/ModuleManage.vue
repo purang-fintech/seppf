@@ -565,7 +565,9 @@ export default {
           if (res.data > 0) {
             _self.showDialog = false;
             _self.$message.success("保存成功！");
-            _self.moduleQuery();
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
           } else {
             _self.$notify.error("保存失败");
             console.log(response);
@@ -636,7 +638,9 @@ export default {
           if ((res.data = 1)) {
             _self.showDialogMod = false;
             _self.$message.success("修改成功！");
-            _self.moduleQuery();
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
           } else {
             _self.$notify.error("修改失败");
             console.log(response);
@@ -661,7 +665,9 @@ export default {
         .then(function (res) {
           if ((res.data = 1)) {
             _self.$message.success("删除成功！");
-            _self.moduleQuery();
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
           } else {
             _self.$notify.error("删除失败");
             console.log(response);

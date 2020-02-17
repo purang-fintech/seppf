@@ -82,7 +82,7 @@
         <div v-for="ele in planed" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
-            <span class="cms-link" @click="$router.push({ name: 'mission', params: { 'id': ele.id } })">{{ele.label}}</span>
+            <span class="cms-link" @click="$router.push({ name: 'missions', params: {type: 'coding', 'id': ele.id } })">{{ele.label}}</span>
           </el-tooltip>
           <div class="split-line"></div>
           计划人力：{{ele.manpower}} 人日
@@ -106,7 +106,7 @@
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
             <span v-if="ele.label.indexOf('处理缺陷') > -1" class="cms-link" style="color:red" @click="toDefect('dev')">{{ele.label}}</span>
-            <span v-else class="cms-link" @click="$router.push({ name: 'mission', params: { 'id': ele.id } })">{{ele.label}}</span>
+            <span v-else class="cms-link" @click="$router.push({ name: 'missions', params: {type: 'coding', 'id': ele.id } })">{{ele.label}}</span>
           </el-tooltip>
           <div class="split-line"></div>
           计划人力：{{ele.manpower}} 人日
@@ -129,7 +129,7 @@
         <div v-for="ele in ready" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
-            <span class="cms-link" @click="$router.push({ name: 'mission', params: { 'id': ele.id } })">{{ele.label}}</span>
+            <span class="cms-link" @click="$router.push({ name: 'missions', params: {type: 'coding', 'id': ele.id } })">{{ele.label}}</span>
           </el-tooltip>
           <div class="split-line"></div>
           计划人力：{{ele.manpower}} 人日
@@ -153,7 +153,7 @@
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
             <span v-if="ele.label.indexOf('处理缺陷') > -1" class="cms-link" style="color:red" @click="toDefect('test')">{{ele.label}}</span>
-            <span v-else class="cms-link" @click="$router.push({ name: 'mission', params: { 'id': ele.id } })">{{ele.label}}</span>
+            <span v-else class="cms-link" @click="$router.push({ name: 'missions', params: {type: 'coding', 'id': ele.id } })">{{ele.label}}</span>
           </el-tooltip>
           <div class="split-line"></div>
           计划人力：{{ele.manpower}} 人日
@@ -176,7 +176,7 @@
         <div v-for="ele in completed" :key="ele.id" class="items" :class="ele.id === specified ? 'specified' : ''">
           <i :class="ele.fixed? 'iconfont icon-anchor' : 'iconfont icon-pushpin'" @click=" ele.fixed=! ele.fixed" aria-hidden="true"></i>
           <el-tooltip :content="ele.label" placement="top" effect="dark">
-            <span class="cms-link" @click="$router.push({ name: 'mission', params: { 'id': ele.id } })">{{ele.label}}</span>
+            <span class="cms-link" @click="$router.push({ name: 'missions', params: {type: 'coding', 'id': ele.id } })">{{ele.label}}</span>
           </el-tooltip>
           <div class="split-line"></div>
           计划人力：{{ele.manpower}} 人日

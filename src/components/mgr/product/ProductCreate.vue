@@ -151,6 +151,14 @@ export default {
         })
     },
 
+    baseProductsReQuery(){
+      let _self = this;
+      _self.$axios.post("/base/products")
+        .then(function (res) {
+          localStorage.setItem("products", JSON.stringify(res.data));
+        })
+    },
+
     productCreate() {
       let _self = this;
       _self.$axios.post("/product/create", {
@@ -188,6 +196,7 @@ export default {
               productCode: _self.prodfrom.productCode
             });
             localStorage.setItem("userProducts", JSON.stringify(userProducts));
+            _self.baseProductsReQuery();
             setTimeout(() => {
               window.location.reload();
             }, 500);

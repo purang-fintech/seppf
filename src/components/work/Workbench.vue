@@ -71,6 +71,80 @@
       </el-table>
     </el-drawer>
 
+    <el-drawer title="项目质量预警 —— 当日全部" :visible.sync="showAllWarning" direction="rtl" size="1000px">
+      <el-table
+        :data="warning.allData"
+        size="mini"
+        stripe
+        empty-text="暂无异常告警情况发生"
+        :max-height="maxHeight"
+        :border="showBorder">
+        <el-table-column type="index" label="序号" width="50" align="center" sortable>
+        </el-table-column>
+        <el-table-column prop="category" label="所属版本" width="160" align="center" sortable>
+        </el-table-column>
+        <el-table-column prop="responserName" label="负责人" width="100" align="center" sortable>
+        </el-table-column>
+        <el-table-column prop="typeName" label="告警类型" width="100" align="center">
+        </el-table-column>
+        <el-table-column prop="subTypeName" label="告警子类型" width="150" align="center">
+        </el-table-column>
+        <el-table-column prop="levelName" label="告警级别" width="100" align="center">
+          <template slot-scope="scope">
+            <el-tag effect="dark" size="mini" v-if="scope.row.level==1">{{scope.row.levelName}}</el-tag>
+            <el-tag effect="dark" size="mini" type="info" v-if="scope.row.level==2">{{scope.row.levelName}}</el-tag>
+            <el-tag effect="dark" size="mini" type="warning" v-if="scope.row.level==3">{{scope.row.levelName}}</el-tag>
+            <el-tag effect="dark" size="mini" type="danger" v-if="scope.row.level==4">{{scope.row.levelName}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="告警摘要" header-align="center">
+          <template slot-scope="scope">
+            <el-popover placement="top" width="500" trigger="click">
+              <el-alert title="计算规则说明" type="warning" :closable="false" :description="scope.row.summary + '，表达式：' + scope.row.content">
+              </el-alert>
+              <el-button slot="reference" type="text" size="small" style="margin-left:5px">{{ scope.row.summary }}</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-drawer>
+
+    <el-drawer title="项目质量预警 ——  当日与我相关" :visible.sync="showMyWarning" direction="rtl" size="860px">
+      <el-table
+        :data="warning.mineData"
+        size="mini"
+        stripe
+        empty-text="暂无异常告警情况发生"
+        :max-height="maxHeight"
+        :border="showBorder">
+        <el-table-column type="index" label="序号" width="50" align="center" sortable>
+        </el-table-column>
+        <el-table-column prop="category" label="所属版本" width="160" align="center" sortable>
+        </el-table-column>
+        <el-table-column prop="typeName" label="告警类型" width="100" align="center">
+        </el-table-column>
+        <el-table-column prop="subTypeName" label="告警子类型" width="150" align="center">
+        </el-table-column>
+        <el-table-column prop="levelName" label="告警级别" width="100" align="center">
+          <template slot-scope="scope">
+            <el-tag effect="dark" size="mini" v-if="scope.row.level==1">{{scope.row.levelName}}</el-tag>
+            <el-tag effect="dark" size="mini" type="info" v-if="scope.row.level==2">{{scope.row.levelName}}</el-tag>
+            <el-tag effect="dark" size="mini" type="warning" v-if="scope.row.level==3">{{scope.row.levelName}}</el-tag>
+            <el-tag effect="dark" size="mini" type="danger" v-if="scope.row.level==4">{{scope.row.levelName}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="告警摘要" header-align="center">
+          <template slot-scope="scope">
+            <el-popover placement="top" width="500" trigger="click">
+              <el-alert title="计算规则说明" type="warning" :closable="false" :description="scope.row.summary + '，表达式：' + scope.row.content">
+              </el-alert>
+              <el-button slot="reference" type="text" size="small" style="margin-left:5px">{{ scope.row.summary }}</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-drawer>
+
     <el-drawer title="产品需求 —— 开发中" :visible.sync="showDevRequest" direction="rtl" size="50%">
       <el-table :data="requirement.devingData" size="mini" stripe :border="showBorder" :max-height="maxHeight">
         <el-table-column type="index" width="100" label="序号" align="center"></el-table-column>
@@ -177,14 +251,14 @@
         <div class="work-content" style="width:48.5%;display:inline-block">
           <div class="content-name">当前合计</div>
           <div style="width:100%;text-align:center">
-            <el-link type="primary" class="content-number" :underline="false">{{warning.count}}</el-link>
+            <el-link type="primary" class="content-number" @click="showAllWarning=true" :underline="false">{{warning.count}}</el-link>
           </div>
         </div>
         <el-divider direction="vertical"></el-divider>
         <div class="work-content" style="width:48.5%;display:inline-block">
           <div class="content-name" style="color: yellow">与我相关</div>
           <div style="width:100%;text-align:center">
-            <el-link type="primary" class="content-number" :underline="false">{{warning.mine}}
+            <el-link type="primary" class="content-number" @click="showMyWarning=true" :underline="false">{{warning.mine}}
               <span style="font-size:16px;font-weight:500">{{warning.count == 0 ? '0.0%' : (warning.mine * 100 / warning.count).toFixed(1) + '%'}}</span>
             </el-link>
           </div>
@@ -518,6 +592,8 @@ export default {
       showMyRequest: false,
       showAllCms: false,
       showMyCms: false,
+      showAllWarning: false,
+      showMyWarning: false,
       userProducts: [],
       release: {
         count: 0,
@@ -888,12 +964,14 @@ export default {
 
     productWarningQuery() {
       let _self = this;
-      // _self.$axios.post("/dashboard/warning")
-      // .then(function(res) {
-      //   let result = res.data;
-      //   _self.warning.count = result.count;
-      //   _self.warning.mine = result.mine;
-      // })
+      _self.$axios.post("/dashboard/warning")
+      .then(function(res) {
+        let result = res.data;
+        _self.warning.count = result.count;
+        _self.warning.mine = result.mine;
+        _self.warning.allData = result.allData;
+        _self.warning.mineData = result.mineData;
+      })
     },
 
     productCodeHealthyQuery() {

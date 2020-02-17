@@ -34,6 +34,15 @@ export default new Router({
           component: resolve => require(['@/components/center/message/MessageCenter.vue'], resolve)
         },
         {
+          path: '/warning',
+          name: 'warning',
+          meta: {
+            requireAuth: true,
+            keepAlive: false
+          },
+          component: resolve => require(['@/components/center/warning/WarningCenter.vue'], resolve)
+        },
+        {
           path: '/release',
           name: 'release',
           meta: {

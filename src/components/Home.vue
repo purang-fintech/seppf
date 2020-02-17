@@ -1,13 +1,7 @@
 <template>
   <div class="wrapper">
-    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showWarning" width="1024px" :show-close="false" custom-class="popver-dialog">
-      <el-table
-        :data="warnings"
-        size="mini"
-        stripe
-        empty-text="暂无异常告警情况发生"
-        :max-height="warnTHeight"
-        :border="showBorder">
+    <el-dialog :close-on-click-modal="modalClose" :visible.sync="showWarning" width="1024px" :title="warningTitle" custom-class="popver-dialog">
+      <el-table :data="warnings" size="mini" empty-text="暂无异常告警情况发生" :max-height="warnTHeight" :border="showBorder">
         <el-table-column type="index" label="序号" width="50" align="center" sortable>
         </el-table-column>
         <el-table-column prop="warningDate" label="告警日期" width="120" align="center" sortable>
@@ -31,6 +25,7 @@
         </el-table-column>
       </el-table>
       <div slot="footer">
+        <el-button type="primary" icon="el-icon-warning-outline" @click="showWarning=false;$router.push('/warning')" size="mini">前往告警中心</el-button>
         <el-button type="primary" icon="el-icon-close" @click="closeWarning()" size="mini">关闭</el-button>
       </div>
     </el-dialog>
@@ -103,6 +98,10 @@
               <i class="el-icon-tickets"></i> 我的工作</el-dropdown-item>
             <el-dropdown-item command="settings">
               <i class="el-icon-setting"></i> 用户设置</el-dropdown-item>
+            <el-dropdown-item command="messages">
+              <i class="el-icon-message"></i> 消息中心</el-dropdown-item>
+            <el-dropdown-item command="warnings">
+              <i class="el-icon-warning-outline"></i> 告警中心</el-dropdown-item>
             <el-dropdown-item command="logout">
               <i class="iconfont icon-logout"></i> 退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -183,6 +182,7 @@ export default {
       messages: [],
       showWarning: false,
       warnings: [],
+      warningTitle: "告警不可清除，如需更新告警数据，请联系项目经理重新计算",
       showNewProduct: false,
       authed: sessionStorage.userId && sessionStorage.userId != null,
       websock: null,
@@ -549,6 +549,10 @@ export default {
           })
       } else if (command == "workbench") {
         _self.$router.push("/index");
+      } else if (command == "messages") {
+        _self.$router.push("/message");
+      } else if (command == "warnings") {
+        _self.$router.push("/warning");
       } else if (command == "settings") {
         _self.$router.push("/user");
       }
@@ -646,10 +650,6 @@ export default {
   border: 1px solid #e0dddd82;
 }
 
-.popver-dialog .el-dialog__header {
-  padding: 0;
-}
-
 .popver-dialog .el-dialog__body {
   padding: 20px 20px 10px 20px;
 }
@@ -661,8 +661,7 @@ export default {
 .message-content .el-alert__description {
   font-size: 14px;
 }
-</style>
-<style scoped>
+</style><style scoped>
 .header {
   box-sizing: border-box;
   font-size: 20px;

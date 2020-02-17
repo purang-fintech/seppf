@@ -3,7 +3,7 @@
         <div class="crumbs">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item>
-            <i class="iconfont icon-auth"></i> 基础设施</el-breadcrumb-item>
+            <i class="iconfont icon-tech"></i> 基础设施</el-breadcrumb-item>
             <el-breadcrumb-item>任务管理</el-breadcrumb-item>
         </el-breadcrumb>
         </div>

@@ -302,11 +302,22 @@ export default {
           if (res.data > 0) {
             _self.showDialog = false;
             _self.$message.success("创建产品分支保存成功！");
-            _self.branchQuery();
+            _self.baseBranchesReQuery();
           } else {
             _self.$notify.error("创建产品分支保存失败");
             console.log(response);
           }
+        })
+    },
+
+    baseBranchesReQuery(){
+      let _self = this;
+      _self.$axios.post("/base/branch/" + sessionStorage.productId)
+        .then(function (res) {
+          localStorage.setItem("productBranch", JSON.stringify(res.data));
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         })
     },
 
@@ -358,7 +369,7 @@ export default {
           if ((res.data = 1)) {
             _self.showDialogMod = false;
             _self.$message.success("修改产品分支成功！");
-            _self.branchQuery();
+            _self.baseBranchesReQuery();
           } else {
             _self.$notify.error("修改产品分支失败");
             console.log(response);
@@ -384,7 +395,7 @@ export default {
         .then(function (res) {
           if ((res.data = 1)) {
             _self.$message.success("禁用成功！");
-            _self.branchQuery();
+            _self.baseBranchesReQuery();
           } else {
             _self.$notify.error("禁用失败");
             console.log(response);
