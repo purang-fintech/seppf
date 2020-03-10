@@ -773,6 +773,9 @@ export default {
         pageInfo: {}
       },
 
+      minSitDate: "",
+      minUatDate: "",
+
       showNotReleasedReq: false,
       openLoading: false,
       notReleasedReq: {
@@ -1097,6 +1100,10 @@ export default {
             _self.$set(item, "showRemove", _self.isManager() && item.status <= 2 && item.status > 0 && item.cmCount == 0 && _self.currentRelease.status > 0);
             _self.$set(item, "showCopy", _self.isManager() && item.status > 2 && _self.currentRelease.status > 0);
           });
+          let sitDates = _self.arraySortBy(_self.releasedReq.reqs, "sitDate");
+          let uatDates = _self.arraySortBy(_self.releasedReq.reqs, "uatDate");
+          _self.minSitDate = sitDates.length == 0 ? null : sitDates[0];
+          _self.minUatDate = uatDates.length == 0 ? null : uatDates[0];
           _self.$nextTick(() => {
             _self.reledLoading = false;
           });
@@ -1135,6 +1142,33 @@ export default {
       this.notReleasedReq.pageSize = size;
       this.notReleasedReq.pageNum = 1;
       this.openReqQuery();
+    },
+
+    arraySortBy(arr, key) {
+      if (arr.length > 0 && !key) {
+        return arr.sort((a, b) => {
+          if (!isNaN(Date.parse(a))) {
+            return new Date(a).getTime() - new Date(b).getTime();
+          }
+          return a - b;
+        });
+      }
+      let temp = [];
+      arr.forEach(d => {
+        if (commonQuery.isNull(d[key])) {
+          return;
+        }
+        temp.push(d[key]);
+      });
+      if (temp.length == 0) {
+        return [];
+      }
+      return temp.sort((a, b) => {
+        if (!isNaN(Date.parse(a))) {
+          return new Date(a).getTime() - new Date(b).getTime();
+        }
+        return a - b;
+      });
     },
 
     filterReqQuery(id) {
@@ -1195,6 +1229,8 @@ export default {
       let _self = this;
       _self.currentRelease.id = data.id;
       _self.currentRelease.status = data.status;
+      _self.currentRelease.sitBeginDate = data.sitBeginDate;
+      _self.currentRelease.uatBeginDate = data.uatBeginDate;
       data.environment.split(",").forEach(item => {
         _self.currentRelease.environment.push(parseInt(item));
       });
@@ -1210,6 +1246,14 @@ export default {
         return;
       }
       let postData = [];
+      let sitDates = [];
+      let uatDates = [];
+      if (!commonQuery.isNull(_self.minSitDate)) {
+        sitDates.push(_self.minSitDate);
+      }
+      if (!commonQuery.isNull(_self.minUatDate)) {
+        uatDates.push(_self.minUatDate);
+      }
       _self.notReleasedReq.selected.forEach(item => {
         postData.push({
           id: item.id,
@@ -1217,6 +1261,8 @@ export default {
           sitDate: item.sitDate,
           uatDate: item.uatDate
         });
+        sitDates.push(item.sitDate);
+        uatDates.push(item.uatDate);
       });
       for (let i = 0; i < postData.length; i++) {
         if (commonQuery.isNull(postData[i].sitDate) || commonQuery.isNull(postData[i].uatDate)) {
@@ -1225,6 +1271,43 @@ export default {
         }
       }
 
+      let miniSitDate = _self.arraySortBy(sitDates)[0];
+      let miniUatDate = _self.arraySortBy(uatDates)[0];
+
+      if (new Date(miniSitDate).getTime() < new Date(_self.currentRelease.sitBeginDate).getTime() || 
+        new Date(miniUatDate).getTime() < new Date(_self.currentRelease.uatBeginDate).getTime()) {
+        _self.$confirm("是否将其同步为全部需求的最早计划时间？", "版本测试计划开始时间滞后", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+          .then(() => {
+            _self.$axios.post("/release/update/date", {
+              id: _self.currentRelease.id,
+              sitBeginDate: miniSitDate,
+              uatBeginDate: miniUatDate
+              })
+              .then(function (res) {
+                if (res.data == 1) {
+                  _self.$message.success("同步版本信息成功！");
+                  _self.releaseReq(postData);
+                } else {
+                  _self.$message.warning("同步版本信息失败");
+                  console.log(res);
+                }
+              })
+          })
+          .catch(() => {
+            _self.$message.warning("需求测试计划开始时间不能早于版本测试计划开始时间！");
+            return;
+          });
+      } else {
+        _self.releaseReq(postData);
+      }
+    },
+
+    releaseReq(postData){
+      let _self = this;
       _self.$axios.post("/req/release", {
           releasing: JSON.stringify(postData)
         })
@@ -1303,8 +1386,8 @@ export default {
       data.environment.split(",").forEach(item => {
         _self.currentRel.environment.push(parseInt(item));
       });
-      _self.currentRel.creator = data.creator,
-        _self.currentRel.relDate = data.relDate;
+      _self.currentRel.creator = data.creator;
+      _self.currentRel.relDate = data.relDate;
       _self.currentRel.reqConfirmDate = data.reqConfirmDate;
       _self.currentRel.sitBeginDate = data.sitBeginDate;
       _self.currentRel.uatBeginDate = data.uatBeginDate;
@@ -1392,12 +1475,12 @@ export default {
               return;
             }
           }
-          _self.saveReleaseMod();
+          _self.saveReleaseMod(_self.releaseQuery);
         }
       });
     },
 
-    saveReleaseMod() {
+    saveReleaseMod(callback) {
       let _self = this;
       _self.$axios.post("/release/update", {
           id: _self.currentRel.id,
@@ -1416,7 +1499,9 @@ export default {
           if (res.data == 1) {
             _self.showDialogMod = false;
             _self.$message.success("版本信息修改成功！");
-            _self.releaseQuery();
+            if (typeof callback == "function") {
+              callback();
+            }
           } else {
             _self.$message.warning("保存失败");
             console.log(res);

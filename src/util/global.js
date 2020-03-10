@@ -30,7 +30,7 @@ workCards = [{
     index: 2,
     title: "项目质量预警",
     links: ["查看详情"],
-    needed: false,
+    needed: true,
     contents: [{
         name: "当前合计",
         count: 45,
@@ -148,7 +148,7 @@ workCards = [{
     index: 7,
     title: "发布流水线",
     links: ["查看详情"],
-    needed: true,
+    needed: false,
     contents: [{
         name: "当前合计",
         count: 10,

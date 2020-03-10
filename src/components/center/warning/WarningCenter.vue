@@ -9,6 +9,46 @@
       </el-breadcrumb>
     </div>
 
+    <el-dialog title="缺陷趋势一览" :show-close="false" :visible.sync="showTrendGragh" width="1164px">
+      <v-direction :datas="defects" v-if="null != defects && defects.length > 0"></v-direction>
+      <h1 v-if="defects == null || defects == ''" class="gragh-no-data">缺陷生长趋势<br><br>暂无数据</h1>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showTrendGragh=false" size="mini">关闭</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="缺陷需求分布" :show-close="false" :visible.sync="showReqDefectGragh" width="960px">
+      <v-req :datas="reqs" v-if="null != reqs && reqs.length > 0"></v-req>
+      <h1 v-if="reqs == null || reqs.length == 0" class="gragh-no-data">缺陷需求分布<br><br>暂无数据</h1>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showReqDefectGragh=false" size="mini">关闭</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="缺陷模块分布" :show-close="false" :visible.sync="showModDefectGragh" width="960px">
+      <v-module :datas="modules" v-if="null != modules && modules.length > 0"></v-module>
+      <h1 v-if="modules == null || modules.length == 0" class="gragh-no-data">缺陷模块分布<br><br>暂无数据</h1>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showModDefectGragh=false" size="mini">关闭</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="缺陷修复时效分布" :show-close="false" :visible.sync="showDefectEffGragh" width="960px">
+      <v-fix-cost :datas="fixCosts" v-if="null != fixCosts && fixCosts.length > 0"></v-fix-cost>
+      <h1 v-if="fixCosts == null || fixCosts.length == 0" class="gragh-no-data">缺陷修复时效分布<br><br>暂无数据</h1>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showDefectEffGragh=false" size="mini">关闭</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="缺陷修复次数分布" :show-close="false" :visible.sync="showDefectTimesGragh" width="960px">
+      <v-fix-times :datas="fixTimes" v-if="null != fixTimes && fixTimes.length > 0"></v-fix-times>
+      <h1 v-if="fixTimes == null || fixTimes.length == 0" class="gragh-no-data">缺陷修复次数分布<br><br>暂无数据</h1>
+      <div slot="footer">
+        <el-button type="primary" icon="el-icon-close" @click="showDefectTimesGragh=false" size="mini">关闭</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog title="告警重算" :visible.sync="showRecal" width="680px">
       <el-form :inline="true" class="warning-form" size="small" v-model="calculate" label-width="100px">
         <el-form-item label="计算方式">
@@ -76,7 +116,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="告警日期">
-          <el-date-picker v-model="warning.warningDate" type="date" :value-format="datefmt" placeholder="告警日期">
+          <el-date-picker v-model="warning.warningDate" type="date" :value-format="datefmt" placeholder="告警日期" :clearable="false">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="已邮件通知">
@@ -132,11 +172,7 @@
         </el-table-column>
         <el-table-column label="告警摘要" header-align="center">
           <template slot-scope="scope">
-            <el-popover placement="top" width="500" trigger="click">
-              <el-alert title="计算规则说明" type="warning" :closable="false" :description="scope.row.summary + '，表达式：' + scope.row.content">
-              </el-alert>
-              <el-button slot="reference" type="text" size="small" style="margin-left:5px">{{ scope.row.summary }}</el-button>
-            </el-popover>
+            <el-button type="text" size="small" @click="showGragh(scope.row)" style="margin-left:5px">{{ scope.row.summary }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -172,6 +208,11 @@ import {
 } from "@/util/date.js";
 import commonQuery from "@/components/util/CommonQuery.vue";
 import TableExport from '@/util/TableExport.js'
+import defectDirection from "@/components/sqa/bug/DefectDirection.vue";
+import defectModule from "@/components/sqa/bug/DefectModule.vue";
+import defectReqirements from "@/components/sqa/bug/DefectReqirements.vue";
+import defectFixTimes from "@/components/sqa/bug/DefectFixTimes.vue";
+import defectFixCost from "@/components/sqa/bug/DefectFixCost.vue";
 export default {
   data: function () {
     return {
@@ -206,6 +247,16 @@ export default {
       warninglevels: [],
       warningTypes: [],
       warningSubTypes: [],
+      showTrendGragh: false,
+      showReqDefectGragh: false,
+      showModDefectGragh: false,
+      showDefectEffGragh: false,
+      showDefectTimesGragh: false,
+      defects: [],
+      modules: [],
+      reqs: [],
+      fixTimes: [],
+      fixCosts: [],
       memberFull: [],
       userOptions: [],
       showRecal: false,
@@ -215,6 +266,14 @@ export default {
         relId: ""
       }
     };
+  },
+
+  components: {
+    vDirection: defectDirection,
+    vReq: defectReqirements,
+    vModule: defectModule,
+    vFixTimes: defectFixTimes,
+    vFixCost: defectFixCost
   },
 
   watch: {
@@ -262,6 +321,60 @@ export default {
         _self.memberFull = result.usersFull;
         _self.userOptions = result.usersFull;
       });
+    },
+
+    showGragh(data) {
+      let _self = this;
+      if (data.type == 1) {
+        _self.defects.splice(0, _self.defects.length);
+        _self.defectDirection(data.relId);
+        _self.showTrendGragh = true;
+      } else if (data.type == 2 && data.subType == 1) {
+        _self.reqs.splice(0, _self.reqs.length);
+        _self.defectReqirements(data.relId);
+        _self.showReqDefectGragh = true;
+      } else if (data.type == 2 && data.subType == 2) {
+        _self.modules.splice(0, _self.modules.length);
+        _self.defectModule(data.relId);
+        _self.showModDefectGragh = true;
+      } else if (data.type == 3 && data.subType == 1) {
+        _self.fixCosts.splice(0, _self.fixCosts.length);
+        _self.defectFixCost(data.relId);
+        _self.showDefectEffGragh = true;
+      } else if (data.type == 3 && data.subType == 2) {
+        _self.fixTimes.splice(0, _self.fixTimes.length);
+        _self.defectFixTimes(data.relId);
+        _self.showDefectTimesGragh = true;
+      } else if (data.type == 4) {
+        _self.$confirm("是否前往测试执行菜单查看详情？", "操作提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "info"
+          })
+          .then(() => {
+            _self.$router.push({
+              name: "testexec",
+              params: {
+                relId: data.relId
+              }
+            });
+          })
+      } else if (data.type == 6) {
+        _self.$confirm("是否前往开发任务看板查看详情？", "操作提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "info"
+          })
+          .then(() => {
+            _self.$router.push({
+              name: "dashboard",
+              params: {
+                relId: data.relId,
+                type: "cms"
+              }
+            });
+          })
+      }
     },
 
     isManager() {
@@ -408,6 +521,28 @@ export default {
       return result;
     },
 
+    sortGragh(json, idKey, childKey) {
+      let temp = [];
+      let result = [];
+      for (let i = 0; i < json.length; i++) {
+        temp.push(json[i][idKey]);
+      }
+      temp = temp.filter(function (element, index, array) {
+        return array.indexOf(element) === index;
+      });
+
+      for (let k = 0; k < temp.length; k++) {
+        let children = json.filter(function (d) {
+          return d[idKey] === temp[k];
+        });
+        result.push({
+          [idKey]: temp[k],
+          [childKey]: children
+        });
+      }
+      return result;
+    },
+
     warningCalculate() {
       let _self = this;
       if (_self.calculate.releaseCal == 2 && _self.calculate.relId == "") {
@@ -458,7 +593,92 @@ export default {
             _self.queryChanged = false;
           }, 200);
         });
-    }
+    },
+
+    defectDirection(relId) {
+      let _self = this;
+      _self.$axios({
+          method: "post",
+          url: "/sqa/bugDirection",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: relId
+          }
+        })
+        .then(function (res) {
+          _self.defects = eval(res.data);
+        })
+    },
+
+    defectModule(relId) {
+      let _self = this;
+      _self.$axios({
+          method: "post",
+          url: "/sqa/bugModule",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: relId
+          }
+        })
+        .then(function (res) {
+          _self.modules = _self.sortGragh(eval(res.data), "moduleName", "children");
+        })
+    },
+
+    defectReqirements(relId) {
+      let _self = this;
+      _self.$axios({
+          method: "post",
+          url: "/sqa/bugReq",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: relId
+          }
+        })
+        .then(function (res) {
+          _self.reqs = _self.sortGragh(eval(res.data), "reqSummary", "children");
+        })
+    },
+
+    defectFixTimes(relId) {
+      let _self = this;
+      _self.$axios({
+          method: "post",
+          url: "/sqa/bugFixtImes",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: relId
+          }
+        })
+        .then(function (res) {
+          _self.fixTimes = eval(res.data);
+        })
+    },
+
+    defectFixCost(relId) {
+      let _self = this;
+      _self.$axios({
+          method: "post",
+          url: "/sqa/bugFixCost",
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            relId: relId
+          }
+        })
+        .then(function (res) {
+          _self.fixCosts = eval(res.data);
+        })
+    },
   }
 };
 </script>
@@ -483,5 +703,14 @@ export default {
   background-color: #fff;
   font-size: 14px;
   color: #788288;
+}
+
+.gragh-no-data {
+  font-size: 20px;
+  width: 100%;
+  display: table;
+  text-align: center;
+  margin-top: 5%;
+  font-weight: 700;
 }
 </style>

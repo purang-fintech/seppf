@@ -32,7 +32,7 @@ export default {
 
     _self.chartsOptions = {
       title: {
-        text: "缺陷修复次数分析（已关闭）",
+        text: "缺陷修复次数分析",
         top: "5px",
         left: "10px"
       },

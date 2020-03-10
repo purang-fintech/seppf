@@ -404,10 +404,6 @@ export default {
         .then(function (res) {
           _self.defects = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectFounder() {
@@ -430,10 +426,6 @@ export default {
         .then(function (res) {
           _self.submitters = _self.sortData(eval(res.data), "founder", "children");
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectResponser() {
@@ -456,10 +448,6 @@ export default {
         .then(function (res) {
           _self.responsers = _self.sortData(eval(res.data), "responser", "children");
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectModule() {
@@ -482,10 +470,6 @@ export default {
         .then(function (res) {
           _self.modules = _self.sortData(eval(res.data), "moduleName", "children");
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectReqirements() {
@@ -508,10 +492,6 @@ export default {
         .then(function (res) {
           _self.reqs = _self.sortData(eval(res.data), "reqSummary", "children");
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectPriority() {
@@ -534,10 +514,6 @@ export default {
         .then(function (res) {
           _self.priorities = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectInfluence() {
@@ -560,10 +536,6 @@ export default {
         .then(function (res) {
           _self.influences = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectType() {
@@ -586,10 +558,6 @@ export default {
         .then(function (res) {
           _self.types = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectFoundPeriod() {
@@ -612,10 +580,6 @@ export default {
         .then(function (res) {
           _self.foundPeriods = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectProducePeriod() {
@@ -638,10 +602,6 @@ export default {
         .then(function (res) {
           _self.periods = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectFixTimes() {
@@ -664,10 +624,6 @@ export default {
         .then(function (res) {
           _self.fixTimes = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectFixCost() {
@@ -690,10 +646,6 @@ export default {
         .then(function (res) {
           _self.fixCosts = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     defectVerifyCost() {
@@ -716,10 +668,6 @@ export default {
         .then(function (res) {
           _self.verifyCosts = eval(res.data);
         })
-        .catch(function (response) {
-          _self.$notify.error("发生错误");
-          console.log(response);
-        });
     },
 
     memberQuery() {

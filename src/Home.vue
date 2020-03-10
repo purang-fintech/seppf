@@ -127,9 +127,9 @@
           <span style="color:#fafad2;margin-left:0">{{productName}}<i class="el-icon-arrow-down" style="margin-left:5px"></i></span>
           <el-dropdown-menu slot="dropdown">
             <template v-for="(item, index) in userProducts">
-                    <el-dropdown-item :command="composeValue(item)" :key="index" :disabled="item.productId==productId"><i class="el-icon-right" />{{item.productName}}</el-dropdown-item>
+                    <el-dropdown-item :command="composeValue(item)" :key="index" :disabled="item.productId==productId"><i class="el-icon-right" />{{item.productName}}</el-dropdown-item>
             </template>
-                  <el-dropdown-item command="new" style="color:#3ab4d7"><i class="el-icon-plus" />新建产品/项目</el-dropdown-item>
+                  <el-dropdown-item command="new" style="color:#3ab4d7"><i class="el-icon-plus" />新建产品/项目</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

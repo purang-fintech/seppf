@@ -9,13 +9,13 @@
     </div>
 
     <div class="his-lists">
-      <el-tag class="his-class" type="success" size="small">
+      <el-tag class="his-class" effect="dark" type="success" size="small">
         <i class="iconfont icon-mine_fill"> 我操作的（最近30天）</i>
       </el-tag>
       <div class="his-area" :style="{height: formHeight + 35 + 'px'}">
         <div style="overflow-y:auto" :style="{height: formHeight + 'px'}">
           <div>
-            <el-steps direction="vertical" space="67px">
+            <el-steps direction="vertical" space="65px">
               <el-step v-for="(item, i) in direct.directHitory" :key="i" :title="item.operTime" :description="item.operComment" status="success">
               </el-step>
             </el-steps>
@@ -36,13 +36,13 @@
     </div>
 
     <div class="his-lists">
-      <el-tag class="his-class" type="warning" size="small">
+      <el-tag class="his-class" effect="dark" size="small">
         <i class="iconfont icon-request"> 与我相关的（最近30天）</i>
       </el-tag>
       <div class="his-area" :style="{height: formHeight + 35 + 'px'}">
         <div style="overflow-y:auto" :style="{height: formHeight + 'px'}">
           <div>
-            <el-steps direction="vertical" space="67px">
+            <el-steps direction="vertical" space="65px">
               <el-step v-for="(item, i) in refer.referHistory" :key="i" :title="item.operTime" :description="item.operComment" status="finish">
               </el-step>
             </el-steps>
@@ -69,7 +69,7 @@ let versions = [];
 export default {
   data: function () {
     return {
-      formHeight: bodyAviHeightNTab - 75,
+      formHeight: bodyAviHeightNTab - 70,
       direct: {
         currentPage: 1,
         pageSize: 10,
@@ -169,15 +169,8 @@ export default {
 
 .his-class {
   text-align: center;
-  color: #000;
   width: 100%;
-  height: 30px;
-  line-height: 30px;
   margin-bottom: 10px;
-}
-
-.his-class * {
-  font-size: 16px;
 }
 
 .his-area {

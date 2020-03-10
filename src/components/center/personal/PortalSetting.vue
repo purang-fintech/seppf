@@ -37,7 +37,7 @@
 export default {
   data: function () {
     return {
-      selected: [1, 3, 4, 5, 6, 7],
+      selected: [1, 2, 3, 4, 5, 6],
       cardList: workCards
     };
   },
