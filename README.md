@@ -31,6 +31,9 @@
 ### axios ###
 > HTTP请求处理组件。访问地址：[axios](https://github.com/axios/axios)
 
+### vue-mindeditor ###
+> 思维导图组件。访问地址：[vue-mindeditor](https://github.com/fudax/vue-mindeditor)
+
 ### echarts ###
 > 图表展示组件。访问地址：[echarts](https://github.com/apache/incubator-echarts)
 
