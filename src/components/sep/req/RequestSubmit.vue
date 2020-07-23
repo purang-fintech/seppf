@@ -1274,7 +1274,7 @@ export default {
     },
 
     beforeUpload(file) {
-      if (file.size / 1024 / 1024 > 50) {
+      if (file.size / 1024 / 1024 > 1024) {
         this.$message.info("单个文件不能超过 50MB！");
         return false;
       }
