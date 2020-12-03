@@ -1,11 +1,11 @@
+![GitHub last commit](https://img.shields.io/github/last-commit/purang-fintech/seppf)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/purang-fintech/seppf)
+![GitHub license](https://img.shields.io/github/license/purang-fintech/seppf)
+
 # Software Engineering Productivity Platform #
 
 基于Vue2、Element UI框架，用于软件研发流程管理支持以及其过程数据分析度量、质量保证技术的集成
 
-## 问题解决步骤：
-- 先赏个STAR
-- 再加QQ群：362260709
-- 再问问题，当然，建议提问之前仔细看完下面的说明
 
 ## 安装步骤 ##
 
