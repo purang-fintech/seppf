@@ -479,7 +479,8 @@ export default {
             "Content-type": "application/x-www-form-urlencoded"
           },
           params: {
-            "parentId": parentId
+            "parentId": parentId,
+            "qryProduct": sessionStorage.productId
           }
         })
         .then(function (res) {
